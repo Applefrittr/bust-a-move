@@ -7,15 +7,15 @@ export default function adjustOrbPositioning(firedOrb: Orb, orb: Orb) {
   if (Math.abs(firedOrb.x - orb.x) <= firedOrb.r + orb.r / 2) {
     radAngle = Math.atan((firedOrb.x - orb.x) / (firedOrb.y - orb.y));
     degrees = (radAngle * 180) / Math.PI;
-    if (degrees >= -75 && degrees < 0) degrees = -45;
-    else if (degrees >= 0 && degrees <= 75) degrees = 45;
+    if (degrees >= -75 && degrees < 0) degrees = -30;
+    else if (degrees >= 0 && degrees <= 75) degrees = 30;
     radAngle = (degrees * Math.PI) / 180;
     firedOrb.x = orb.x + (firedOrb.r + orb.r) * Math.sin(radAngle);
     firedOrb.y = orb.y + (firedOrb.r + orb.r) * Math.cos(radAngle);
   } else if (Math.abs(firedOrb.x - orb.x) >= firedOrb.r + orb.r / 2) {
     radAngle = Math.atan((firedOrb.y - orb.y) / (firedOrb.x - orb.x));
     degrees = (radAngle * 180) / Math.PI;
-    if (degrees <= 45 && degrees > 0 && firedOrb.x > orb.x) {
+    if (firedOrb.x > orb.x) {
       degrees = 0;
     } else {
       degrees = 180;
