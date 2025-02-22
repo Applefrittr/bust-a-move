@@ -1,5 +1,6 @@
 import Orb from "./objects/Orb";
 import Cannon from "./objects/Cannon";
+import detectCollisions from "./utils/detectCollision";
 // import randomNumInRange from "./utils/randomNumInRange";
 
 export default class Game {
@@ -8,6 +9,7 @@ export default class Game {
   paused: boolean;
   orbs: Orb[];
   cannon: Cannon;
+  firedOrb: Orb | null;
 
   constructor() {
     this.ctx = null;
@@ -15,6 +17,7 @@ export default class Game {
     this.paused = false;
     this.orbs = [];
     this.cannon = new Cannon(50, 100);
+    this.firedOrb = null;
   }
 
   setContext(ctx: CanvasRenderingContext2D | null) {
@@ -25,7 +28,7 @@ export default class Game {
 
   keyDownEvent = (event: KeyboardEvent) => {
     this.cannon.handleKeyDown(event.key);
-    if (event.key === " ") {
+    if (event.key === " " && !this.firedOrb) {
       const orb = new Orb(
         this.cannon.x + this.cannon.width / 2,
         this.cannon.y + this.cannon.height / 2,
@@ -33,7 +36,7 @@ export default class Game {
         10 * Math.cos(((-90 + this.cannon.deg) * Math.PI) / 180),
         10 * Math.sin(((-90 + this.cannon.deg) * Math.PI) / 180)
       );
-      this.orbs.push(orb);
+      this.firedOrb = orb;
     }
   };
 
@@ -71,7 +74,23 @@ export default class Game {
       this.frame = requestAnimationFrame(this.animationLoop);
       this.ctx.clearRect(0, 0, innerWidth, innerHeight);
       this.cannon.update(this.ctx);
-      this.orbs.forEach((orb) => orb.update(this.ctx));
+      // this.orbs.forEach((currOrb) => {
+      //   detectCollisions(
+      //     currOrb,
+      //     this.orbs.filter((orb) => orb != currOrb)
+      //   );
+      //   currOrb.update(this.ctx);
+      // });
+
+      if (this.firedOrb) {
+        detectCollisions(this.firedOrb, this.orbs);
+        this.firedOrb.update(this.ctx);
+        if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
+          this.orbs.push(this.firedOrb);
+          this.firedOrb = null;
+        }
+      }
+      this.orbs.forEach((currOrb) => currOrb.update(this.ctx));
     }
   };
 }
