@@ -2,13 +2,14 @@ import Orb from "./objects/Orb";
 import Cannon from "./objects/Cannon";
 import detectCollisions from "./utils/detectCollision";
 import Arena from "./objects/Arena";
+import OrbGraph from "./objects/OrbGraph";
 // import randomNumInRange from "./utils/randomNumInRange";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null;
   frame: number;
   paused: boolean;
-  orbs: Orb[];
+  orbs: OrbGraph;
   firedOrb: Orb | null;
   orbRadius: number = 25;
   cannon: Cannon;
@@ -18,8 +19,8 @@ export default class Game {
     this.ctx = null;
     this.frame = 0;
     this.paused = false;
-    this.orbs = [];
     this.firedOrb = null;
+    this.orbs = new OrbGraph();
     this.cannon = new Cannon(50, 100);
     this.arena = new Arena(this.orbRadius, "#808080");
   }
@@ -29,6 +30,7 @@ export default class Game {
   }
 
   keyDownEvent = (event: KeyboardEvent) => {
+    console.log(this.orbs);
     this.cannon.handleKeyDown(event.key);
     if (event.key === " " && !this.firedOrb) {
       const orb = new Orb(
@@ -38,6 +40,7 @@ export default class Game {
         10 * Math.cos(((-90 + this.cannon.deg) * Math.PI) / 180),
         10 * Math.sin(((-90 + this.cannon.deg) * Math.PI) / 180)
       );
+      this.orbs.addOrb(orb);
       this.firedOrb = orb;
     }
   };
@@ -81,13 +84,13 @@ export default class Game {
 
       if (this.firedOrb) {
         detectCollisions(this.firedOrb, this.orbs);
-        this.firedOrb.update(this.ctx, this.arena);
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
-          this.orbs.push(this.firedOrb);
           this.firedOrb = null;
         }
       }
-      this.orbs.forEach((currOrb) => currOrb.update(this.ctx, this.arena));
+      for (const [orb] of this.orbs.graph) {
+        orb.update(this.ctx, this.arena);
+      }
     }
   };
 }
