@@ -1,4 +1,4 @@
-// Fired orbs can only be postioning at -90, -45, 45, 90 degress relative to the orb they have collided with
+// Fired orbs can only be postioning at -90, -30, 30, 90 degress relative to the orb they have collided with
 import Orb from "../objects/Orb";
 
 export default function adjustOrbPositioning(firedOrb: Orb, orb: Orb) {

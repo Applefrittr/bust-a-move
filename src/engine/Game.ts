@@ -1,6 +1,7 @@
 import Orb from "./objects/Orb";
 import Cannon from "./objects/Cannon";
 import detectCollisions from "./utils/detectCollision";
+import Arena from "./objects/Arena";
 // import randomNumInRange from "./utils/randomNumInRange";
 
 export default class Game {
@@ -8,23 +9,24 @@ export default class Game {
   frame: number;
   paused: boolean;
   orbs: Orb[];
-  cannon: Cannon;
   firedOrb: Orb | null;
+  orbRadius: number = 25;
+  cannon: Cannon;
+  arena: Arena;
 
   constructor() {
     this.ctx = null;
     this.frame = 0;
     this.paused = false;
     this.orbs = [];
-    this.cannon = new Cannon(50, 100);
     this.firedOrb = null;
+    this.cannon = new Cannon(50, 100);
+    this.arena = new Arena(this.orbRadius, "#808080");
   }
 
   setContext(ctx: CanvasRenderingContext2D | null) {
     this.ctx = ctx;
   }
-
-  generateOrbs() {}
 
   keyDownEvent = (event: KeyboardEvent) => {
     this.cannon.handleKeyDown(event.key);
@@ -32,7 +34,7 @@ export default class Game {
       const orb = new Orb(
         this.cannon.x + this.cannon.width / 2,
         this.cannon.y + this.cannon.height / 2,
-        25,
+        this.orbRadius,
         10 * Math.cos(((-90 + this.cannon.deg) * Math.PI) / 180),
         10 * Math.sin(((-90 + this.cannon.deg) * Math.PI) / 180)
       );
@@ -73,24 +75,19 @@ export default class Game {
     if (this.ctx) {
       this.frame = requestAnimationFrame(this.animationLoop);
       this.ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+      this.arena.draw(this.ctx);
       this.cannon.update(this.ctx);
-      // this.orbs.forEach((currOrb) => {
-      //   detectCollisions(
-      //     currOrb,
-      //     this.orbs.filter((orb) => orb != currOrb)
-      //   );
-      //   currOrb.update(this.ctx);
-      // });
 
       if (this.firedOrb) {
         detectCollisions(this.firedOrb, this.orbs);
-        this.firedOrb.update(this.ctx);
+        this.firedOrb.update(this.ctx, this.arena);
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
           this.orbs.push(this.firedOrb);
           this.firedOrb = null;
         }
       }
-      this.orbs.forEach((currOrb) => currOrb.update(this.ctx));
+      this.orbs.forEach((currOrb) => currOrb.update(this.ctx, this.arena));
     }
   };
 }

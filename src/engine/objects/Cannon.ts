@@ -9,7 +9,7 @@ export default class Cannon {
   constructor(width: number, height: number) {
     this.width = width;
     this.height = height;
-    this.x = innerWidth / 2;
+    this.x = innerWidth / 2 - this.width / 2;
     this.y = innerHeight - 100;
     this.deg = 0;
     this.degDelta = 0;

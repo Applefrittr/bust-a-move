@@ -1,4 +1,5 @@
 import randomNumInRange from "../utils/randomNumInRange";
+import Arena from "./Arena";
 
 const COLORS = ["red", "yellow", "orange", "purple", "blue"];
 
@@ -28,14 +29,21 @@ export default class Orb {
     }
   }
 
-  update(ctx: CanvasRenderingContext2D | null) {
-    if (this.x + this.dx < 0 + this.r || this.x + this.dx > innerWidth - this.r)
+  update(ctx: CanvasRenderingContext2D | null, arena: Arena) {
+    if (
+      this.x + this.dx < arena.leftBound + this.r ||
+      this.x + this.dx > arena.rightBound - this.r
+    )
       this.dx = -this.dx;
     if (this.y + this.dy > innerHeight) this.dy = -this.dy;
     if (this.y + this.dy < 0 + this.r) {
       this.dx = 0;
       this.dy = 0;
       this.y = this.r;
+      this.x =
+        arena.leftBound +
+        Math.floor((this.x + this.r / 2 - arena.leftBound) / (2 * this.r)) *
+          (2 * this.r);
     }
     this.x += this.dx;
     this.y += this.dy;
