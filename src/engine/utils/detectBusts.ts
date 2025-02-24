@@ -16,6 +16,7 @@ function recurvBusting(
   orbNeighbors.forEach((currOrb) => {
     if (color === currOrb.color && !currOrb.busted) {
       currOrb.busted = true;
+      orbGraph.bustedThisRound += 1;
       const neighbors = orbGraph.getNeighbors(currOrb);
       recurvBusting(color, neighbors, orbGraph);
     }

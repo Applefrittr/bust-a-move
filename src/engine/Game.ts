@@ -5,6 +5,9 @@ import Arena from "./objects/Arena";
 import OrbGraph from "./objects/OrbGraph";
 import detectNeighbors from "./utils/detectNeighbors";
 import detectBusts from "./utils/detectBusts";
+import bustOrbs from "./utils/bustOrbs";
+import resetBustStatus from "./utils/resetBustStatus";
+import bustOrphanOrbs from "./utils/bustOrphanOrbs";
 // import randomNumInRange from "./utils/randomNumInRange";
 
 export default class Game {
@@ -89,6 +92,9 @@ export default class Game {
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);
+          bustOrbs(this.orbs);
+          bustOrphanOrbs(this.orbs);
+          resetBustStatus(this.orbs);
           this.firedOrb = null;
         }
       }
