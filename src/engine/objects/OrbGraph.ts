@@ -16,7 +16,7 @@ export default class OrbGraph {
     this.graph.get(orb2)?.add(orb1);
   }
 
-  getConnections(orb: Orb) {
+  getNeighbors(orb: Orb) {
     return this.graph.get(orb);
   }
 

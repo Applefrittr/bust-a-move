@@ -3,6 +3,7 @@ import Cannon from "./objects/Cannon";
 import detectCollisions from "./utils/detectCollision";
 import Arena from "./objects/Arena";
 import OrbGraph from "./objects/OrbGraph";
+import detectNeighbors from "./utils/detectNeighbors";
 // import randomNumInRange from "./utils/randomNumInRange";
 
 export default class Game {
@@ -85,6 +86,7 @@ export default class Game {
       if (this.firedOrb) {
         detectCollisions(this.firedOrb, this.orbs);
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
+          detectNeighbors(this.firedOrb, this.orbs);
           this.firedOrb = null;
         }
       }
