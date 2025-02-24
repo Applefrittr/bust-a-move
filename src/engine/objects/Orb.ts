@@ -10,6 +10,7 @@ export default class Orb {
   dy: number;
   r: number;
   color: string;
+  busted: boolean = false;
 
   constructor(x: number, y: number, r: number, dx: number, dy: number) {
     this.x = x;
