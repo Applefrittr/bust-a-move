@@ -10,7 +10,7 @@ import resetBustStatus from "./utils/resetBustStatus";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
 import fireCannon from "./utils/fireCannon";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
-// import randomNumInRange from "./utils/randomNumInRange";
+import generateLevel from "./utils/generateLevel";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
@@ -34,7 +34,6 @@ export default class Game {
     0,
     0
   );
-  ammo: Orb[] = [this.loadedOrb, this.nextOrb];
   arena: Arena = new Arena(this.orbRadius, "#808080");
 
   setContext(ctx: CanvasRenderingContext2D | null) {
@@ -56,12 +55,14 @@ export default class Game {
   start() {
     window.addEventListener("keydown", this.keyDownEvent);
     window.addEventListener("keyup", this.keyUpEvent);
+    generateLevel(this, 100);
     this.animationLoop();
   }
 
   stop() {
     window.removeEventListener("keydown", this.keyDownEvent);
     window.removeEventListener("keyup", this.keyUpEvent);
+    this.orbs.deleteGraph();
     cancelAnimationFrame(this.frame);
   }
 

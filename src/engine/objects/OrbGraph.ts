@@ -12,6 +12,10 @@ export default class OrbGraph {
     this.graph.delete(orb);
   }
 
+  deleteGraph() {
+    this.graph.clear();
+  }
+
   addEdge(orb1: Orb, orb2: Orb) {
     this.graph.get(orb1)?.add(orb2);
     this.graph.get(orb2)?.add(orb1);

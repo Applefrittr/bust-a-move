@@ -12,6 +12,10 @@ export default class Arena {
     this.color = color;
   }
 
+  get width() {
+    return this.#width;
+  }
+
   get leftBound() {
     return this.#leftBound;
   }

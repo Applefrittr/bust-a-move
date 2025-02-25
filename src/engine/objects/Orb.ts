@@ -1,4 +1,3 @@
-import randomNumInRange from "../utils/randomNumInRange";
 import Arena from "./Arena";
 
 //const COLORS = ["red", "yellow", "orange", "purple", "blue"];
@@ -10,7 +9,7 @@ export default class Orb {
   dx: number;
   dy: number;
   r: number;
-  color: string = COLORS[randomNumInRange(0, COLORS.length - 1)];
+  color: string = COLORS[Math.floor(Math.random() * COLORS.length)];
   busted: boolean = false;
   anchoredToArena: boolean = false;
   recursiveVisitedFlag: boolean = false;
@@ -39,7 +38,7 @@ export default class Orb {
     )
       this.dx = -this.dx;
     if (this.y + this.dy > innerHeight) this.dy = -this.dy;
-    if (this.y + this.dy < 0 + this.r) {
+    if (this.y + this.dy <= 0 + this.r) {
       this.dx = 0;
       this.dy = 0;
       this.y = this.r;
