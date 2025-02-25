@@ -1,12 +1,8 @@
 import Orb from "./Orb";
 
 export default class OrbGraph {
-  graph: Map<Orb, Set<Orb>>;
+  graph: Map<Orb, Set<Orb>> = new Map<Orb, Set<Orb>>();
   bustedThisRound: number = 0;
-
-  constructor() {
-    this.graph = new Map<Orb, Set<Orb>>();
-  }
 
   addOrb(orb: Orb) {
     this.graph.set(orb, new Set<Orb>());

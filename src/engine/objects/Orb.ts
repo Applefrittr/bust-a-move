@@ -10,7 +10,7 @@ export default class Orb {
   dx: number;
   dy: number;
   r: number;
-  color: string;
+  color: string = COLORS[randomNumInRange(0, COLORS.length - 1)];
   busted: boolean = false;
   anchoredToArena: boolean = false;
   recursiveVisitedFlag: boolean = false;
@@ -21,7 +21,6 @@ export default class Orb {
     this.r = r;
     this.dx = dx;
     this.dy = dy;
-    this.color = COLORS[randomNumInRange(0, COLORS.length - 1)];
   }
 
   draw(ctx: CanvasRenderingContext2D | null) {

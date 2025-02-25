@@ -10,8 +10,6 @@ export default class Arena {
     this.#leftBound = innerWidth / 2 - this.#width / 2;
     this.#rightBound = this.#leftBound + this.#width;
     this.color = color;
-
-    console.log("width: ", this.#width);
   }
 
   get leftBound() {

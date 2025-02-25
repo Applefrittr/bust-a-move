@@ -3,16 +3,14 @@ export default class Cannon {
   height: number;
   x: number;
   y: number;
-  deg: number;
-  degDelta: number;
+  deg: number = 0;
+  degDelta: number = 0;
 
   constructor(width: number, height: number) {
     this.width = width;
     this.height = height;
     this.x = innerWidth / 2 - this.width / 2;
     this.y = innerHeight - 100;
-    this.deg = 0;
-    this.degDelta = 0;
   }
 
   handleKeyDown(char: string) {

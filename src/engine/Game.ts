@@ -8,27 +8,34 @@ import detectBusts from "./utils/detectBusts";
 import bustOrbs from "./utils/bustOrbs";
 import resetBustStatus from "./utils/resetBustStatus";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
+import fireCannon from "./utils/fireCannon";
+import updateCannonAmmo from "./utils/updateCannonAmmo";
 // import randomNumInRange from "./utils/randomNumInRange";
 
 export default class Game {
-  ctx: CanvasRenderingContext2D | null;
-  frame: number;
-  paused: boolean;
-  orbs: OrbGraph;
-  firedOrb: Orb | null;
+  ctx: CanvasRenderingContext2D | null = null;
+  frame: number = 0;
+  paused: boolean = false;
   orbRadius: number = 25;
-  cannon: Cannon;
-  arena: Arena;
-
-  constructor() {
-    this.ctx = null;
-    this.frame = 0;
-    this.paused = false;
-    this.firedOrb = null;
-    this.orbs = new OrbGraph();
-    this.cannon = new Cannon(50, 100);
-    this.arena = new Arena(this.orbRadius, "#808080");
-  }
+  orbs: OrbGraph = new OrbGraph();
+  cannon: Cannon = new Cannon(50, 100);
+  firedOrb: Orb | null = null;
+  loadedOrb: Orb = new Orb(
+    this.cannon.x + this.cannon.width / 2,
+    this.cannon.y + this.cannon.height / 2,
+    this.orbRadius,
+    0,
+    0
+  );
+  nextOrb: Orb = new Orb(
+    this.cannon.x - (6 * this.cannon.width) / 2,
+    this.cannon.y + this.cannon.height / 2,
+    this.orbRadius,
+    0,
+    0
+  );
+  ammo: Orb[] = [this.loadedOrb, this.nextOrb];
+  arena: Arena = new Arena(this.orbRadius, "#808080");
 
   setContext(ctx: CanvasRenderingContext2D | null) {
     this.ctx = ctx;
@@ -38,15 +45,7 @@ export default class Game {
     console.log(this.orbs);
     this.cannon.handleKeyDown(event.key);
     if (event.key === " " && !this.firedOrb) {
-      const orb = new Orb(
-        this.cannon.x + this.cannon.width / 2,
-        this.cannon.y + this.cannon.height / 2,
-        this.orbRadius,
-        10 * Math.cos(((-90 + this.cannon.deg) * Math.PI) / 180),
-        10 * Math.sin(((-90 + this.cannon.deg) * Math.PI) / 180)
-      );
-      this.orbs.addOrb(orb);
-      this.firedOrb = orb;
+      fireCannon(this, this.loadedOrb, this.nextOrb);
     }
   };
 
@@ -98,6 +97,8 @@ export default class Game {
           this.firedOrb = null;
         }
       }
+
+      updateCannonAmmo(this);
       for (const [orb] of this.orbs.graph) {
         orb.update(this.ctx, this.arena);
       }
