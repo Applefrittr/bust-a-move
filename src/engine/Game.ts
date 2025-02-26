@@ -11,6 +11,8 @@ import bustOrphanOrbs from "./utils/bustOrphanOrbs";
 import fireCannon from "./utils/fireCannon";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import generateLevel from "./utils/generateLevel";
+import { delay } from "./utils/lvlCompleteTimeoutDelay";
+import detectGameOver from "./utils/detectGameOver";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
@@ -35,6 +37,8 @@ export default class Game {
     0
   );
   arena: Arena = new Arena(this.orbRadius, "#808080");
+  lvlComplete: boolean = false;
+  gameOverFlag: boolean = false;
 
   setContext(ctx: CanvasRenderingContext2D | null) {
     this.ctx = ctx;
@@ -57,6 +61,22 @@ export default class Game {
     window.addEventListener("keyup", this.keyUpEvent);
     generateLevel(this, 100);
     this.animationLoop();
+  }
+
+  nextLevel() {
+    this.lvlComplete = true;
+    this.stop();
+    setTimeout(() => {
+      this.lvlComplete = false;
+      this.start();
+    }, delay);
+  }
+
+  gameOver() {
+    this.gameOverFlag = true;
+    window.removeEventListener("keydown", this.keyDownEvent);
+    window.removeEventListener("keyup", this.keyUpEvent);
+    cancelAnimationFrame(this.frame);
   }
 
   stop() {
@@ -96,6 +116,7 @@ export default class Game {
           bustOrphanOrbs(this.orbs);
           resetBustStatus(this.orbs);
           this.firedOrb = null;
+          if (this.orbs.graph.size === 0) this.nextLevel();
         }
       }
 
@@ -103,6 +124,8 @@ export default class Game {
       for (const [orb] of this.orbs.graph) {
         orb.update(this.ctx, this.arena);
       }
+
+      if (detectGameOver(this)) this.gameOver();
     }
   };
 }

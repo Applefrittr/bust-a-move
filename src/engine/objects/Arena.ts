@@ -3,6 +3,7 @@ export default class Arena {
   #height: number = innerHeight;
   #leftBound: number;
   #rightBound: number;
+  #bottomBound: number = this.#height - 100;
   color: string;
 
   constructor(orbRadius: number, color: string) {
@@ -24,8 +25,15 @@ export default class Arena {
     return this.#rightBound;
   }
 
+  get bottomBound() {
+    return this.#bottomBound;
+  }
+
   draw(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = this.color;
     ctx.fillRect(this.#leftBound, 0, this.#width, this.#height);
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(this.#leftBound, this.#bottomBound, this.#width, 2);
   }
 }

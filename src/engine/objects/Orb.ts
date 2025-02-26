@@ -1,7 +1,7 @@
 import Arena from "./Arena";
 
-//const COLORS = ["red", "yellow", "orange", "purple", "blue"];
-const COLORS = ["red", "blue", "orange"];
+const COLORS = ["red", "yellow", "orange", "purple", "blue"];
+//const COLORS = ["red"];
 
 export default class Orb {
   x: number;
