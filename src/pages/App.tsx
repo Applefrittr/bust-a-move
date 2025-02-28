@@ -1,14 +1,13 @@
-import useDimensions from "./hooks/useDimensions";
-import Game from "./engine/Game";
+import useDimensions from "../hooks/useDimensions";
+import Game from "../engine/Game";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
-import { delay } from "./engine/utils/lvlCompleteTimeoutDelay";
+import { delay } from "../engine/utils/lvlCompleteTimeoutDelay";
 
-function App() {
+export default function App() {
   const { width, height } = useDimensions();
   const [frame, setFrame] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const game = useMemo(() => new Game(), []);
-  //const msPrev = useMemo(() => performance.now(), []);
   const syncReactFrames = useCallback(
     () => setFrame(requestAnimationFrame(syncReactFrames)),
     []
@@ -46,7 +45,7 @@ function App() {
   }, [game.lvlComplete, game.gameOverFlag]);
 
   return (
-    <main className="relative">
+    <>
       <div className="relative z-10">
         <p className="p-10 font-bold">Hello World</p>
         <button
@@ -72,8 +71,6 @@ function App() {
           <b>Game Over!</b>
         </h1>
       )}
-    </main>
+    </>
   );
 }
-
-export default App;
