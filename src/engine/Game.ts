@@ -1,18 +1,20 @@
-import Orb from "./objects/Orb";
-import Cannon from "./objects/Cannon";
-import detectCollisions from "./utils/detectCollision";
 import Arena from "./objects/Arena";
+import Cannon from "./objects/Cannon";
+import FPSController from "./objects/FPSController";
+import Orb from "./objects/Orb";
 import OrbGraph from "./objects/OrbGraph";
-import detectNeighbors from "./utils/detectNeighbors";
-import detectBusts from "./utils/detectBusts";
+import arenaShrink from "./utils/arenaShrink";
 import bustOrbs from "./utils/bustOrbs";
-import resetBustStatus from "./utils/resetBustStatus";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
-import fireCannon from "./utils/fireCannon";
-import updateCannonAmmo from "./utils/updateCannonAmmo";
-import generateLevel from "./utils/generateLevel";
-import { delay } from "./utils/lvlCompleteTimeoutDelay";
+import detectBusts from "./utils/detectBusts";
+import detectCollisions from "./utils/detectCollision";
 import detectGameOver from "./utils/detectGameOver";
+import detectNeighbors from "./utils/detectNeighbors";
+import fireCannon from "./utils/fireCannon";
+import generateLevel from "./utils/generateLevel";
+import resetBustStatus from "./utils/resetBustStatus";
+import updateCannonAmmo from "./utils/updateCannonAmmo";
+import { delay } from "./utils/lvlCompleteTimeoutDelay";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
@@ -36,9 +38,14 @@ export default class Game {
     0,
     0
   );
-  arena: Arena = new Arena(this.orbRadius, "#808080");
+  arena: Arena = new Arena(this, "#808080");
+  arenaShrinkRate: number = 0;
+  fpsController: FPSController = new FPSController();
   lvlComplete: boolean = false;
   gameOverFlag: boolean = false;
+  msNow: number = this.fpsController.msPrev;
+
+  constructor() {}
 
   setContext(ctx: CanvasRenderingContext2D | null) {
     this.ctx = ctx;
@@ -59,7 +66,7 @@ export default class Game {
   start() {
     window.addEventListener("keydown", this.keyDownEvent);
     window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 100);
+    generateLevel(this, 10, 0.01);
     this.animationLoop();
   }
 
@@ -68,6 +75,7 @@ export default class Game {
     this.stop();
     setTimeout(() => {
       this.lvlComplete = false;
+      this.arena.topBound = 0;
       this.start();
     }, delay);
   }
@@ -102,7 +110,13 @@ export default class Game {
   animationLoop = () => {
     if (this.ctx) {
       this.frame = requestAnimationFrame(this.animationLoop);
+
+      this.msNow = this.fpsController.msPrev;
+      if (!this.fpsController.renderFrame()) return;
+
       this.ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+      arenaShrink(this);
 
       this.arena.draw(this.ctx);
       this.cannon.update(this.ctx);

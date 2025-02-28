@@ -3,7 +3,11 @@ import Orb from "../objects/Orb";
 import detectNeighbors from "./detectNeighbors";
 import randomNumInRange from "./randomNumInRange";
 
-export default function generateLevel(game: Game, numOfOrbs: number) {
+export default function generateLevel(
+  game: Game,
+  numOfOrbs: number,
+  arenaShrinkRate: number
+) {
   const orbCoordinates = new Map<string, Orb>();
 
   for (let i = 0; i < numOfOrbs; i++) {
@@ -16,6 +20,8 @@ export default function generateLevel(game: Game, numOfOrbs: number) {
     game.orbs.addOrb(orb);
     detectNeighbors(orb, game.orbs);
   }
+
+  game.arenaShrinkRate = arenaShrinkRate;
 }
 
 function placeOrb(currOrb: Orb, coordinates: Map<string, Orb>, game: Game) {

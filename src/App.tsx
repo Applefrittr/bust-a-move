@@ -8,6 +8,7 @@ function App() {
   const [frame, setFrame] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const game = useMemo(() => new Game(), []);
+  //const msPrev = useMemo(() => performance.now(), []);
   const syncReactFrames = useCallback(
     () => setFrame(requestAnimationFrame(syncReactFrames)),
     []

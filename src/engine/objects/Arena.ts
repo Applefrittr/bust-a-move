@@ -1,13 +1,16 @@
+import Game from "../Game";
+
 export default class Arena {
   #width: number;
   #height: number = innerHeight;
   #leftBound: number;
   #rightBound: number;
   #bottomBound: number = this.#height - 100;
+  #topBound: number = 0;
   color: string;
 
-  constructor(orbRadius: number, color: string) {
-    this.#width = 2 * orbRadius * 10;
+  constructor(game: Game, color: string) {
+    this.#width = 2 * game.orbRadius * 10;
     this.#leftBound = innerWidth / 2 - this.#width / 2;
     this.#rightBound = this.#leftBound + this.#width;
     this.color = color;
@@ -29,9 +32,18 @@ export default class Arena {
     return this.#bottomBound;
   }
 
+  get topBound() {
+    return this.#topBound;
+  }
+
+  set topBound(num: number) {
+    if (num > 0) this.#topBound += num;
+    else if (num === 0) this.#topBound = num;
+  }
+
   draw(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = this.color;
-    ctx.fillRect(this.#leftBound, 0, this.#width, this.#height);
+    ctx.fillRect(this.#leftBound, this.#topBound, this.#width, this.#height);
 
     ctx.fillStyle = "black";
     ctx.fillRect(this.#leftBound, this.#bottomBound, this.#width, 2);
