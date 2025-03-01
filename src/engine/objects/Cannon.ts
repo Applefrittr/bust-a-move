@@ -1,5 +1,5 @@
 import CannonBarrel from "../../assets/cannon-barrel.png";
-import Arena from "./Arena";
+import Game from "../Game";
 
 const cannonBarrel = new Image();
 cannonBarrel.src = CannonBarrel;
@@ -11,12 +11,14 @@ export default class Cannon {
   y: number;
   deg: number = 0;
   degDelta: number = 0;
+  ratio: number;
 
-  constructor(arena: Arena) {
-    this.width = 2 * cannonBarrel.width;
-    this.height = 2 * cannonBarrel.height;
-    this.x = innerWidth / 2 - this.width / 2;
-    this.y = arena.arenaFloor - 2 * cannonBarrel.height;
+  constructor(game: Game) {
+    this.ratio = game.orbToSpriteRatio;
+    this.width = this.ratio * cannonBarrel.width;
+    this.height = this.ratio * cannonBarrel.height;
+    this.x = innerWidth / 2 - this.width / 2 + 2.5;
+    this.y = game.arena.arenaFloor - this.height + 20;
   }
 
   handleKeyDown(char: string) {

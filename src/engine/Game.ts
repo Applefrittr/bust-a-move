@@ -17,17 +17,19 @@ import resetBustStatus from "./utils/resetBustStatus";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { delay } from "./utils/lvlCompleteTimeoutDelay";
 import Sprite from "./objects/Sprite";
+import OrbBag from "./objects/OrbBag";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
   frame: number = 0;
   paused: boolean = false;
   orbRadius: number = 25;
+  orbToSpriteRatio: number = this.orbRadius / 8;
   arena: Arena = new Arena(this, "#808080");
   arenaShrinkRate: number = 0;
   orbs: OrbGraph = new OrbGraph();
-  cannon: Cannon = new Cannon(this.arena);
-  cannonBase: CannonBase = new CannonBase(this.arena);
+  cannon: Cannon = new Cannon(this);
+  cannonBase: CannonBase = new CannonBase(this);
   firedOrb: Orb | null = null;
   loadedOrb: Orb = new Orb(
     this.cannon.x + this.cannon.width / 2,
@@ -37,8 +39,8 @@ export default class Game {
     0
   );
   nextOrb: Orb = new Orb(
-    this.cannon.x - 150,
-    this.cannon.y + this.cannon.height / 2,
+    this.cannon.x - 5 * this.orbRadius,
+    this.arena.arenaFloor - this.orbRadius,
     this.orbRadius,
     0,
     0
@@ -48,6 +50,8 @@ export default class Game {
   gameOverFlag: boolean = false;
   msNow: number = this.fpsController.msPrev;
   greenSprite = new Sprite(innerWidth / 2 + 50, this.arena.arenaFloor - 100);
+  orbBagBack = new OrbBag("back", this);
+  orbBagFront = new OrbBag("front", this);
 
   constructor() {}
 
@@ -126,6 +130,7 @@ export default class Game {
       arenaShrink(this);
 
       this.arena.draw(this.ctx);
+      this.orbBagBack.draw(this.ctx);
       this.cannonBase.update(this.ctx);
       this.cannon.update(this.ctx);
 
@@ -146,6 +151,8 @@ export default class Game {
       for (const [orb] of this.orbs.graph) {
         orb.update(this.ctx, this.arena);
       }
+
+      this.orbBagFront.draw(this.ctx);
 
       this.greenSprite.update(this.ctx);
       if (detectGameOver(this)) this.gameOver();
