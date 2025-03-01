@@ -1,5 +1,6 @@
 import Arena from "./objects/Arena";
 import Cannon from "./objects/Cannon";
+import CannonBase from "./objects/CannonBase";
 import FPSController from "./objects/FPSController";
 import Orb from "./objects/Orb";
 import OrbGraph from "./objects/OrbGraph";
@@ -15,14 +16,18 @@ import generateLevel from "./utils/generateLevel";
 import resetBustStatus from "./utils/resetBustStatus";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { delay } from "./utils/lvlCompleteTimeoutDelay";
+import Sprite from "./objects/Sprite";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
   frame: number = 0;
   paused: boolean = false;
   orbRadius: number = 25;
+  arena: Arena = new Arena(this, "#808080");
+  arenaShrinkRate: number = 0;
   orbs: OrbGraph = new OrbGraph();
-  cannon: Cannon = new Cannon(50, 100);
+  cannon: Cannon = new Cannon(this.arena);
+  cannonBase: CannonBase = new CannonBase(this.arena);
   firedOrb: Orb | null = null;
   loadedOrb: Orb = new Orb(
     this.cannon.x + this.cannon.width / 2,
@@ -32,18 +37,17 @@ export default class Game {
     0
   );
   nextOrb: Orb = new Orb(
-    this.cannon.x - (6 * this.cannon.width) / 2,
+    this.cannon.x - 150,
     this.cannon.y + this.cannon.height / 2,
     this.orbRadius,
     0,
     0
   );
-  arena: Arena = new Arena(this, "#808080");
-  arenaShrinkRate: number = 0;
   fpsController: FPSController = new FPSController();
   lvlComplete: boolean = false;
   gameOverFlag: boolean = false;
   msNow: number = this.fpsController.msPrev;
+  greenSprite = new Sprite(innerWidth / 2 + 50, this.arena.arenaFloor - 100);
 
   constructor() {}
 
@@ -54,13 +58,16 @@ export default class Game {
   keyDownEvent = (event: KeyboardEvent) => {
     console.log(this.orbs);
     this.cannon.handleKeyDown(event.key);
+    this.cannonBase.handleKeyDown(event.key);
     if (event.key === " " && !this.firedOrb) {
       fireCannon(this, this.loadedOrb, this.nextOrb);
+      this.greenSprite.setSheet("look");
     }
   };
 
   keyUpEvent = () => {
     this.cannon.handleKeyUp();
+    this.cannonBase.handleKeyUp();
   };
 
   start() {
@@ -119,6 +126,7 @@ export default class Game {
       arenaShrink(this);
 
       this.arena.draw(this.ctx);
+      this.cannonBase.update(this.ctx);
       this.cannon.update(this.ctx);
 
       if (this.firedOrb) {
@@ -126,7 +134,7 @@ export default class Game {
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);
-          bustOrbs(this.orbs);
+          bustOrbs(this.orbs, this.greenSprite);
           bustOrphanOrbs(this.orbs);
           resetBustStatus(this.orbs);
           this.firedOrb = null;
@@ -139,6 +147,7 @@ export default class Game {
         orb.update(this.ctx, this.arena);
       }
 
+      this.greenSprite.update(this.ctx);
       if (detectGameOver(this)) this.gameOver();
     }
   };

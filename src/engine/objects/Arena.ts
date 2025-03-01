@@ -7,6 +7,7 @@ export default class Arena {
   #rightBound: number;
   #bottomBound: number = this.#height - 100;
   #topBound: number = 0;
+  #arenaFloor: number = this.#height - 10;
   color: string;
 
   constructor(game: Game, color: string) {
@@ -34,6 +35,10 @@ export default class Arena {
 
   get topBound() {
     return this.#topBound;
+  }
+
+  get arenaFloor() {
+    return this.#arenaFloor;
   }
 
   set topBound(num: number) {

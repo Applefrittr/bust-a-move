@@ -7,6 +7,7 @@ export default function Home() {
       <div className="flex gap-2">
         <LinkBtns to={"game"} text={"Start"} />
         <LinkBtns to={"scoreboard"} text={"Scoreboard"} />
+        <LinkBtns to={"sprites"} text={"Sprites"} />
       </div>
     </section>
   );
