@@ -16,8 +16,10 @@ import generateLevel from "./utils/generateLevel";
 import resetBustStatus from "./utils/resetBustStatus";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { delay } from "./utils/lvlCompleteTimeoutDelay";
-import Sprite from "./objects/Sprite";
+//import Sprite from "./objects/Sprite";
 import OrbBag from "./objects/OrbBag";
+import CannonOperator from "./objects/CannonOperator";
+import CannonLoader from "./objects/CannonLoader";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
@@ -49,7 +51,9 @@ export default class Game {
   lvlComplete: boolean = false;
   gameOverFlag: boolean = false;
   msNow: number = this.fpsController.msPrev;
-  greenSprite = new Sprite(innerWidth / 2 + 50, this.arena.arenaFloor - 100);
+  //cannonOperatorSprite = new Sprite(innerWidth / 2 + 50, innerHeight - 100);
+  cannonOperatorSprite = new CannonOperator(this);
+  cannonLoaderSprite = new CannonLoader(this);
   orbBagBack = new OrbBag("back", this);
   orbBagFront = new OrbBag("front", this);
 
@@ -63,21 +67,24 @@ export default class Game {
     console.log(this.orbs);
     this.cannon.handleKeyDown(event.key);
     this.cannonBase.handleKeyDown(event.key);
+    this.cannonOperatorSprite.handleKeyDown(event.key);
+    this.cannonLoaderSprite.handleKeyDown(event.key);
     if (event.key === " " && !this.firedOrb) {
       fireCannon(this, this.loadedOrb, this.nextOrb);
-      this.greenSprite.setSheet("look");
+      //this.cannonOperatorSprite.setSheet("look");
     }
   };
 
   keyUpEvent = () => {
     this.cannon.handleKeyUp();
     this.cannonBase.handleKeyUp();
+    this.cannonOperatorSprite.handleKeyUp();
   };
 
   start() {
     window.addEventListener("keydown", this.keyDownEvent);
     window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 10, 0.01);
+    generateLevel(this, 10, 0.05);
     this.animationLoop();
   }
 
@@ -139,13 +146,15 @@ export default class Game {
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);
-          bustOrbs(this.orbs, this.greenSprite);
+          bustOrbs(this.orbs);
           bustOrphanOrbs(this.orbs);
           resetBustStatus(this.orbs);
           this.firedOrb = null;
           if (this.orbs.graph.size === 0) this.nextLevel();
         }
       }
+
+      this.cannonLoaderSprite.update(this.ctx);
 
       updateCannonAmmo(this);
       for (const [orb] of this.orbs.graph) {
@@ -154,7 +163,7 @@ export default class Game {
 
       this.orbBagFront.draw(this.ctx);
 
-      this.greenSprite.update(this.ctx);
+      this.cannonOperatorSprite.update(this.ctx);
       if (detectGameOver(this)) this.gameOver();
     }
   };
