@@ -1,5 +1,5 @@
 // Fired orbs can only be postioning at -90, -30, 30, 90 degress relative to the orb they have collided with
-import Orb from "../objects/Orb";
+import Orb from "../classes/Orb";
 
 export default function adjustOrbPositioning(firedOrb: Orb, orb: Orb) {
   let radAngle = 0;

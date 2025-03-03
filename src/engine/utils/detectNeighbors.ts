@@ -1,5 +1,5 @@
-import Orb from "../objects/Orb";
-import OrbGraph from "../objects/OrbGraph";
+import Orb from "../classes/Orb";
+import OrbGraph from "../classes/OrbGraph";
 import getDistance from "./getDistance";
 
 export default function detectNeighbors(firedOrb: Orb, orbList: OrbGraph) {

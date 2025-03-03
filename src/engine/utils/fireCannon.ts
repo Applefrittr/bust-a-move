@@ -1,4 +1,4 @@
-import Orb from "../objects/Orb";
+import Orb from "../classes/Orb";
 import Game from "../Game";
 
 export default function fireCannon(game: Game, loaded: Orb, next: Orb) {

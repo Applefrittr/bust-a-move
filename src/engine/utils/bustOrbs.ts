@@ -1,4 +1,4 @@
-import OrbGraph from "../objects/OrbGraph";
+import OrbGraph from "../classes/OrbGraph";
 //import Sprite from "../objects/Sprite";
 
 export default function bustOrbs(orbGraph: OrbGraph) {

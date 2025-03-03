@@ -1,5 +1,5 @@
 import Game from "../Game";
-import Orb from "../objects/Orb";
+import Orb from "../classes/Orb";
 import detectNeighbors from "./detectNeighbors";
 import randomNumInRange from "./randomNumInRange";
 

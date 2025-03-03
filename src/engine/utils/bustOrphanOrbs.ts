@@ -1,5 +1,5 @@
-import Orb from "../objects/Orb";
-import OrbGraph from "../objects/OrbGraph";
+import Orb from "../classes/Orb";
+import OrbGraph from "../classes/OrbGraph";
 
 export default function bustOrphanOrbs(orbGraph: OrbGraph) {
   const anchoredOrbs = new Map<Orb, boolean | undefined>();

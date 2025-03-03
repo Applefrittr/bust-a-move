@@ -1,6 +1,6 @@
 import Game from "../Game";
-import Arena from "../objects/Arena";
-import OrbGraph from "../objects/OrbGraph";
+import Arena from "../classes/Arena";
+import OrbGraph from "../classes/OrbGraph";
 
 function resizeArena(arena: Arena, shiftAmount: number) {
   arena.topBound = shiftAmount;

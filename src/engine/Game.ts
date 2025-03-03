@@ -1,9 +1,9 @@
-import Arena from "./objects/Arena";
-import Cannon from "./objects/Cannon";
-import CannonBase from "./objects/CannonBase";
-import FPSController from "./objects/FPSController";
-import Orb from "./objects/Orb";
-import OrbGraph from "./objects/OrbGraph";
+import Arena from "./classes/Arena";
+import Cannon from "./classes/Cannon";
+import CannonBase from "./classes/CannonBase";
+import FPSController from "./classes/FPSController";
+import Orb from "./classes/Orb";
+import OrbGraph from "./classes/OrbGraph";
 import arenaShrink from "./utils/arenaShrink";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
@@ -17,9 +17,9 @@ import resetBustStatus from "./utils/resetBustStatus";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { delay } from "./utils/lvlCompleteTimeoutDelay";
 //import Sprite from "./objects/Sprite";
-import OrbBag from "./objects/OrbBag";
-import CannonOperator from "./objects/CannonOperator";
-import CannonLoader from "./objects/CannonLoader";
+import OrbBag from "./classes/OrbBag";
+import CannonOperator from "./classes/CannonOperator";
+import CannonLoader from "./classes/CannonLoader";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
@@ -144,6 +144,7 @@ export default class Game {
       if (this.firedOrb) {
         detectCollisions(this.firedOrb, this.orbs);
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
+          this.firedOrb.shine();
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);
           bustOrbs(this.orbs);

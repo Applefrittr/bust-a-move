@@ -1,4 +1,4 @@
-import OrbGraph from "../objects/OrbGraph";
+import OrbGraph from "../classes/OrbGraph";
 
 export default function resetBustStatus(orbGraph: OrbGraph) {
   orbGraph.bustedThisRound = 0;

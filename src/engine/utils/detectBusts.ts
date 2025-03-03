@@ -1,5 +1,5 @@
-import Orb from "../objects/Orb";
-import OrbGraph from "../objects/OrbGraph";
+import Orb from "../classes/Orb";
+import OrbGraph from "../classes/OrbGraph";
 
 export default function detectBusts(firedOrb: Orb, orbGraph: OrbGraph) {
   const color = firedOrb.color;
