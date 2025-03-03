@@ -151,7 +151,6 @@ export default class Game {
           bustOrphanOrbs(this.orbs);
           resetBustStatus(this.orbs);
           this.firedOrb = null;
-          if (this.orbs.graph.size === 0) this.nextLevel();
         }
       }
 
@@ -159,12 +158,13 @@ export default class Game {
 
       updateCannonAmmo(this);
       for (const [orb] of this.orbs.graph) {
-        orb.update(this.ctx, this.arena);
+        orb.update(this.ctx, this.arena, this.orbs);
       }
 
       this.orbBagFront.draw(this.ctx);
 
       this.cannonOperatorSprite.update(this.ctx);
+      if (this.orbs.graph.size === 0) this.nextLevel();
       if (detectGameOver(this)) this.gameOver();
     }
   };
