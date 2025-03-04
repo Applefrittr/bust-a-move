@@ -20,6 +20,7 @@ import { delay } from "./utils/lvlCompleteTimeoutDelay";
 import OrbBag from "./classes/OrbBag";
 import CannonOperator from "./classes/CannonOperator";
 import CannonLoader from "./classes/CannonLoader";
+import OrbExplosion from "./classes/OrbExplosion";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
@@ -51,11 +52,11 @@ export default class Game {
   lvlComplete: boolean = false;
   gameOverFlag: boolean = false;
   msNow: number = this.fpsController.msPrev;
-  //cannonOperatorSprite = new Sprite(innerWidth / 2 + 50, innerHeight - 100);
   cannonOperatorSprite = new CannonOperator(this);
   cannonLoaderSprite = new CannonLoader(this);
   orbBagBack = new OrbBag("back", this);
   orbBagFront = new OrbBag("front", this);
+  explosions: Set<OrbExplosion> = new Set();
 
   constructor() {}
 
@@ -147,11 +148,10 @@ export default class Game {
           this.firedOrb.shine();
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);
-          bustOrbs(this.orbs);
-          bustOrphanOrbs(this.orbs);
+          bustOrbs(this.orbs, this.explosions, this.orbToSpriteRatio);
+          bustOrphanOrbs(this.orbs, this.explosions, this.orbToSpriteRatio);
           resetBustStatus(this.orbs);
           this.firedOrb = null;
-          if (this.orbs.graph.size === 0) this.nextLevel();
         }
       }
 
@@ -161,10 +161,15 @@ export default class Game {
       for (const [orb] of this.orbs.graph) {
         orb.update(this.ctx, this.arena);
       }
+      this.explosions.forEach((explosion) =>
+        explosion.update(this.ctx, this.explosions)
+      );
 
       this.orbBagFront.draw(this.ctx);
 
       this.cannonOperatorSprite.update(this.ctx);
+      if (this.orbs.graph.size === 0 && this.explosions.size === 0)
+        this.nextLevel();
       if (detectGameOver(this)) this.gameOver();
     }
   };

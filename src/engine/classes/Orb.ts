@@ -1,6 +1,5 @@
 import Arena from "./Arena";
 import randomNumInRange from "../utils/randomNumInRange";
-
 import { orbSprites, colors } from "../spriteObjects/Orbs";
 
 export default class Orb {
@@ -15,14 +14,17 @@ export default class Orb {
   frame: number = 1;
   sx: number = 0;
   sy: number = 0;
+  spriteDrawX: number;
+  spriteDrawY: number;
   shiftX: number = 0;
   spriteWidth: number = orbSprites[this.color].width;
   spriteHeight: number = orbSprites[this.color].height;
-  randomIdleInterval: number = randomNumInRange(200, 300);
-
+  spriteDrawWidth: number;
+  spriteDrawHeight: number;
   busted: boolean = false;
   anchoredToArena: boolean = false;
   recursiveVisitedFlag: boolean = false;
+  randomIdleInterval: number = randomNumInRange(200, 300);
 
   constructor(x: number, y: number, r: number, dx: number, dy: number) {
     this.x = x;
@@ -30,10 +32,16 @@ export default class Orb {
     this.r = r;
     this.dx = dx;
     this.dy = dy;
+
+    this.spriteDrawX = this.x - this.r;
+    this.spriteDrawY = this.y - this.r;
+    this.spriteDrawWidth = 2 * this.r;
+    this.spriteDrawHeight = 2 * this.r;
   }
 
   draw(ctx: CanvasRenderingContext2D | null) {
     if (ctx) {
+      ctx.strokeStyle = "transparent";
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
       ctx.stroke();
@@ -44,10 +52,10 @@ export default class Orb {
         this.sy,
         this.spriteWidth,
         this.spriteHeight,
-        this.x - this.r,
-        this.y - this.r,
-        2 * this.r,
-        2 * this.r
+        this.spriteDrawX,
+        this.spriteDrawY,
+        this.spriteDrawWidth,
+        this.spriteDrawHeight
       );
     }
   }
@@ -80,6 +88,13 @@ export default class Orb {
     }
     this.x += this.dx;
     this.y += this.dy;
+    if (this.sprite === orbSprites[this.color].bust) {
+      this.spriteDrawX = this.x - 2 * this.r;
+      this.spriteDrawY = this.y - 2 * this.r;
+    } else {
+      this.spriteDrawX = this.x - this.r;
+      this.spriteDrawY = this.y - this.r;
+    }
 
     if (this.frame % this.randomIdleInterval === 0) this.idle();
     if (this.frame % 5 === 0) {
