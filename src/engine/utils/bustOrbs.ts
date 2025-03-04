@@ -1,11 +1,13 @@
 import OrbCritter from "../classes/OrbCritter";
 import OrbExplosion from "../classes/OrbExplosion";
 import OrbGraph from "../classes/OrbGraph";
+import TenPoints from "../classes/TenPoints";
 
 export default function bustOrbs(
   orbGraph: OrbGraph,
   explosions: Set<OrbExplosion>,
   critters: Set<OrbCritter>,
+  tenPointSprites: Set<TenPoints>,
   ratio: number
 ) {
   if (orbGraph.bustedThisRound < 3) {
@@ -24,6 +26,10 @@ export default function bustOrbs(
       const critter = new OrbCritter(orb.x, orb.y, orb.color, ratio);
       critters.add(critter);
       explosions.add(explosion);
+      setTimeout(() => {
+        const tenPoints = new TenPoints(orb.x, orb.y, ratio);
+        tenPointSprites.add(tenPoints);
+      }, 300);
       continue;
     }
 

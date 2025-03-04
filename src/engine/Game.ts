@@ -22,6 +22,7 @@ import CannonOperator from "./classes/CannonOperator";
 import CannonLoader from "./classes/CannonLoader";
 import OrbExplosion from "./classes/OrbExplosion";
 import OrbCritter from "./classes/OrbCritter";
+import TenPoints from "./classes/TenPoints";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
@@ -59,6 +60,7 @@ export default class Game {
   orbBagFront = new OrbBag("front", this);
   explosions: Set<OrbExplosion> = new Set();
   critters: Set<OrbCritter> = new Set();
+  tenPointSprites: Set<TenPoints> = new Set();
 
   constructor() {}
 
@@ -153,6 +155,7 @@ export default class Game {
             this.orbs,
             this.explosions,
             this.critters,
+            this.tenPointSprites,
             this.orbToSpriteRatio
           );
           bustOrphanOrbs(this.orbs);
@@ -169,6 +172,10 @@ export default class Game {
       }
       this.explosions.forEach((explosion) =>
         explosion.update(this.ctx, this.explosions)
+      );
+
+      this.tenPointSprites.forEach((sprite) =>
+        sprite.update(this.ctx, this.tenPointSprites)
       );
 
       this.critters.forEach((critter) =>
