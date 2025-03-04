@@ -1,9 +1,6 @@
+import Arena from "./Arena";
 import randomNumInRange from "../utils/randomNumInRange";
 import { orbSprites, colors } from "../spriteObjects/Orbs";
-import Arena from "./Arena";
-import OrbGraph from "./OrbGraph";
-
-const SPRITES = orbSprites;
 
 export default class Orb {
   x: number;
@@ -13,15 +10,15 @@ export default class Orb {
   r: number;
 
   color: string = colors[Math.floor(Math.random() * colors.length)];
-  sprite: HTMLImageElement = SPRITES[this.color].idle;
+  sprite: HTMLImageElement = orbSprites[this.color].idle;
   frame: number = 1;
   sx: number = 0;
   sy: number = 0;
   spriteDrawX: number;
   spriteDrawY: number;
   shiftX: number = 0;
-  spriteWidth: number = SPRITES[this.color].width;
-  spriteHeight: number = SPRITES[this.color].height;
+  spriteWidth: number = orbSprites[this.color].width;
+  spriteHeight: number = orbSprites[this.color].height;
   spriteDrawWidth: number;
   spriteDrawHeight: number;
   busted: boolean = false;
@@ -64,7 +61,7 @@ export default class Orb {
   }
 
   shine() {
-    this.sprite = SPRITES[this.color].shine;
+    this.sprite = orbSprites[this.color].shine;
     this.shiftX = this.spriteWidth + 1;
   }
 
@@ -72,20 +69,7 @@ export default class Orb {
     this.shiftX = this.spriteWidth + 1;
   }
 
-  bust() {
-    this.sprite = SPRITES[this.color].bust;
-    this.spriteWidth = SPRITES[this.color].bustWidth;
-    this.spriteHeight = SPRITES[this.color].bustHeight;
-    this.shiftX = SPRITES[this.color].bustWidth + 1;
-    this.spriteDrawWidth = 4 * this.r;
-    this.spriteDrawHeight = 4 * this.r;
-  }
-
-  update(
-    ctx: CanvasRenderingContext2D | null,
-    arena: Arena,
-    orbList: OrbGraph
-  ) {
+  update(ctx: CanvasRenderingContext2D | null, arena: Arena) {
     if (
       this.x + this.dx < arena.leftBound + this.r ||
       this.x + this.dx > arena.rightBound - this.r
@@ -104,7 +88,7 @@ export default class Orb {
     }
     this.x += this.dx;
     this.y += this.dy;
-    if (this.sprite === SPRITES[this.color].bust) {
+    if (this.sprite === orbSprites[this.color].bust) {
       this.spriteDrawX = this.x - 2 * this.r;
       this.spriteDrawY = this.y - 2 * this.r;
     } else {
@@ -116,19 +100,15 @@ export default class Orb {
     if (this.frame % 5 === 0) {
       this.sx += this.shiftX;
       if (
-        (this.sprite === SPRITES[this.color].shine &&
+        (this.sprite === orbSprites[this.color].shine &&
           this.sx >= this.sprite.width) ||
-        (this.sprite === SPRITES[this.color].idle &&
+        (this.sprite === orbSprites[this.color].idle &&
           this.sx >= this.sprite.width)
       ) {
         this.sx = 0;
         this.shiftX = 0;
-        this.sprite = SPRITES[this.color].idle;
-      } else if (
-        this.sprite === SPRITES[this.color].bust &&
-        this.sx >= this.sprite.width
-      )
-        orbList.graph.delete(this);
+        this.sprite = orbSprites[this.color].idle;
+      }
     }
 
     this.frame++;

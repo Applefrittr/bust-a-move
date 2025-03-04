@@ -1,16 +1,6 @@
-import { useEffect } from "react";
 import LinkBtns from "../components/LinkBtns";
-import preLoadAllSprites from "../engine/spriteObjects/preLoadSprites";
 
 export default function Home() {
-  useEffect(() => {
-    const load = async () => {
-      const sprites = await preLoadAllSprites();
-      console.log(sprites);
-    };
-
-    load();
-  }, []);
   return (
     <section className="flex items-center justify-center flex-col gap-8 h-full">
       <h1>BUST A MOVE</h1>
