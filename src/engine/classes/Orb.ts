@@ -1,6 +1,7 @@
 import Arena from "./Arena";
 import randomNumInRange from "../utils/randomNumInRange";
 import { orbSprites, colors } from "../spriteObjects/Orbs";
+import OrbGraph from "./OrbGraph";
 
 export default class Orb {
   x: number;
@@ -25,6 +26,8 @@ export default class Orb {
   anchoredToArena: boolean = false;
   recursiveVisitedFlag: boolean = false;
   randomIdleInterval: number = randomNumInRange(200, 300);
+  orphaned: boolean = false;
+  gravityPerFrame: number = 0;
 
   constructor(x: number, y: number, r: number, dx: number, dy: number) {
     this.x = x;
@@ -69,13 +72,23 @@ export default class Orb {
     this.shiftX = this.spriteWidth + 1;
   }
 
-  update(ctx: CanvasRenderingContext2D | null, arena: Arena) {
+  drop() {
+    this.orphaned = true;
+    this.gravityPerFrame = 0.5;
+    this.dy = this.gravityPerFrame;
+  }
+
+  update(
+    ctx: CanvasRenderingContext2D | null,
+    arena: Arena,
+    orbGraph?: OrbGraph
+  ) {
     if (
       this.x + this.dx < arena.leftBound + this.r ||
       this.x + this.dx > arena.rightBound - this.r
     )
       this.dx = -this.dx;
-    if (this.y + this.dy > innerHeight) this.dy = -this.dy;
+    if (this.y + this.dy > innerHeight) orbGraph?.deleteOrb(this);
     if (this.y + this.dy <= arena.topBound + this.r) {
       this.dx = 0;
       this.dy = 0;
@@ -88,13 +101,8 @@ export default class Orb {
     }
     this.x += this.dx;
     this.y += this.dy;
-    if (this.sprite === orbSprites[this.color].bust) {
-      this.spriteDrawX = this.x - 2 * this.r;
-      this.spriteDrawY = this.y - 2 * this.r;
-    } else {
-      this.spriteDrawX = this.x - this.r;
-      this.spriteDrawY = this.y - this.r;
-    }
+    this.spriteDrawX = this.x - this.r;
+    this.spriteDrawY = this.y - this.r;
 
     if (this.frame % this.randomIdleInterval === 0) this.idle();
     if (this.frame % 5 === 0) {
@@ -111,6 +119,7 @@ export default class Orb {
       }
     }
 
+    if (this.orphaned) this.dy += this.gravityPerFrame;
     this.frame++;
     this.draw(ctx);
   }

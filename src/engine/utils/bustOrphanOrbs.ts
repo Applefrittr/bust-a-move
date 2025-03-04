@@ -1,25 +1,13 @@
 import Orb from "../classes/Orb";
-import OrbExplosion from "../classes/OrbExplosion";
 import OrbGraph from "../classes/OrbGraph";
 
-export default function bustOrphanOrbs(
-  orbGraph: OrbGraph,
-  explosions: Set<OrbExplosion>,
-  ratio: number
-) {
+export default function bustOrphanOrbs(orbGraph: OrbGraph) {
   const anchoredOrbs = new Map<Orb, boolean | undefined>();
 
   for (const [orb] of orbGraph.graph) {
     const neighbors = orbGraph.getNeighbors(orb);
     if (neighbors?.size === 0 && !orb.anchoredToArena) {
-      const explosion = new OrbExplosion(
-        orb.x - 2 * orb.r,
-        orb.y - 2 * orb.r,
-        orb.color,
-        ratio
-      );
-      explosions.add(explosion);
-      orbGraph.deleteOrb(orb);
+      orb.drop();
       continue;
     } else if (orb.anchoredToArena) {
       anchoredOrbs.set(orb, true);
@@ -34,14 +22,7 @@ export default function bustOrphanOrbs(
 
   for (const [orb] of anchoredOrbs) {
     if (!anchoredOrbs.get(orb) && !orb.anchoredToArena) {
-      const explosion = new OrbExplosion(
-        orb.x - 2 * orb.r,
-        orb.y - 2 * orb.r,
-        orb.color,
-        ratio
-      );
-      explosions.add(explosion);
-      orbGraph.deleteOrb(orb);
+      orb.drop();
     }
     orb.recursiveVisitedFlag = false;
   }

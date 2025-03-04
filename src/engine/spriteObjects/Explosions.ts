@@ -18,17 +18,17 @@ const redBust = await preLoadSprite(RedBust);
 export const explosionSprites: ExplosionSprites = {
   green: {
     explosion: greenBust,
-    width: greenBust.width / 7 - 1,
+    width: greenBust.width / 7,
     height: greenBust.height,
   },
   blue: {
     explosion: blueBust,
-    width: blueBust.width / 7 - 1,
+    width: blueBust.width / 7,
     height: blueBust.height,
   },
   red: {
     explosion: redBust,
-    width: redBust.width / 7 - 1,
+    width: redBust.width / 7,
     height: redBust.height,
   },
 };

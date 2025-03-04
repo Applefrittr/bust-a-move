@@ -149,7 +149,7 @@ export default class Game {
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);
           bustOrbs(this.orbs, this.explosions, this.orbToSpriteRatio);
-          bustOrphanOrbs(this.orbs, this.explosions, this.orbToSpriteRatio);
+          bustOrphanOrbs(this.orbs);
           resetBustStatus(this.orbs);
           this.firedOrb = null;
         }
@@ -159,7 +159,7 @@ export default class Game {
 
       updateCannonAmmo(this);
       for (const [orb] of this.orbs.graph) {
-        orb.update(this.ctx, this.arena);
+        orb.update(this.ctx, this.arena, this.orbs);
       }
       this.explosions.forEach((explosion) =>
         explosion.update(this.ctx, this.explosions)
