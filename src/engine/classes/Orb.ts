@@ -1,7 +1,8 @@
 import Arena from "./Arena";
-import randomNumInRange from "../utils/randomNumInRange";
-import { orbSprites, colors } from "../spriteObjects/Orbs";
 import OrbGraph from "./OrbGraph";
+import randomNumInRange from "../utils/randomNumInRange";
+import { orbSprites, colors } from "../spriteObjects/OrbSprites";
+import { gravityPerFrame } from "../utils/constantValues";
 
 export default class Orb {
   x: number;
@@ -27,7 +28,6 @@ export default class Orb {
   recursiveVisitedFlag: boolean = false;
   randomIdleInterval: number = randomNumInRange(200, 300);
   orphaned: boolean = false;
-  gravityPerFrame: number = 0;
 
   constructor(x: number, y: number, r: number, dx: number, dy: number) {
     this.x = x;
@@ -74,8 +74,7 @@ export default class Orb {
 
   drop() {
     this.orphaned = true;
-    this.gravityPerFrame = 0.5;
-    this.dy = this.gravityPerFrame;
+    this.dy = gravityPerFrame;
   }
 
   update(
@@ -119,7 +118,7 @@ export default class Orb {
       }
     }
 
-    if (this.orphaned) this.dy += this.gravityPerFrame;
+    if (this.orphaned) this.dy += gravityPerFrame;
     this.frame++;
     this.draw(ctx);
   }

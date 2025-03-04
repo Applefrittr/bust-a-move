@@ -1,4 +1,4 @@
-import { explosionSprites } from "../spriteObjects/Explosions";
+import { explosionSprites } from "../spriteObjects/ExplosionSprites";
 
 export default class OrbExplosion {
   frame: number = 1;

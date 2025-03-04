@@ -1,7 +1,7 @@
 import useDimensions from "../hooks/useDimensions";
 import Game from "../engine/Game";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
-import { delay } from "../engine/utils/lvlCompleteTimeoutDelay";
+import { delay } from "../engine/utils/constantValues";
 
 export default function App() {
   const { width, height } = useDimensions();

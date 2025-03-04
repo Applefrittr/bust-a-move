@@ -15,12 +15,13 @@ import fireCannon from "./utils/fireCannon";
 import generateLevel from "./utils/generateLevel";
 import resetBustStatus from "./utils/resetBustStatus";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
-import { delay } from "./utils/lvlCompleteTimeoutDelay";
+import { delay } from "./utils/constantValues";
 //import Sprite from "./objects/Sprite";
 import OrbBag from "./classes/OrbBag";
 import CannonOperator from "./classes/CannonOperator";
 import CannonLoader from "./classes/CannonLoader";
 import OrbExplosion from "./classes/OrbExplosion";
+import OrbCritter from "./classes/OrbCritter";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
@@ -57,6 +58,7 @@ export default class Game {
   orbBagBack = new OrbBag("back", this);
   orbBagFront = new OrbBag("front", this);
   explosions: Set<OrbExplosion> = new Set();
+  critters: Set<OrbCritter> = new Set();
 
   constructor() {}
 
@@ -72,7 +74,6 @@ export default class Game {
     this.cannonLoaderSprite.handleKeyDown(event.key);
     if (event.key === " " && !this.firedOrb) {
       fireCannon(this, this.loadedOrb, this.nextOrb);
-      //this.cannonOperatorSprite.setSheet("look");
     }
   };
 
@@ -148,7 +149,12 @@ export default class Game {
           this.firedOrb.shine();
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);
-          bustOrbs(this.orbs, this.explosions, this.orbToSpriteRatio);
+          bustOrbs(
+            this.orbs,
+            this.explosions,
+            this.critters,
+            this.orbToSpriteRatio
+          );
           bustOrphanOrbs(this.orbs);
           resetBustStatus(this.orbs);
           this.firedOrb = null;
@@ -163,6 +169,10 @@ export default class Game {
       }
       this.explosions.forEach((explosion) =>
         explosion.update(this.ctx, this.explosions)
+      );
+
+      this.critters.forEach((critter) =>
+        critter.update(this.ctx, this.critters)
       );
 
       this.orbBagFront.draw(this.ctx);
