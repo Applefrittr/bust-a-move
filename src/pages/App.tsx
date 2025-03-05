@@ -7,13 +7,11 @@ export default function App() {
   const { width, height } = useDimensions();
   const [frame, setFrame] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const game = useMemo(() => new Game(), []);
+  const game = useMemo(() => new Game(width / height > 1 ? 3 : 2.25), []);
   const syncReactFrames = useCallback(
     () => setFrame(requestAnimationFrame(syncReactFrames)),
     []
   );
-  const [lvlComplete, setLvlComplete] = useState(game.lvlComplete);
-  const [gameOver, setGameOver] = useState(game.gameOverFlag);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -31,15 +29,12 @@ export default function App() {
 
   useEffect(() => {
     if (game.lvlComplete) {
-      setLvlComplete(true);
       cancelAnimationFrame(frame);
       setTimeout(() => {
-        setLvlComplete(false);
         syncReactFrames();
       }, delay);
     }
     if (game.gameOverFlag) {
-      setGameOver(true);
       cancelAnimationFrame(frame);
     }
   }, [game.lvlComplete, game.gameOverFlag]);
@@ -62,12 +57,12 @@ export default function App() {
         height={height}
         ref={canvasRef}
       />
-      {lvlComplete && (
+      {game.lvlComplete && (
         <h1 className="absolute left-1/2 top-1/2 -translate-1/2 z-10 bg-amber-50 text-black p-2">
           <b>LEVEL COMPLETE</b>
         </h1>
       )}
-      {gameOver && (
+      {game.gameOverFlag && (
         <h1 className="absolute left-1/2 top-1/2 -translate-1/2 z-10 bg-amber-50 text-black p-2">
           <b>Game Over!</b>
         </h1>
