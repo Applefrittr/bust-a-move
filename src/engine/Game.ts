@@ -30,41 +30,53 @@ export default class Game {
   gameOverFlag: boolean = false;
   lvlComplete: boolean = false;
   paused: boolean = false;
-  orbRadius: number = 25;
+  orbRadius: number = 8;
   score: number = 0;
-  orbToSpriteRatio: number = this.orbRadius / 8;
-  arena: Arena = new Arena(this, "#808080");
+  orbToSpriteRatio: number;
+  arena: Arena;
   arenaShrinkRate: number = 0;
   orbs: OrbGraph = new OrbGraph();
-  cannon: Cannon = new Cannon(this);
-  cannonBase: CannonBase = new CannonBase(this);
+  cannon: Cannon;
+  cannonBase: CannonBase;
   firedOrb: Orb | null = null;
-  loadedOrb: Orb = new Orb(
-    this.cannon.x + this.cannon.width / 2,
-    this.cannon.y + this.cannon.height / 2,
-    this.orbRadius,
-    0,
-    0
-  );
-  nextOrb: Orb = new Orb(
-    this.cannon.x - 5 * this.orbRadius,
-    this.arena.arenaFloor - this.orbRadius,
-    this.orbRadius,
-    0,
-    0
-  );
+  loadedOrb: Orb;
+  nextOrb: Orb;
   fpsController: FPSController = new FPSController();
   msNow: number = this.fpsController.msPrev;
-  cannonOperatorSprite = new CannonOperator(this);
-  cannonLoaderSprite = new CannonLoader(this);
-  orbBagBack = new OrbBag("back", this);
-  orbBagFront = new OrbBag("front", this);
+  cannonOperatorSprite: CannonOperator;
+  cannonLoaderSprite: CannonLoader;
+  orbBagBack: OrbBag;
+  orbBagFront: OrbBag;
   explosions: Set<OrbExplosion> = new Set();
   critters: Set<OrbCritter> = new Set();
   tenPointSprites: Set<TenPoints> = new Set();
   dropPoints: DropPoints | null = null;
 
-  constructor() {}
+  constructor(ratio: number) {
+    this.orbRadius *= ratio;
+    this.orbToSpriteRatio = ratio;
+    this.arena = new Arena(this, "#808080");
+    this.cannon = new Cannon(this);
+    this.cannonBase = new CannonBase(this);
+    this.loadedOrb = new Orb(
+      this.cannon.x + this.cannon.width / 2,
+      this.cannon.y + this.cannon.height / 2,
+      this.orbRadius,
+      0,
+      0
+    );
+    this.nextOrb = new Orb(
+      this.cannon.x - 5 * this.orbRadius,
+      this.arena.arenaFloor - this.orbRadius,
+      this.orbRadius,
+      0,
+      0
+    );
+    this.cannonOperatorSprite = new CannonOperator(this);
+    this.cannonLoaderSprite = new CannonLoader(this);
+    this.orbBagBack = new OrbBag("back", this);
+    this.orbBagFront = new OrbBag("front", this);
+  }
 
   setContext(ctx: CanvasRenderingContext2D | null) {
     this.ctx = ctx;
