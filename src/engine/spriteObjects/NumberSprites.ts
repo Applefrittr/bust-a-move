@@ -1,10 +1,19 @@
-import Numbers from "../../assets/numbers-sheet.png";
+import GreenNums from "../../assets/numbers-sheet-green.png";
+import BlueNums from "../../assets/numbers-sheet-blue.png";
+import RedNums from "../../assets/numbers-sheet-red.png";
+import YellowNums from "../../assets/numbers-sheet-yellow.png";
 import preLoadSprite from "../utils/preLoadSprite";
 
-const sprite = await preLoadSprite(Numbers);
+const green = await preLoadSprite(GreenNums);
+const blue = await preLoadSprite(BlueNums);
+const red = await preLoadSprite(RedNums);
+const yellow = await preLoadSprite(YellowNums);
 
 export const numbers = {
-  sprite,
-  digitWidth: sprite.width / 10,
-  digitHieght: sprite.height,
+  green,
+  blue,
+  red,
+  yellow,
+  digitWidth: green.width / 10,
+  digitHieght: green.height,
 };

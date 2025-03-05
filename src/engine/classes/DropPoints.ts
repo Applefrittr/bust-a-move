@@ -6,7 +6,13 @@ export default class DropPoints {
   y: number;
   dy: number = 0;
   scoreDigits: number[];
-  numbersSheet: HTMLImageElement = numbers.sprite;
+  sprite: HTMLImageElement = numbers.green;
+  numberSheets: HTMLImageElement[] = [
+    numbers.green,
+    numbers.blue,
+    numbers.red,
+    numbers.yellow,
+  ];
   width: number;
   digitWidth: number = numbers.digitWidth;
   digitHeight: number = numbers.digitHieght;
@@ -26,7 +32,7 @@ export default class DropPoints {
       const len = this.scoreDigits.length;
       for (let i = len - 1; i >= 0; i--) {
         ctx.drawImage(
-          this.numbersSheet,
+          this.sprite,
           this.scoreDigits[i] * this.digitWidth,
           0,
           this.digitWidth,
@@ -44,6 +50,7 @@ export default class DropPoints {
     this.draw(ctx);
     this.frame++;
     this.y += this.dy;
+    this.sprite = this.numberSheets[this.frame % this.numberSheets.length];
     if (this.frame >= 100) this.dy = -5;
     if (this.y < 0 - this.ratio * this.digitHeight) game.dropPoints = null;
   }
