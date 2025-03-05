@@ -1,13 +1,18 @@
+import DropPoints from "../classes/DropPoints";
 import Orb from "../classes/Orb";
 import OrbGraph from "../classes/OrbGraph";
+import Game from "../Game";
 
-export default function bustOrphanOrbs(orbGraph: OrbGraph) {
+export default function bustOrphanOrbs(game: Game) {
   const anchoredOrbs = new Map<Orb, boolean | undefined>();
 
-  for (const [orb] of orbGraph.graph) {
-    const neighbors = orbGraph.getNeighbors(orb);
+  let numDropped = 0;
+
+  for (const [orb] of game.orbs.graph) {
+    const neighbors = game.orbs.getNeighbors(orb);
     if (neighbors?.size === 0 && !orb.anchoredToArena) {
       orb.drop();
+      numDropped++;
       continue;
     } else if (orb.anchoredToArena) {
       anchoredOrbs.set(orb, true);
@@ -15,16 +20,28 @@ export default function bustOrphanOrbs(orbGraph: OrbGraph) {
     } else {
       orb.recursiveVisitedFlag = true;
       const isAnchored =
-        recurvDetectAnchored(anchoredOrbs, orb, orbGraph) || false;
+        recurvDetectAnchored(anchoredOrbs, orb, game.orbs) || false;
       anchoredOrbs.set(orb, isAnchored);
     }
   }
 
   for (const [orb] of anchoredOrbs) {
     if (!anchoredOrbs.get(orb) && !orb.anchoredToArena) {
+      numDropped++;
       orb.drop();
     }
     orb.recursiveVisitedFlag = false;
+  }
+
+  if (numDropped) {
+    let droppedScore = 20;
+    for (let i = 1; i < numDropped; i++) {
+      droppedScore *= 2;
+    }
+    game.dropPoints = new DropPoints(
+      droppedScore.toString(),
+      game.orbToSpriteRatio
+    );
   }
 }
 

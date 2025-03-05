@@ -5,7 +5,7 @@ import { critterSprites } from "../spriteObjects/OrbCritterSprites";
 export default class OrbCritter {
   x: number;
   y: number;
-  dx: number = randomNumInRange(-5, 5);
+  dx: number = randomNumInRange(-2, 2);
   dy: number = -8;
   sx: number = 0;
   sy: number = 0;
