@@ -16,7 +16,7 @@ export default class Arena {
     this.#topBound = innerHeight / 2 - this.#height / 2;
     this.#leftBound = innerWidth / 2 - this.#width / 2;
     this.#rightBound = this.#leftBound + this.#width;
-    this.#bottomBound = this.#height - 100;
+    this.#bottomBound = this.#height - 2 * game.orbRadius * 2;
     this.#arenaFloor = this.#height - 10;
     this.color = color;
   }
