@@ -11,6 +11,7 @@ export default function bustOrbs(game: Game) {
 
   for (const [orb] of game.orbs.graph) {
     if (orb.busted) {
+      game.score += 10;
       game.orbs.deleteOrb(orb);
       const explosion = new OrbExplosion(
         orb.x - 2 * orb.r,

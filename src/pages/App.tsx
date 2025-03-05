@@ -54,6 +54,7 @@ export default function App() {
         >
           pause
         </button>
+        <p>{game.score}</p>
       </div>
       <canvas
         className="absolute left-0 top-0 z-0"

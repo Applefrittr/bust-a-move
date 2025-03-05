@@ -1,9 +1,16 @@
 import Arena from "./classes/Arena";
 import Cannon from "./classes/Cannon";
 import CannonBase from "./classes/CannonBase";
+import CannonLoader from "./classes/CannonLoader";
+import CannonOperator from "./classes/CannonOperator";
+import DropPoints from "./classes/DropPoints";
 import FPSController from "./classes/FPSController";
 import Orb from "./classes/Orb";
+import OrbBag from "./classes/OrbBag";
+import OrbCritter from "./classes/OrbCritter";
+import OrbExplosion from "./classes/OrbExplosion";
 import OrbGraph from "./classes/OrbGraph";
+import TenPoints from "./classes/TenPoints";
 import arenaShrink from "./utils/arenaShrink";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
@@ -16,19 +23,15 @@ import generateLevel from "./utils/generateLevel";
 import resetBustStatus from "./utils/resetBustStatus";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { delay } from "./utils/constantValues";
-import OrbBag from "./classes/OrbBag";
-import CannonOperator from "./classes/CannonOperator";
-import CannonLoader from "./classes/CannonLoader";
-import OrbExplosion from "./classes/OrbExplosion";
-import OrbCritter from "./classes/OrbCritter";
-import TenPoints from "./classes/TenPoints";
-import DropPoints from "./classes/DropPoints";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
   frame: number = 0;
+  gameOverFlag: boolean = false;
+  lvlComplete: boolean = false;
   paused: boolean = false;
   orbRadius: number = 25;
+  score: number = 0;
   orbToSpriteRatio: number = this.orbRadius / 8;
   arena: Arena = new Arena(this, "#808080");
   arenaShrinkRate: number = 0;
@@ -51,8 +54,6 @@ export default class Game {
     0
   );
   fpsController: FPSController = new FPSController();
-  lvlComplete: boolean = false;
-  gameOverFlag: boolean = false;
   msNow: number = this.fpsController.msPrev;
   cannonOperatorSprite = new CannonOperator(this);
   cannonLoaderSprite = new CannonLoader(this);
@@ -89,7 +90,7 @@ export default class Game {
   start() {
     window.addEventListener("keydown", this.keyDownEvent);
     window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 10, 0.05);
+    generateLevel(this, 1, 0.05);
     this.animationLoop();
   }
 

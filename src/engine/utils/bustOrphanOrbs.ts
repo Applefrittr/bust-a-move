@@ -42,6 +42,7 @@ export default function bustOrphanOrbs(game: Game) {
       droppedScore.toString(),
       game.orbToSpriteRatio
     );
+    game.score += droppedScore;
   }
 }
 
