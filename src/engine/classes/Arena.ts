@@ -1,4 +1,5 @@
 import Game from "../Game";
+import { NATIVERESOLUTION } from "../utils/constantValues";
 
 export default class Arena {
   #width: number;
@@ -13,10 +14,10 @@ export default class Arena {
 
   constructor(game: Game, color: string) {
     this.#width = 2 * game.orbRadius * 10;
-    this.#height = 2 * game.orbRadius * 15;
-    this.#topBound = innerHeight / 2 - this.#height / 2;
-    this.#bottomBound = innerHeight / 2 + this.#height / 2;
-    this.#leftBound = innerWidth / 2 - this.#width / 2;
+    this.#height = 2 * game.orbRadius * 13;
+    this.#topBound = NATIVERESOLUTION.height / 2 - this.#height / 2;
+    this.#bottomBound = NATIVERESOLUTION.height / 2 + this.#height / 2;
+    this.#leftBound = NATIVERESOLUTION.width / 2 - this.#width / 2;
     this.#rightBound = this.#leftBound + this.#width;
     this.#line = this.#bottomBound - 2 * game.orbRadius * 2;
     this.#arenaFloor = this.#bottomBound - 10;
@@ -53,7 +54,8 @@ export default class Arena {
 
   set topBound(num: number) {
     if (num > 0) this.#topBound += num;
-    else if (num === 0) this.#topBound = innerHeight / 2 - this.#height / 2;
+    else if (num === 0)
+      this.#topBound = NATIVERESOLUTION.height / 2 - this.#height / 2;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -61,6 +63,6 @@ export default class Arena {
     ctx.fillRect(this.#leftBound, this.#topBound, this.#width, this.#height);
 
     ctx.fillStyle = "black";
-    ctx.fillRect(this.#leftBound, this.#line, this.#width, 2);
+    ctx.fillRect(this.#leftBound, this.#line, this.#width, 1);
   }
 }

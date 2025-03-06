@@ -1,5 +1,6 @@
 import Game from "../Game";
 import { numbers } from "../spriteObjects/NumberSprites";
+import { NATIVERESOLUTION } from "../utils/constantValues";
 
 export default class DropPoints {
   x: number;
@@ -22,7 +23,7 @@ export default class DropPoints {
   constructor(score: string, ratio: number) {
     this.scoreDigits = score.split("").map((digit) => Number(digit));
     this.width = this.digitWidth * this.scoreDigits.length;
-    this.x = innerWidth / 2 - (ratio * this.width) / 4;
+    this.x = NATIVERESOLUTION.width / 2 - (ratio * this.width) / 4;
     this.y = this.digitHeight;
     this.ratio = ratio;
   }
@@ -51,7 +52,7 @@ export default class DropPoints {
     this.frame++;
     this.y += this.dy;
     this.sprite = this.numberSheets[this.frame % this.numberSheets.length];
-    if (this.frame >= 100) this.dy = -5;
-    if (this.y < 0 - this.ratio * this.digitHeight) game.dropPoints = null;
+    if (this.frame >= 150) game.dropPoints = null;
+    //if (this.y < 0 - this.ratio * this.digitHeight) game.dropPoints = null;
   }
 }

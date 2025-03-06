@@ -1,5 +1,6 @@
 import CannonBarrel from "../../assets/cannon-barrel.png";
 import Game from "../Game";
+import { NATIVERESOLUTION } from "../utils/constantValues";
 
 const cannonBarrel = new Image();
 cannonBarrel.src = CannonBarrel;
@@ -17,7 +18,7 @@ export default class Cannon {
     this.ratio = game.orbToSpriteRatio;
     this.width = this.ratio * cannonBarrel.width;
     this.height = this.ratio * cannonBarrel.height;
-    this.x = innerWidth / 2 - this.width / 2 + 2.5;
+    this.x = NATIVERESOLUTION.width / 2 - this.width / 2 + 2.5;
     this.y = game.arena.arenaFloor - this.height + 20;
   }
 

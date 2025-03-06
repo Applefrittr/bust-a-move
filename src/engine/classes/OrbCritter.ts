@@ -1,12 +1,13 @@
 import randomNumInRange from "../utils/randomNumInRange";
 import { gravityPerFrame } from "../utils/constantValues";
 import { critterSprites } from "../spriteObjects/OrbCritterSprites";
+import Game from "../Game";
 
 export default class OrbCritter {
   x: number;
   y: number;
   dx: number = randomNumInRange(-2, 2);
-  dy: number = -8;
+  dy: number = -4;
   sx: number = 0;
   sy: number = 0;
   spriteWidth: number = 0;
@@ -42,12 +43,12 @@ export default class OrbCritter {
     }
   }
 
-  update(ctx: CanvasRenderingContext2D | null, critters: Set<OrbCritter>) {
+  update(ctx: CanvasRenderingContext2D | null, game: Game) {
     this.draw(ctx);
     this.dy += gravityPerFrame;
     this.y += this.dy;
     this.x += this.dx;
-    if (this.y >= innerHeight) critters.delete(this);
+    if (this.y >= game.arena.arenaFloor) game.critters.delete(this);
     if (this.frame % 5 === 0) {
       this.sx += this.spriteWidth;
       if (this.sx >= this.sprite.width) this.sx = 0;

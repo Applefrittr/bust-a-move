@@ -1,5 +1,6 @@
 import Cannon from "../../assets/cannon-base-sheet.png";
 import Game from "../Game";
+import { NATIVERESOLUTION } from "../utils/constantValues";
 
 const cannonBaseSprite = new Image();
 cannonBaseSprite.src = Cannon;
@@ -20,7 +21,7 @@ export default class CannonBase {
     this.ratio = game.orbToSpriteRatio;
     this.width = this.ratio * cannonBaseSprite.width;
     this.height = this.ratio * cannonBaseSprite.height;
-    this.x = innerWidth / 2 - (this.ratio * this.spriteWidth) / 2;
+    this.x = NATIVERESOLUTION.width / 2 - (this.ratio * this.spriteWidth) / 2;
     this.y = game.arena.arenaFloor - this.height;
   }
 

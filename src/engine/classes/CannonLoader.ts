@@ -1,8 +1,8 @@
 import FiringCannon from "../../assets/blue-firing-cannon.png";
-//import cannonLauncher from "../../assets/cannon-launcher.png";
 import CannonLauncher from "../../assets/cannon-launcher.png";
 import Idle from "../../assets/blue-idle.png";
 import Game from "../Game";
+import { NATIVERESOLUTION } from "../utils/constantValues";
 
 const firingCannonSprite = new Image();
 firingCannonSprite.src = FiringCannon;
@@ -38,13 +38,16 @@ export default class CannonLoader {
     this.ratio = game.orbToSpriteRatio;
     this.spriteWidth = this.ratio * this.spriteSheet.width;
     this.spriteHeight = this.ratio * this.spriteSheet.height;
-    this.spriteX = innerWidth / 2 - this.ratio * this.spriteSourceWidth - 10;
+    this.spriteX =
+      NATIVERESOLUTION.width / 2 - this.ratio * this.spriteSourceWidth - 10;
     this.spriteY = game.arena.arenaFloor - this.spriteHeight;
 
     this.launcherWidth = this.ratio * cannonLauncher.width;
     this.launcherHeight = this.ratio * cannonLauncher.height;
     this.launcherX =
-      innerWidth / 2 - (this.ratio * this.launcherSourceWidth) / 2 + 5;
+      NATIVERESOLUTION.width / 2 -
+      (this.ratio * this.launcherSourceWidth) / 2 +
+      5;
     this.launcherY = game.arena.arenaFloor - this.launcherHeight - 5;
   }
 

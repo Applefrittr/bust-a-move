@@ -23,6 +23,7 @@ import generateLevel from "./utils/generateLevel";
 import resetBustStatus from "./utils/resetBustStatus";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { delay } from "./utils/constantValues";
+import { NATIVERESOLUTION } from "./utils/constantValues";
 
 export default class Game {
   ctx: CanvasRenderingContext2D | null = null;
@@ -51,6 +52,18 @@ export default class Game {
   critters: Set<OrbCritter> = new Set();
   tenPointSprites: Set<TenPoints> = new Set();
   dropPoints: DropPoints | null = null;
+  scale: number = Math.max(
+    innerWidth / NATIVERESOLUTION.width,
+    innerHeight / NATIVERESOLUTION.height
+  );
+  origin = {
+    x: (innerWidth - NATIVERESOLUTION.width * this.scale) / 2,
+    y: (innerHeight - NATIVERESOLUTION.height * this.scale) / 2,
+  };
+  // origin = {
+  //   x: 0,
+  //   y: 0,
+  // };
 
   constructor(ratio: number) {
     this.orbRadius *= ratio;
@@ -150,7 +163,17 @@ export default class Game {
       this.msNow = this.fpsController.msPrev;
       if (!this.fpsController.renderFrame()) return;
 
+      // scaler transformation here
       this.ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+      this.ctx.setTransform(
+        this.scale,
+        0,
+        0,
+        this.scale,
+        this.origin.x,
+        this.origin.y
+      );
 
       arenaShrink(this);
 
@@ -186,9 +209,7 @@ export default class Game {
         sprite.update(this.ctx, this.tenPointSprites)
       );
 
-      this.critters.forEach((critter) =>
-        critter.update(this.ctx, this.critters)
-      );
+      this.critters.forEach((critter) => critter.update(this.ctx, this));
 
       this.orbBagFront.draw(this.ctx);
 

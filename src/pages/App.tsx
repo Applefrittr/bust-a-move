@@ -1,13 +1,14 @@
-import useDimensions from "../hooks/useDimensions";
 import Game from "../engine/Game";
+import useDimensions from "../hooks/useDimensions";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
 import { delay } from "../engine/utils/constantValues";
+import { NATIVERESOLUTION } from "../engine/utils/constantValues";
 
 export default function App() {
-  const { width, height } = useDimensions();
   const [frame, setFrame] = useState(0);
+  const { width, height } = useDimensions();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const game = useMemo(() => new Game(width / height > 1 ? 3 : 2.25), []);
+  const game = useMemo(() => new Game(1), []);
   const syncReactFrames = useCallback(
     () => setFrame(requestAnimationFrame(syncReactFrames)),
     []
@@ -39,6 +40,18 @@ export default function App() {
     }
   }, [game.lvlComplete, game.gameOverFlag]);
 
+  useEffect(() => {
+    game.scale = Math.min(
+      width / NATIVERESOLUTION.width,
+      height / NATIVERESOLUTION.height
+    );
+
+    game.origin = {
+      x: (width - NATIVERESOLUTION.width * game.scale) / 2,
+      y: (height - NATIVERESOLUTION.height * game.scale) / 2,
+    };
+  }, [width, height]);
+
   return (
     <>
       <div className="relative z-10">
@@ -50,11 +63,14 @@ export default function App() {
           pause
         </button>
         <p>{game.score}</p>
+        <p>
+          {innerWidth} X {innerHeight}
+        </p>
       </div>
       <canvas
         className="absolute left-0 top-0 z-0"
-        width={width}
-        height={height}
+        width={innerWidth}
+        height={innerHeight}
         ref={canvasRef}
       />
       {game.lvlComplete && (
