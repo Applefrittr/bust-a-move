@@ -11,6 +11,7 @@ export default class Arena {
   #line: number;
   #arenaFloor: number;
   color: string;
+  shrinkRate: number = 0;
 
   constructor(game: Game, color: string) {
     this.#width = 2 * game.orbRadius * 10;
@@ -20,7 +21,7 @@ export default class Arena {
     this.#leftBound = NATIVERESOLUTION.width / 2 - this.#width / 2;
     this.#rightBound = this.#leftBound + this.#width;
     this.#line = this.#bottomBound - 2 * game.orbRadius * 2;
-    this.#arenaFloor = this.#bottomBound - 10;
+    this.#arenaFloor = this.#bottomBound - 2;
     this.color = color;
   }
 
@@ -52,10 +53,9 @@ export default class Arena {
     return this.#arenaFloor;
   }
 
-  set topBound(num: number) {
-    if (num > 0) this.#topBound += num;
-    else if (num === 0)
-      this.#topBound = NATIVERESOLUTION.height / 2 - this.#height / 2;
+  resetArena(game: Game) {
+    this.#height = 2 * game.orbRadius * 13;
+    this.#topBound = NATIVERESOLUTION.height / 2 - this.#height / 2;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -63,6 +63,12 @@ export default class Arena {
     ctx.fillRect(this.#leftBound, this.#topBound, this.#width, this.#height);
 
     ctx.fillStyle = "black";
-    ctx.fillRect(this.#leftBound, this.#line, this.#width, 1);
+    ctx.fillRect(this.#leftBound, this.#line, this.#width, 0.5);
+  }
+
+  update(ctx: CanvasRenderingContext2D) {
+    this.draw(ctx);
+    this.#topBound += this.shrinkRate;
+    this.#height -= this.shrinkRate;
   }
 }

@@ -28,6 +28,7 @@ export default function generateLevel(
   }
 
   game.arenaShrinkRate = arenaShrinkRate;
+  game.arena.shrinkRate = arenaShrinkRate;
 }
 
 function placeOrb(currOrb: Orb, coordinates: Map<string, Orb>, game: Game) {

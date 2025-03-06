@@ -11,7 +11,6 @@ import OrbCritter from "./classes/OrbCritter";
 import OrbExplosion from "./classes/OrbExplosion";
 import OrbGraph from "./classes/OrbGraph";
 import TenPoints from "./classes/TenPoints";
-import arenaShrink from "./utils/arenaShrink";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
 import detectBusts from "./utils/detectBusts";
@@ -21,6 +20,7 @@ import detectNeighbors from "./utils/detectNeighbors";
 import fireCannon from "./utils/fireCannon";
 import generateLevel from "./utils/generateLevel";
 import resetBustStatus from "./utils/resetBustStatus";
+import shiftOrbsWithArena from "./utils/shiftOrbsWithArena";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
 
@@ -115,7 +115,7 @@ export default class Game {
   start() {
     window.addEventListener("keydown", this.keyDownEvent);
     window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 1, 0.01);
+    generateLevel(this, 1, 0.05);
     this.animationLoop();
   }
 
@@ -124,7 +124,7 @@ export default class Game {
     this.stop();
     setTimeout(() => {
       this.lvlComplete = false;
-      this.arena.topBound = 0;
+      this.arena.resetArena(this);
       this.start();
     }, DELAY);
   }
@@ -174,9 +174,9 @@ export default class Game {
         this.transformOrigin.y
       );
 
-      arenaShrink(this);
+      this.arena.update(this.ctx);
+      shiftOrbsWithArena(this);
 
-      this.arena.draw(this.ctx);
       this.orbBagBack.draw(this.ctx);
       this.cannonBase.update(this.ctx);
       this.cannon.update(this.ctx);
