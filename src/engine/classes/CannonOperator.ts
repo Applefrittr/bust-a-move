@@ -2,6 +2,7 @@ import TuringCannon from "../../assets/green-turning-cannon.png";
 import CannonWheel from "../../assets/cannon-wheel.png";
 import Idle from "../../assets/green-idle.png";
 import Game from "../Game";
+import { NATIVERESOLUTION } from "../utils/constantValues";
 
 const turningCannonSprite = new Image();
 turningCannonSprite.src = TuringCannon;
@@ -31,18 +32,16 @@ export default class CannonOperator {
   wheelSX: number = 0;
   wheelSY: number = 0;
   frame: number = 0;
-  ratio: number;
 
   constructor(game: Game) {
-    this.ratio = game.orbToSpriteRatio;
-    this.spriteWidth = this.ratio * this.spriteSheet.width;
-    this.spriteHeight = this.ratio * this.spriteSheet.height;
-    this.spriteX = innerWidth / 2 + (this.ratio * this.spriteSourceWidth) / 2;
+    this.spriteWidth = this.spriteSheet.width;
+    this.spriteHeight = this.spriteSheet.height;
+    this.spriteX = NATIVERESOLUTION.width / 2 + this.spriteSourceWidth / 2;
     this.spriteY = game.arena.arenaFloor - this.spriteHeight;
 
-    this.wheelWidth = this.ratio * cannonWheel.width;
-    this.wheelHeight = this.ratio * cannonWheel.height;
-    this.wheelX = innerWidth / 2 + (this.ratio * this.spriteSourceWidth) / 2;
+    this.wheelWidth = cannonWheel.width;
+    this.wheelHeight = cannonWheel.height;
+    this.wheelX = NATIVERESOLUTION.width / 2 + this.spriteSourceWidth / 2;
     this.wheelY = game.arena.arenaFloor - this.wheelHeight;
   }
 
@@ -55,8 +54,8 @@ export default class CannonOperator {
       this.wheelHeight,
       this.wheelX,
       this.wheelY,
-      this.ratio * this.wheelSourceWidth,
-      this.ratio * this.wheelHeight
+      this.wheelSourceWidth,
+      this.wheelHeight
     );
 
     ctx.drawImage(
@@ -67,8 +66,8 @@ export default class CannonOperator {
       this.spriteHeight,
       this.spriteX,
       this.spriteY,
-      this.ratio * this.spriteSourceWidth,
-      this.ratio * this.spriteHeight
+      this.spriteSourceWidth,
+      this.spriteHeight
     );
   }
 

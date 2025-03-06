@@ -22,49 +22,74 @@ import fireCannon from "./utils/fireCannon";
 import generateLevel from "./utils/generateLevel";
 import resetBustStatus from "./utils/resetBustStatus";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
-import { delay } from "./utils/constantValues";
+import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
 
 export default class Game {
+  arena: Arena;
+  arenaShrinkRate: number = 0;
   ctx: CanvasRenderingContext2D | null = null;
+  cannon: Cannon;
+  cannonBase: CannonBase;
+  cannonLoaderSprite: CannonLoader;
+  cannonOperatorSprite: CannonOperator;
+  critters: Set<OrbCritter> = new Set();
+  dropPoints: DropPoints | null = null;
+  explosions: Set<OrbExplosion> = new Set();
+  firedOrb: Orb | null = null;
+  fpsController: FPSController = new FPSController();
   frame: number = 0;
   gameOverFlag: boolean = false;
+  height: number;
+  loadedOrb: Orb;
   lvlComplete: boolean = false;
-  paused: boolean = false;
-  orbRadius: number = 25;
-  score: number = 0;
-  orbToSpriteRatio: number = this.orbRadius / 8;
-  arena: Arena = new Arena(this, "#808080");
-  arenaShrinkRate: number = 0;
-  orbs: OrbGraph = new OrbGraph();
-  cannon: Cannon = new Cannon(this);
-  cannonBase: CannonBase = new CannonBase(this);
-  firedOrb: Orb | null = null;
-  loadedOrb: Orb = new Orb(
-    this.cannon.x + this.cannon.width / 2,
-    this.cannon.y + this.cannon.height / 2,
-    this.orbRadius,
-    0,
-    0
-  );
-  nextOrb: Orb = new Orb(
-    this.cannon.x - 5 * this.orbRadius,
-    this.arena.arenaFloor - this.orbRadius,
-    this.orbRadius,
-    0,
-    0
-  );
-  fpsController: FPSController = new FPSController();
   msNow: number = this.fpsController.msPrev;
-  cannonOperatorSprite = new CannonOperator(this);
-  cannonLoaderSprite = new CannonLoader(this);
-  orbBagBack = new OrbBag("back", this);
-  orbBagFront = new OrbBag("front", this);
-  explosions: Set<OrbExplosion> = new Set();
-  critters: Set<OrbCritter> = new Set();
+  nextOrb: Orb;
+  orbs: OrbGraph = new OrbGraph();
+  orbBagBack: OrbBag;
+  orbBagFront: OrbBag;
+  orbRadius: number = ORBRADIUS;
+  paused: boolean = false;
+  transformOrigin: { x: number; y: number };
+  transformScaler: number;
+  score: number = 0;
   tenPointSprites: Set<TenPoints> = new Set();
-  dropPoints: DropPoints | null = null;
+  width: number;
 
-  constructor() {}
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+
+    this.transformScaler = Math.min(
+      width / NATIVERESOLUTION.width,
+      height / NATIVERESOLUTION.height
+    );
+    this.transformOrigin = {
+      x: (width - NATIVERESOLUTION.width * this.transformScaler) / 2,
+      y: (height - NATIVERESOLUTION.height * this.transformScaler) / 2,
+    };
+
+    this.arena = new Arena(this, "#808080");
+    this.cannon = new Cannon(this);
+    this.cannonBase = new CannonBase(this);
+    this.loadedOrb = new Orb(
+      this.cannon.x + this.cannon.width / 2,
+      this.cannon.y + this.cannon.height / 2,
+      this.orbRadius,
+      0,
+      0
+    );
+    this.nextOrb = new Orb(
+      this.cannon.x - 5 * this.orbRadius,
+      this.arena.arenaFloor - this.orbRadius,
+      this.orbRadius,
+      0,
+      0
+    );
+    this.cannonOperatorSprite = new CannonOperator(this);
+    this.cannonLoaderSprite = new CannonLoader(this);
+    this.orbBagBack = new OrbBag("back", this);
+    this.orbBagFront = new OrbBag("front", this);
+  }
 
   setContext(ctx: CanvasRenderingContext2D | null) {
     this.ctx = ctx;
@@ -90,7 +115,7 @@ export default class Game {
   start() {
     window.addEventListener("keydown", this.keyDownEvent);
     window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 1, 0.05);
+    generateLevel(this, 1, 0.01);
     this.animationLoop();
   }
 
@@ -101,7 +126,7 @@ export default class Game {
       this.lvlComplete = false;
       this.arena.topBound = 0;
       this.start();
-    }, delay);
+    }, DELAY);
   }
 
   gameOver() {
@@ -138,7 +163,16 @@ export default class Game {
       this.msNow = this.fpsController.msPrev;
       if (!this.fpsController.renderFrame()) return;
 
-      this.ctx.clearRect(0, 0, innerWidth, innerHeight);
+      this.ctx.clearRect(0, 0, this.width, this.height);
+
+      this.ctx.setTransform(
+        this.transformScaler,
+        0,
+        0,
+        this.transformScaler,
+        this.transformOrigin.x,
+        this.transformOrigin.y
+      );
 
       arenaShrink(this);
 
@@ -174,9 +208,7 @@ export default class Game {
         sprite.update(this.ctx, this.tenPointSprites)
       );
 
-      this.critters.forEach((critter) =>
-        critter.update(this.ctx, this.critters)
-      );
+      this.critters.forEach((critter) => critter.update(this.ctx, this));
 
       this.orbBagFront.draw(this.ctx);
 
@@ -187,6 +219,8 @@ export default class Game {
       if (this.orbs.graph.size === 0 && this.explosions.size === 0)
         this.nextLevel();
       if (detectGameOver(this)) this.gameOver();
+
+      this.ctx.resetTransform();
     }
   };
 }

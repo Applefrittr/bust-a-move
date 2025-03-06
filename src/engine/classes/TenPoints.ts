@@ -6,13 +6,11 @@ export default class TenPoints {
   dy: number = -1;
   originy: number;
   sprite: HTMLImageElement = ten;
-  ratio: number;
 
-  constructor(x: number, y: number, ratio: number) {
+  constructor(x: number, y: number) {
     this.x = x - this.sprite.width / 2;
     this.y = y - this.sprite.height / 2;
     this.originy = y;
-    this.ratio = ratio;
   }
 
   draw(ctx: CanvasRenderingContext2D | null) {
@@ -21,8 +19,8 @@ export default class TenPoints {
         this.sprite,
         this.x,
         this.y,
-        this.ratio * this.sprite.width,
-        this.ratio * this.sprite.height
+        this.sprite.width,
+        this.sprite.height
       );
     }
   }

@@ -12,19 +12,17 @@ export default class OrbBag {
   x: number;
   y: number;
   spriteWidth: number = orbBagSprite.width / 2;
-  ratio: number;
 
   constructor(input: "back" | "front", game: Game) {
-    this.ratio = game.orbToSpriteRatio;
-    this.width = this.ratio * orbBagSprite.width;
-    this.height = this.ratio * orbBagSprite.height;
+    this.width = orbBagSprite.width;
+    this.height = orbBagSprite.height;
     if (input === "back") {
       this.sx = 0;
     } else {
       this.sx = this.spriteWidth;
     }
 
-    this.x = game.nextOrb.x - (this.ratio * this.spriteWidth) / 2;
+    this.x = game.nextOrb.x - this.spriteWidth / 2;
     this.y = game.arena.arenaFloor - this.height;
   }
 
@@ -37,8 +35,8 @@ export default class OrbBag {
       this.height,
       this.x,
       this.y,
-      this.ratio * this.spriteWidth,
-      this.ratio * this.height
+      this.spriteWidth,
+      this.height
     );
   }
 }

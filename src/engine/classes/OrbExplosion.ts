@@ -11,13 +11,11 @@ export default class OrbExplosion {
   spriteDrawWidth: number;
   spriteDrawHeight: number;
   color: string;
-  ratio: number;
 
-  constructor(x: number, y: number, color: string, ratio: number) {
+  constructor(x: number, y: number, color: string) {
     this.x = x;
     this.y = y;
     this.color = color;
-    this.ratio = ratio;
 
     this.sprite = explosionSprites[this.color].explosion;
     this.shiftX = explosionSprites[this.color].width;
@@ -35,8 +33,8 @@ export default class OrbExplosion {
         this.spriteDrawHeight,
         this.x,
         this.y,
-        this.spriteDrawWidth * this.ratio,
-        this.spriteDrawHeight * this.ratio
+        this.spriteDrawWidth,
+        this.spriteDrawHeight
       );
     }
   }

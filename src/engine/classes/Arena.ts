@@ -1,4 +1,5 @@
 import Game from "../Game";
+import { NATIVERESOLUTION } from "../utils/constantValues";
 
 export default class Arena {
   #width: number;
@@ -7,17 +8,19 @@ export default class Arena {
   #rightBound: number;
   #bottomBound: number;
   #topBound: number;
+  #line: number;
   #arenaFloor: number;
   color: string;
 
   constructor(game: Game, color: string) {
     this.#width = 2 * game.orbRadius * 10;
-    this.#height = 2 * game.orbRadius * 15;
-    this.#topBound = innerHeight / 2 - this.#height / 2;
-    this.#leftBound = innerWidth / 2 - this.#width / 2;
+    this.#height = 2 * game.orbRadius * 13;
+    this.#topBound = NATIVERESOLUTION.height / 2 - this.#height / 2;
+    this.#bottomBound = NATIVERESOLUTION.height / 2 + this.#height / 2;
+    this.#leftBound = NATIVERESOLUTION.width / 2 - this.#width / 2;
     this.#rightBound = this.#leftBound + this.#width;
-    this.#bottomBound = this.#height - 2 * game.orbRadius * 2;
-    this.#arenaFloor = this.#height - 10;
+    this.#line = this.#bottomBound - 2 * game.orbRadius * 2;
+    this.#arenaFloor = this.#bottomBound - 10;
     this.color = color;
   }
 
@@ -37,8 +40,8 @@ export default class Arena {
     return this.#rightBound;
   }
 
-  get bottomBound() {
-    return this.#bottomBound;
+  get line() {
+    return this.#line;
   }
 
   get topBound() {
@@ -51,19 +54,15 @@ export default class Arena {
 
   set topBound(num: number) {
     if (num > 0) this.#topBound += num;
-    else if (num === 0) this.#topBound = innerHeight / 2 - this.#height / 2;
+    else if (num === 0)
+      this.#topBound = NATIVERESOLUTION.height / 2 - this.#height / 2;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = this.color;
-    ctx.fillRect(
-      this.#leftBound,
-      this.#topBound,
-      this.#width,
-      this.#height - this.#topBound
-    );
+    ctx.fillRect(this.#leftBound, this.#topBound, this.#width, this.#height);
 
     ctx.fillStyle = "black";
-    ctx.fillRect(this.#leftBound, this.#bottomBound, this.#width, 2);
+    ctx.fillRect(this.#leftBound, this.#line, this.#width, 1);
   }
 }

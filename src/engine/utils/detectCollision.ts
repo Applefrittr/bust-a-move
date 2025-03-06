@@ -11,7 +11,6 @@ export default function detectCollisions(firedOrb: Orb, orbGraph: OrbGraph) {
       firedOrb.dx = 0;
       firedOrb.dy = 0;
       adjustOrbPositioning(firedOrb, orb);
-      //orbGraph.addEdge(firedOrb, orb);
       break;
     }
   }

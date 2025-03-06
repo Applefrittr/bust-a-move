@@ -1,19 +1,22 @@
-import useDimensions from "../hooks/useDimensions";
 import Game from "../engine/Game";
+import useDimensions from "../hooks/useDimensions";
+import useMaxResolutionScaler from "../hooks/useMaxResolutionScaler";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
-import { delay } from "../engine/utils/constantValues";
+import {
+  NATIVERESOLUTION,
+  MINRESOLUTIONSCALER,
+} from "../engine/utils/constantValues";
 
 export default function App() {
-  const { width, height } = useDimensions();
   const [frame, setFrame] = useState(0);
+  const { width, height } = useDimensions();
+  const maxResolutionScaler = useMaxResolutionScaler(width);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const game = useMemo(() => new Game(), []);
+  const game = useMemo(() => new Game(width, height), []);
   const syncReactFrames = useCallback(
     () => setFrame(requestAnimationFrame(syncReactFrames)),
     []
   );
-  const [lvlComplete, setLvlComplete] = useState(game.lvlComplete);
-  const [gameOver, setGameOver] = useState(game.gameOverFlag);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -30,19 +33,25 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (game.lvlComplete) {
-      setLvlComplete(true);
-      cancelAnimationFrame(frame);
-      setTimeout(() => {
-        setLvlComplete(false);
-        syncReactFrames();
-      }, delay);
-    }
-    if (game.gameOverFlag) {
-      setGameOver(true);
-      cancelAnimationFrame(frame);
-    }
-  }, [game.lvlComplete, game.gameOverFlag]);
+    game.width = width;
+    game.height = height;
+
+    game.transformScaler = Math.max(
+      MINRESOLUTIONSCALER,
+      Math.min(
+        width / NATIVERESOLUTION.width,
+        height / NATIVERESOLUTION.height,
+        maxResolutionScaler
+      )
+    );
+
+    game.transformOrigin = {
+      x: (width - NATIVERESOLUTION.width * game.transformScaler) / 2,
+      y: (height - NATIVERESOLUTION.height * game.transformScaler) / 2,
+    };
+
+    console.log(game.transformScaler);
+  }, [width, height]);
 
   return (
     <>
@@ -55,6 +64,9 @@ export default function App() {
           pause
         </button>
         <p>{game.score}</p>
+        <p>
+          {width} X {height}
+        </p>
       </div>
       <canvas
         className="absolute left-0 top-0 z-0"
@@ -62,12 +74,12 @@ export default function App() {
         height={height}
         ref={canvasRef}
       />
-      {lvlComplete && (
+      {game.lvlComplete && (
         <h1 className="absolute left-1/2 top-1/2 -translate-1/2 z-10 bg-amber-50 text-black p-2">
           <b>LEVEL COMPLETE</b>
         </h1>
       )}
-      {gameOver && (
+      {game.gameOverFlag && (
         <h1 className="absolute left-1/2 top-1/2 -translate-1/2 z-10 bg-amber-50 text-black p-2">
           <b>Game Over!</b>
         </h1>
