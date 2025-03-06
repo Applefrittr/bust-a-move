@@ -16,19 +16,13 @@ export default function bustOrbs(game: Game) {
       const explosion = new OrbExplosion(
         orb.x - 2 * orb.r,
         orb.y - 2 * orb.r,
-        orb.color,
-        game.orbToSpriteRatio
+        orb.color
       );
-      const critter = new OrbCritter(
-        orb.x,
-        orb.y,
-        orb.color,
-        game.orbToSpriteRatio
-      );
+      const critter = new OrbCritter(orb.x, orb.y, orb.color);
       game.critters.add(critter);
       game.explosions.add(explosion);
       setTimeout(() => {
-        const tenPoints = new TenPoints(orb.x, orb.y, game.orbToSpriteRatio);
+        const tenPoints = new TenPoints(orb.x, orb.y);
         game.tenPointSprites.add(tenPoints);
       }, 300);
       continue;

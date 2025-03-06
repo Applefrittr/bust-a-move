@@ -12,14 +12,12 @@ export default class Cannon {
   y: number;
   deg: number = 0;
   degDelta: number = 0;
-  ratio: number;
 
   constructor(game: Game) {
-    this.ratio = game.orbToSpriteRatio;
-    this.width = this.ratio * cannonBarrel.width;
-    this.height = this.ratio * cannonBarrel.height;
-    this.x = NATIVERESOLUTION.width / 2 - this.width / 2 + 2.5;
-    this.y = game.arena.arenaFloor - this.height + 20;
+    this.width = cannonBarrel.width;
+    this.height = cannonBarrel.height;
+    this.x = NATIVERESOLUTION.width / 2 - this.width / 2;
+    this.y = game.arena.arenaFloor - this.height + 5;
   }
 
   handleKeyDown(char: string) {

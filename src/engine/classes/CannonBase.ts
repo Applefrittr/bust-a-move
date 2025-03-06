@@ -15,13 +15,11 @@ export default class CannonBase {
   sx: number = 0;
   sy: number = 0;
   frame: number = 0;
-  ratio: number;
 
   constructor(game: Game) {
-    this.ratio = game.orbToSpriteRatio;
-    this.width = this.ratio * cannonBaseSprite.width;
-    this.height = this.ratio * cannonBaseSprite.height;
-    this.x = NATIVERESOLUTION.width / 2 - (this.ratio * this.spriteWidth) / 2;
+    this.width = cannonBaseSprite.width;
+    this.height = cannonBaseSprite.height;
+    this.x = NATIVERESOLUTION.width / 2 - this.spriteWidth / 2;
     this.y = game.arena.arenaFloor - this.height;
   }
 
@@ -44,8 +42,8 @@ export default class CannonBase {
       this.height,
       this.x,
       this.y,
-      this.ratio * this.spriteWidth,
-      this.ratio * this.height
+      this.spriteWidth,
+      this.height
     );
   }
 

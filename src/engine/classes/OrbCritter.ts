@@ -1,5 +1,5 @@
 import randomNumInRange from "../utils/randomNumInRange";
-import { gravityPerFrame } from "../utils/constantValues";
+import { GRAVITYPERFRAME } from "../utils/constantValues";
 import { critterSprites } from "../spriteObjects/OrbCritterSprites";
 import Game from "../Game";
 
@@ -14,17 +14,15 @@ export default class OrbCritter {
   spriteHeight: number = 0;
   color: string;
   sprite: HTMLImageElement;
-  ratio: number;
   frame: number = 1;
 
-  constructor(x: number, y: number, color: string, ratio: number) {
+  constructor(x: number, y: number, color: string) {
     this.x = x;
     this.y = y;
     this.color = color;
     this.sprite = critterSprites[this.color].sprite;
     this.spriteWidth = critterSprites[this.color].width;
     this.spriteHeight = critterSprites[this.color].height;
-    this.ratio = ratio;
   }
 
   draw(ctx: CanvasRenderingContext2D | null) {
@@ -37,18 +35,18 @@ export default class OrbCritter {
         this.spriteHeight,
         this.x,
         this.y,
-        this.ratio * this.spriteWidth,
-        this.ratio * this.spriteHeight
+        this.spriteWidth,
+        this.spriteHeight
       );
     }
   }
 
   update(ctx: CanvasRenderingContext2D | null, game: Game) {
     this.draw(ctx);
-    this.dy += gravityPerFrame;
+    this.dy += GRAVITYPERFRAME;
     this.y += this.dy;
     this.x += this.dx;
-    if (this.y >= game.arena.arenaFloor) game.critters.delete(this);
+    if (this.y >= innerHeight) game.critters.delete(this);
     if (this.frame % 5 === 0) {
       this.sx += this.spriteWidth;
       if (this.sx >= this.sprite.width) this.sx = 0;

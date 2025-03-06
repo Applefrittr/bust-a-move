@@ -1,14 +1,13 @@
 import Game from "../engine/Game";
 import useDimensions from "../hooks/useDimensions";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
-import { delay } from "../engine/utils/constantValues";
 import { NATIVERESOLUTION } from "../engine/utils/constantValues";
 
 export default function App() {
   const [frame, setFrame] = useState(0);
   const { width, height } = useDimensions();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const game = useMemo(() => new Game(1), []);
+  const game = useMemo(() => new Game(width, height), []);
   const syncReactFrames = useCallback(
     () => setFrame(requestAnimationFrame(syncReactFrames)),
     []
@@ -29,27 +28,24 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (game.lvlComplete) {
-      cancelAnimationFrame(frame);
-      setTimeout(() => {
-        syncReactFrames();
-      }, delay);
-    }
-    if (game.gameOverFlag) {
-      cancelAnimationFrame(frame);
-    }
-  }, [game.lvlComplete, game.gameOverFlag]);
+    game.width = width;
+    game.height = height;
 
-  useEffect(() => {
-    game.scale = Math.min(
-      width / NATIVERESOLUTION.width,
-      height / NATIVERESOLUTION.height
+    game.transformScaler = Math.max(
+      1.75,
+      Math.min(
+        width / NATIVERESOLUTION.width,
+        height / NATIVERESOLUTION.height,
+        3
+      )
     );
 
-    game.origin = {
-      x: (width - NATIVERESOLUTION.width * game.scale) / 2,
-      y: (height - NATIVERESOLUTION.height * game.scale) / 2,
+    game.transformOrigin = {
+      x: (width - NATIVERESOLUTION.width * game.transformScaler) / 2,
+      y: (height - NATIVERESOLUTION.height * game.transformScaler) / 2,
     };
+
+    console.log(game.transformScaler);
   }, [width, height]);
 
   return (
@@ -64,13 +60,13 @@ export default function App() {
         </button>
         <p>{game.score}</p>
         <p>
-          {innerWidth} X {innerHeight}
+          {width} X {height}
         </p>
       </div>
       <canvas
         className="absolute left-0 top-0 z-0"
-        width={innerWidth}
-        height={innerHeight}
+        width={width}
+        height={height}
         ref={canvasRef}
       />
       {game.lvlComplete && (

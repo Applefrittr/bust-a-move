@@ -38,10 +38,7 @@ export default function bustOrphanOrbs(game: Game) {
     for (let i = 1; i < numDropped; i++) {
       droppedScore *= 2;
     }
-    game.dropPoints = new DropPoints(
-      droppedScore.toString(),
-      game.orbToSpriteRatio
-    );
+    game.dropPoints = new DropPoints(droppedScore.toString());
     game.score += droppedScore;
   }
 }

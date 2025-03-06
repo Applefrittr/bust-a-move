@@ -32,23 +32,17 @@ export default class CannonLoader {
   launcherSX: number = 0;
   launcherSY: number = 0;
   frame: number = 0;
-  ratio: number;
 
   constructor(game: Game) {
-    this.ratio = game.orbToSpriteRatio;
-    this.spriteWidth = this.ratio * this.spriteSheet.width;
-    this.spriteHeight = this.ratio * this.spriteSheet.height;
-    this.spriteX =
-      NATIVERESOLUTION.width / 2 - this.ratio * this.spriteSourceWidth - 10;
+    this.spriteWidth = this.spriteSheet.width;
+    this.spriteHeight = this.spriteSheet.height;
+    this.spriteX = NATIVERESOLUTION.width / 2 - this.spriteSourceWidth - 2;
     this.spriteY = game.arena.arenaFloor - this.spriteHeight;
 
-    this.launcherWidth = this.ratio * cannonLauncher.width;
-    this.launcherHeight = this.ratio * cannonLauncher.height;
-    this.launcherX =
-      NATIVERESOLUTION.width / 2 -
-      (this.ratio * this.launcherSourceWidth) / 2 +
-      5;
-    this.launcherY = game.arena.arenaFloor - this.launcherHeight - 5;
+    this.launcherWidth = cannonLauncher.width;
+    this.launcherHeight = cannonLauncher.height;
+    this.launcherX = NATIVERESOLUTION.width / 2 - this.launcherSourceWidth / 2;
+    this.launcherY = game.arena.arenaFloor - this.launcherHeight - 2;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -60,8 +54,8 @@ export default class CannonLoader {
       this.launcherHeight,
       this.launcherX,
       this.launcherY,
-      this.ratio * this.launcherSourceWidth,
-      this.ratio * this.launcherHeight
+      this.launcherSourceWidth,
+      this.launcherHeight
     );
 
     ctx.drawImage(
@@ -72,8 +66,8 @@ export default class CannonLoader {
       this.spriteHeight,
       this.spriteX,
       this.spriteY,
-      this.ratio * this.spriteSourceWidth,
-      this.ratio * this.spriteHeight
+      this.spriteSourceWidth,
+      this.spriteHeight
     );
   }
 

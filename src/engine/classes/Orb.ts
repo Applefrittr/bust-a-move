@@ -2,7 +2,7 @@ import Arena from "./Arena";
 import OrbGraph from "./OrbGraph";
 import randomNumInRange from "../utils/randomNumInRange";
 import { orbSprites, colors } from "../spriteObjects/OrbSprites";
-import { gravityPerFrame } from "../utils/constantValues";
+import { GRAVITYPERFRAME } from "../utils/constantValues";
 
 export default class Orb {
   x: number;
@@ -74,7 +74,7 @@ export default class Orb {
 
   drop() {
     this.orphaned = true;
-    this.dy = gravityPerFrame;
+    this.dy = GRAVITYPERFRAME;
   }
 
   update(
@@ -87,7 +87,7 @@ export default class Orb {
       this.x + this.dx > arena.rightBound - this.r
     )
       this.dx = -this.dx;
-    if (this.y + this.dy > arena.arenaFloor) orbGraph?.deleteOrb(this);
+    if (this.y + this.dy > innerHeight) orbGraph?.deleteOrb(this);
     if (this.y + this.dy <= arena.topBound + this.r) {
       this.dx = 0;
       this.dy = 0;
@@ -118,7 +118,7 @@ export default class Orb {
       }
     }
 
-    if (this.orphaned) this.dy += gravityPerFrame;
+    if (this.orphaned) this.dy += GRAVITYPERFRAME;
     this.frame++;
     this.draw(ctx);
   }

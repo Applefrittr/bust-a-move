@@ -17,15 +17,13 @@ export default class DropPoints {
   width: number;
   digitWidth: number = numbers.digitWidth;
   digitHeight: number = numbers.digitHieght;
-  ratio: number;
   frame: number = 1;
 
-  constructor(score: string, ratio: number) {
+  constructor(score: string) {
     this.scoreDigits = score.split("").map((digit) => Number(digit));
     this.width = this.digitWidth * this.scoreDigits.length;
-    this.x = NATIVERESOLUTION.width / 2 - (ratio * this.width) / 4;
+    this.x = NATIVERESOLUTION.width / 2 - this.width / 4;
     this.y = this.digitHeight;
-    this.ratio = ratio;
   }
 
   draw(ctx: CanvasRenderingContext2D | null) {
@@ -38,10 +36,10 @@ export default class DropPoints {
           0,
           this.digitWidth,
           this.digitHeight,
-          this.x + (this.ratio * this.digitWidth * i) / 2,
+          this.x + (this.digitWidth * i) / 2,
           this.y,
-          this.ratio * this.digitWidth,
-          this.ratio * this.digitHeight
+          this.digitWidth,
+          this.digitHeight
         );
       }
     }
@@ -52,7 +50,7 @@ export default class DropPoints {
     this.frame++;
     this.y += this.dy;
     this.sprite = this.numberSheets[this.frame % this.numberSheets.length];
-    if (this.frame >= 150) game.dropPoints = null;
-    //if (this.y < 0 - this.ratio * this.digitHeight) game.dropPoints = null;
+    if (this.frame >= 100) this.dy = -5;
+    if (this.y < 0 - this.digitHeight) game.dropPoints = null;
   }
 }

@@ -22,52 +22,52 @@ import fireCannon from "./utils/fireCannon";
 import generateLevel from "./utils/generateLevel";
 import resetBustStatus from "./utils/resetBustStatus";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
-import { delay } from "./utils/constantValues";
-import { NATIVERESOLUTION } from "./utils/constantValues";
+import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
 
 export default class Game {
-  ctx: CanvasRenderingContext2D | null = null;
-  frame: number = 0;
-  gameOverFlag: boolean = false;
-  lvlComplete: boolean = false;
-  paused: boolean = false;
-  orbRadius: number = 8;
-  score: number = 0;
-  orbToSpriteRatio: number;
   arena: Arena;
   arenaShrinkRate: number = 0;
-  orbs: OrbGraph = new OrbGraph();
+  ctx: CanvasRenderingContext2D | null = null;
   cannon: Cannon;
   cannonBase: CannonBase;
-  firedOrb: Orb | null = null;
-  loadedOrb: Orb;
-  nextOrb: Orb;
-  fpsController: FPSController = new FPSController();
-  msNow: number = this.fpsController.msPrev;
-  cannonOperatorSprite: CannonOperator;
   cannonLoaderSprite: CannonLoader;
+  cannonOperatorSprite: CannonOperator;
+  critters: Set<OrbCritter> = new Set();
+  dropPoints: DropPoints | null = null;
+  explosions: Set<OrbExplosion> = new Set();
+  firedOrb: Orb | null = null;
+  fpsController: FPSController = new FPSController();
+  frame: number = 0;
+  gameOverFlag: boolean = false;
+  height: number;
+  loadedOrb: Orb;
+  lvlComplete: boolean = false;
+  msNow: number = this.fpsController.msPrev;
+  nextOrb: Orb;
+  orbs: OrbGraph = new OrbGraph();
   orbBagBack: OrbBag;
   orbBagFront: OrbBag;
-  explosions: Set<OrbExplosion> = new Set();
-  critters: Set<OrbCritter> = new Set();
+  orbRadius: number = ORBRADIUS;
+  paused: boolean = false;
+  transformOrigin: { x: number; y: number };
+  transformScaler: number;
+  score: number = 0;
   tenPointSprites: Set<TenPoints> = new Set();
-  dropPoints: DropPoints | null = null;
-  scale: number = Math.max(
-    innerWidth / NATIVERESOLUTION.width,
-    innerHeight / NATIVERESOLUTION.height
-  );
-  origin = {
-    x: (innerWidth - NATIVERESOLUTION.width * this.scale) / 2,
-    y: (innerHeight - NATIVERESOLUTION.height * this.scale) / 2,
-  };
-  // origin = {
-  //   x: 0,
-  //   y: 0,
-  // };
+  width: number;
 
-  constructor(ratio: number) {
-    this.orbRadius *= ratio;
-    this.orbToSpriteRatio = ratio;
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+
+    this.transformScaler = Math.min(
+      width / NATIVERESOLUTION.width,
+      height / NATIVERESOLUTION.height
+    );
+    this.transformOrigin = {
+      x: (width - NATIVERESOLUTION.width * this.transformScaler) / 2,
+      y: (height - NATIVERESOLUTION.height * this.transformScaler) / 2,
+    };
+
     this.arena = new Arena(this, "#808080");
     this.cannon = new Cannon(this);
     this.cannonBase = new CannonBase(this);
@@ -126,7 +126,7 @@ export default class Game {
       this.lvlComplete = false;
       this.arena.topBound = 0;
       this.start();
-    }, delay);
+    }, DELAY);
   }
 
   gameOver() {
@@ -163,16 +163,15 @@ export default class Game {
       this.msNow = this.fpsController.msPrev;
       if (!this.fpsController.renderFrame()) return;
 
-      // scaler transformation here
-      this.ctx.clearRect(0, 0, innerWidth, innerHeight);
+      this.ctx.clearRect(0, 0, this.width, this.height);
 
       this.ctx.setTransform(
-        this.scale,
+        this.transformScaler,
         0,
         0,
-        this.scale,
-        this.origin.x,
-        this.origin.y
+        this.transformScaler,
+        this.transformOrigin.x,
+        this.transformOrigin.y
       );
 
       arenaShrink(this);
@@ -220,6 +219,8 @@ export default class Game {
       if (this.orbs.graph.size === 0 && this.explosions.size === 0)
         this.nextLevel();
       if (detectGameOver(this)) this.gameOver();
+
+      this.ctx.resetTransform();
     }
   };
 }
