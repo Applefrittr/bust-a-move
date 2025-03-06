@@ -1,11 +1,16 @@
 import Game from "../engine/Game";
 import useDimensions from "../hooks/useDimensions";
+import useMaxResolutionScaler from "../hooks/useMaxResolutionScaler";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
-import { NATIVERESOLUTION } from "../engine/utils/constantValues";
+import {
+  NATIVERESOLUTION,
+  MINRESOLUTIONSCALER,
+} from "../engine/utils/constantValues";
 
 export default function App() {
   const [frame, setFrame] = useState(0);
   const { width, height } = useDimensions();
+  const maxResolutionScaler = useMaxResolutionScaler(width);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const game = useMemo(() => new Game(width, height), []);
   const syncReactFrames = useCallback(
@@ -32,11 +37,11 @@ export default function App() {
     game.height = height;
 
     game.transformScaler = Math.max(
-      1.75,
+      MINRESOLUTIONSCALER,
       Math.min(
         width / NATIVERESOLUTION.width,
         height / NATIVERESOLUTION.height,
-        3
+        maxResolutionScaler
       )
     );
 

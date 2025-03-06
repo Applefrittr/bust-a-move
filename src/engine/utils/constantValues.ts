@@ -8,3 +8,11 @@ export const NATIVERESOLUTION = {
 };
 
 export const ORBRADIUS = 8;
+
+export const MINRESOLUTIONSCALER = 1.75;
+
+export const MAXRESOLUTIONSCALER = {
+  HD: 3,
+  "2K": 4,
+  "4K": 5,
+};

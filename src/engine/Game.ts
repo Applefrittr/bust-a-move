@@ -115,7 +115,7 @@ export default class Game {
   start() {
     window.addEventListener("keydown", this.keyDownEvent);
     window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 1, 0.05);
+    generateLevel(this, 1, 0.01);
     this.animationLoop();
   }
 
