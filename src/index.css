@@ -1,4 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Press+Start+2P&display=swap");
 @import "tailwindcss";
+
+@theme {
+  --font-press-start-2p: "Press Start 2P";
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

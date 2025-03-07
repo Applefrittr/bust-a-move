@@ -40,6 +40,7 @@ export default class Game {
   frame: number = 0;
   gameOverFlag: boolean = false;
   height: number;
+  level: number = 1;
   loadedOrb: Orb;
   lvlComplete: boolean = false;
   msNow: number = this.fpsController.msPrev;
@@ -125,6 +126,7 @@ export default class Game {
     setTimeout(() => {
       this.lvlComplete = false;
       this.arena.resetArena(this);
+      this.level += 1;
       this.start();
     }, DELAY);
   }

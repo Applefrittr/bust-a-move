@@ -6,6 +6,7 @@ import {
   NATIVERESOLUTION,
   MINRESOLUTIONSCALER,
 } from "../engine/utils/constantValues";
+import GameUI from "../components/GameUI";
 
 export default function App() {
   const [frame, setFrame] = useState(0);
@@ -54,20 +55,8 @@ export default function App() {
   }, [width, height]);
 
   return (
-    <>
-      <div className="relative z-10">
-        <p className="p-10 font-bold">Hello World</p>
-        <button
-          onClick={() => game?.togglePause()}
-          className="p-10 bg-amber-50 text-black"
-        >
-          pause
-        </button>
-        <p>{game.score}</p>
-        <p>
-          {width} X {height}
-        </p>
-      </div>
+    <main className="h-dvh relative">
+      <GameUI game={game} />
       <canvas
         className="absolute left-0 top-0 z-0"
         width={width}
@@ -84,6 +73,6 @@ export default function App() {
           <b>Game Over!</b>
         </h1>
       )}
-    </>
+    </main>
   );
 }
