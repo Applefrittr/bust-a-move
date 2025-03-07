@@ -79,7 +79,7 @@ export default class Arena {
       ArenaBG.height,
       this.#leftBound - ORBRADIUS,
       this.#topBound - ORBRADIUS,
-      this.#width + ORBRADIUS,
+      this.#width + 2 * ORBRADIUS,
       this.#height + ORBRADIUS
     );
 
@@ -87,7 +87,7 @@ export default class Arena {
     ctx.fillRect(
       this.#leftBound - ORBRADIUS,
       this.#line,
-      this.#width + ORBRADIUS,
+      this.#width + 2 * ORBRADIUS,
       0.5
     );
 

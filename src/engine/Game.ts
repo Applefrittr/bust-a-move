@@ -13,6 +13,7 @@ import OrbGraph from "./classes/OrbGraph";
 import TenPoints from "./classes/TenPoints";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
+import drawBackGround from "./utils/drawBackground";
 import detectBusts from "./utils/detectBusts";
 import detectCollisions from "./utils/detectCollision";
 import detectGameOver from "./utils/detectGameOver";
@@ -23,10 +24,6 @@ import resetBustStatus from "./utils/resetBustStatus";
 import shiftOrbsWithArena from "./utils/shiftOrbsWithArena";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
-import background from "../assets/bg-lvl1.png";
-
-const BG = new Image();
-BG.src = background;
 
 export default class Game {
   arena: Arena;
@@ -120,7 +117,7 @@ export default class Game {
   start() {
     window.addEventListener("keydown", this.keyDownEvent);
     window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 1, 0.05);
+    generateLevel(this, 15, 0.05);
     this.animationLoop();
   }
 
@@ -180,14 +177,7 @@ export default class Game {
         this.transformOrigin.y
       );
 
-      const pattern = this.ctx.createPattern(BG, "repeat") as CanvasPattern;
-      this.ctx.fillStyle = pattern;
-      this.ctx.fillRect(
-        0 - this.transformOrigin.x,
-        0 - this.transformOrigin.y,
-        this.width,
-        this.height
-      );
+      drawBackGround(this);
 
       this.arena.update(this.ctx);
       shiftOrbsWithArena(this);

@@ -23,6 +23,7 @@ export default function App() {
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
       game.setContext(ctx);
+
       game.start();
 
       syncReactFrames();

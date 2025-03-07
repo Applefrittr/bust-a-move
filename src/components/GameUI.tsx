@@ -17,11 +17,11 @@ export default function GameUI({ game }: GameUIProps) {
 
   return (
     <div className="relative z-10 flex justify-between items-center p-2 sm:p-8">
-      <div className="font-bold space-y-4 sm:text-3xl p-4 bg-black border-s-white border-2 rounded-2xl ">
+      <div className="font-bold space-y-4 lg:text-3xl p-4 bg-black border-s-white border-2 rounded-2xl ">
         <p>{generateStringScore(game.score)}</p>
         <p>LEVEL-{game.level}</p>
       </div>
-      <div className="flex gap-2 flex-wrap justify-end sm:flex-nowrap">
+      <div className="flex flex-col gap-2 justify-end lg:flex-row">
         <button
           onClick={(e) => {
             game?.togglePause();
