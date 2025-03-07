@@ -23,6 +23,10 @@ import resetBustStatus from "./utils/resetBustStatus";
 import shiftOrbsWithArena from "./utils/shiftOrbsWithArena";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
+import background from "../assets/bg-lvl1.png";
+
+const BG = new Image();
+BG.src = background;
 
 export default class Game {
   arena: Arena;
@@ -69,7 +73,7 @@ export default class Game {
       y: (height - NATIVERESOLUTION.height * this.transformScaler) / 2,
     };
 
-    this.arena = new Arena(this, "#808080");
+    this.arena = new Arena(this, "#000000");
     this.cannon = new Cannon(this);
     this.cannonBase = new CannonBase(this);
     this.loadedOrb = new Orb(
@@ -174,6 +178,15 @@ export default class Game {
         this.transformScaler,
         this.transformOrigin.x,
         this.transformOrigin.y
+      );
+
+      const pattern = this.ctx.createPattern(BG, "repeat") as CanvasPattern;
+      this.ctx.fillStyle = pattern;
+      this.ctx.fillRect(
+        0 - this.transformOrigin.x,
+        0 - this.transformOrigin.y,
+        this.width,
+        this.height
       );
 
       this.arena.update(this.ctx);

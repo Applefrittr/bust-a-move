@@ -1,5 +1,17 @@
 import Game from "../Game";
-import { NATIVERESOLUTION } from "../utils/constantValues";
+import { NATIVERESOLUTION, ORBRADIUS } from "../utils/constantValues";
+import arenaBG from "../../assets/bg-lvl1-arena.png";
+import arenaBorder from "../../assets/bg-lvl1-border.png";
+import floor from "../../assets/bg-lvl1-floor.png";
+
+const ArenaBG = new Image();
+ArenaBG.src = arenaBG;
+
+const ArenaBorder = new Image();
+ArenaBorder.src = arenaBorder;
+
+const Floor = new Image();
+Floor.src = floor;
 
 export default class Arena {
   #width: number;
@@ -59,16 +71,49 @@ export default class Arena {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.#leftBound, this.#topBound, this.#width, this.#height);
+    ctx.drawImage(
+      ArenaBG,
+      0,
+      0,
+      ArenaBG.width,
+      ArenaBG.height,
+      this.#leftBound - ORBRADIUS,
+      this.#topBound - ORBRADIUS,
+      this.#width + ORBRADIUS,
+      this.#height + ORBRADIUS
+    );
 
-    ctx.fillStyle = "black";
-    ctx.fillRect(this.#leftBound, this.#line, this.#width, 0.5);
+    ctx.fillStyle = "white";
+    ctx.fillRect(
+      this.#leftBound - ORBRADIUS,
+      this.#line,
+      this.#width + ORBRADIUS,
+      0.5
+    );
+
+    ctx.drawImage(
+      Floor,
+      0,
+      0,
+      Floor.width,
+      Floor.height,
+      this.leftBound - Floor.width / 4,
+      this.arenaFloor,
+      Floor.width,
+      Floor.height
+    );
+
+    ctx.fillStyle = "#242424";
+    ctx.fillRect(
+      0 - innerWidth,
+      this.arenaFloor + Floor.height,
+      2 * innerWidth,
+      innerHeight
+    );
   }
 
   update(ctx: CanvasRenderingContext2D) {
     this.draw(ctx);
     this.#topBound += this.shrinkRate;
-    this.#height -= this.shrinkRate;
   }
 }
