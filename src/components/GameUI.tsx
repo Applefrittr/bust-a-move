@@ -17,9 +17,9 @@ export default function GameUI({ game }: GameUIProps) {
   };
 
   return (
-    <section className="h-full relative z-10 flex flex-col justify-between p-2 xl:p-8 select-none">
+    <section className="h-full relative z-10 flex flex-col justify-between p-2 2xl:p-8 select-none">
       <div className="flex justify-between items-center">
-        <div className="font-bold space-y-4 lg:text-3xl p-4 bg-black border-s-white border-2 rounded-2xl ">
+        <div className="font-bold space-y-4 2xl:text-3xl p-4 bg-black border-s-white border-2 rounded-2xl ">
           <p>{generateStringScore(game.score)}</p>
           <p>LEVEL-{game.level}</p>
         </div>

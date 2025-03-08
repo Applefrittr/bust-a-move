@@ -13,7 +13,7 @@ import OrbGraph from "./classes/OrbGraph";
 import TenPoints from "./classes/TenPoints";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
-import drawBackGround from "./utils/drawBackground";
+//import drawBackGround from "./utils/drawBackground";
 import detectBusts from "./utils/detectBusts";
 import detectCollisions from "./utils/detectCollision";
 import detectGameOver from "./utils/detectGameOver";
@@ -176,7 +176,7 @@ export default class Game {
         this.transformOrigin.y
       );
 
-      drawBackGround(this);
+      //drawBackGround(this);
 
       this.arena.update(this.ctx);
       shiftOrbsWithArena(this);
