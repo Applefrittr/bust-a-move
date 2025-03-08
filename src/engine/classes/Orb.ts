@@ -87,7 +87,7 @@ export default class Orb {
       this.x + this.dx > arena.rightBound - this.r
     )
       this.dx = -this.dx;
-    if (this.y + this.dy > innerHeight) orbGraph?.deleteOrb(this);
+    if (this.y + this.dy > arena.arenaFloor) orbGraph?.deleteOrb(this);
     if (this.y + this.dy <= arena.topBound + this.r) {
       this.dx = 0;
       this.dy = 0;
