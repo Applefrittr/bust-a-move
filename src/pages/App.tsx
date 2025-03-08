@@ -51,8 +51,6 @@ export default function App() {
       x: (width - NATIVERESOLUTION.width * game.transformScaler) / 2,
       y: (height - NATIVERESOLUTION.height * game.transformScaler) / 2,
     };
-
-    console.log(game.transformScaler);
   }, [width, height]);
 
   return (

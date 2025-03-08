@@ -98,7 +98,6 @@ export default class Game {
   }
 
   keyDownEvent = (event: KeyboardEvent) => {
-    console.log(this.orbs);
     this.cannon.handleKeyDown(event.key);
     this.cannonBase.handleKeyDown(event.key);
     this.cannonOperatorSprite.handleKeyDown(event.key);

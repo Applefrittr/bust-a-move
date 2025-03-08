@@ -19,32 +19,27 @@ export default function MobileControls() {
     window.dispatchEvent(fireEvent);
   };
   return (
-    <div className="flex justify-between items-center lg:hidden">
+    <div className="flex justify-between items-center px-3 lg:hidden">
       <div className="flex flex-col w-28 gap-2">
         <MobileButton
           dispatchKeyBoardDown={simulateKeyBoardPressDown}
           dispatchKeyBoardUp={simulateKeyBoardRelease}
           value="a"
-        >
-          {"<"}
-        </MobileButton>
+        />
+
         <MobileButton
           dispatchKeyBoardDown={simulateKeyBoardPressDown}
           dispatchKeyBoardUp={simulateKeyBoardRelease}
           value="d"
           custClass="ml-auto"
-        >
-          {">"}
-        </MobileButton>
+        />
       </div>
       <MobileButton
         dispatchKeyBoardDown={simulateKeyBoardPressDown}
         dispatchKeyBoardUp={simulateKeyBoardRelease}
         value=" "
         custClass="h-max"
-      >
-        {"Fire"}
-      </MobileButton>
+      />
     </div>
   );
 }
