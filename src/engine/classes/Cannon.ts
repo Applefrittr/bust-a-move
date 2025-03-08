@@ -21,8 +21,8 @@ export default class Cannon {
   }
 
   handleKeyDown(char: string) {
-    if (char === "a") this.degDelta = -1;
-    else if (char === "d") this.degDelta = 1;
+    if (char === "a") this.degDelta = -2;
+    else if (char === "d") this.degDelta = 2;
     else return;
   }
 

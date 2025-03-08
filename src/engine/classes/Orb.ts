@@ -104,7 +104,7 @@ export default class Orb {
     this.spriteDrawY = this.y - this.r;
 
     if (this.frame % this.randomIdleInterval === 0) this.idle();
-    if (this.frame % 5 === 0) {
+    if (this.frame % 3 === 0) {
       this.sx += this.shiftX;
       if (
         (this.sprite === orbSprites[this.color].shine &&

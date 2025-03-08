@@ -46,7 +46,7 @@ export default class OrbExplosion {
     if (this.sx >= this.sprite.width) {
       orbExplosions.delete(this);
     }
-    if (this.frame % 5 === 0) this.sx += this.shiftX;
+    if (this.frame % 3 === 0) this.sx += this.shiftX;
     this.draw(ctx);
     this.frame++;
   }

@@ -1,6 +1,6 @@
 export default class FPSController {
   msPrev: number = performance.now();
-  fps: number = 60;
+  fps: number = 30;
   msPerFrame: number = 1000 / this.fps;
 
   constructor() {}
