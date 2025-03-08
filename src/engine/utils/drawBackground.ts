@@ -9,8 +9,8 @@ export default function drawBackGround(game: Game) {
     const pattern = game.ctx.createPattern(BG, "repeat") as CanvasPattern;
     game.ctx.fillStyle = pattern;
     game.ctx.fillRect(
-      0 - game.transformOrigin.x / 1.75,
-      0 - game.transformOrigin.y / 1.25,
+      0 - game.transformOrigin.x,
+      0 - game.transformOrigin.y,
       game.width,
       game.height
     );

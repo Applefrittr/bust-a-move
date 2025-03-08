@@ -4,7 +4,7 @@ import useMaxResolutionScaler from "../hooks/useMaxResolutionScaler";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
 import {
   NATIVERESOLUTION,
-  MINRESOLUTIONSCALER,
+  //MINRESOLUTIONSCALER,
 } from "../engine/utils/constantValues";
 import GameUI from "../components/GameUI";
 
@@ -38,13 +38,10 @@ export default function App() {
     game.width = width;
     game.height = height;
 
-    game.transformScaler = Math.max(
-      MINRESOLUTIONSCALER,
-      Math.min(
-        width / NATIVERESOLUTION.width,
-        height / NATIVERESOLUTION.height,
-        maxResolutionScaler
-      )
+    game.transformScaler = Math.min(
+      width / NATIVERESOLUTION.width,
+      height / NATIVERESOLUTION.height,
+      maxResolutionScaler
     );
 
     game.transformOrigin = {
