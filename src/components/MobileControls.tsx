@@ -19,7 +19,7 @@ export default function MobileControls() {
     window.dispatchEvent(fireEvent);
   };
   return (
-    <div className="flex justify-between items-center px-3 lg:hidden">
+    <div className="flex justify-between items-center px-3 2xl:hidden">
       <div className="flex flex-col w-28 gap-2">
         <MobileButton
           dispatchKeyBoardDown={simulateKeyBoardPressDown}

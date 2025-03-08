@@ -17,13 +17,13 @@ export default function GameUI({ game }: GameUIProps) {
   };
 
   return (
-    <section className="h-full relative z-10 flex flex-col justify-between p-2 lg:p-8">
-      <div className="flex justify-between">
+    <section className="h-full relative z-10 flex flex-col justify-between p-2 xl:p-8">
+      <div className="flex justify-between items-center">
         <div className="font-bold space-y-4 lg:text-3xl p-4 bg-black border-s-white border-2 rounded-2xl ">
           <p>{generateStringScore(game.score)}</p>
           <p>LEVEL-{game.level}</p>
         </div>
-        <div className="flex flex-col gap-2 justify-end lg:flex-row">
+        <div className="flex flex-col gap-2 h-max lg:flex-row">
           <button
             onClick={(e) => {
               game?.togglePause();
