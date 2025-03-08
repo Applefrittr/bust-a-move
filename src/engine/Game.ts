@@ -13,6 +13,7 @@ import OrbGraph from "./classes/OrbGraph";
 import TenPoints from "./classes/TenPoints";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
+import drawBackGround from "./utils/drawBackground";
 import detectBusts from "./utils/detectBusts";
 import detectCollisions from "./utils/detectCollision";
 import detectGameOver from "./utils/detectGameOver";
@@ -40,6 +41,7 @@ export default class Game {
   frame: number = 0;
   gameOverFlag: boolean = false;
   height: number;
+  level: number = 1;
   loadedOrb: Orb;
   lvlComplete: boolean = false;
   msNow: number = this.fpsController.msPrev;
@@ -68,7 +70,7 @@ export default class Game {
       y: (height - NATIVERESOLUTION.height * this.transformScaler) / 2,
     };
 
-    this.arena = new Arena(this, "#808080");
+    this.arena = new Arena(this, "#000000");
     this.cannon = new Cannon(this);
     this.cannonBase = new CannonBase(this);
     this.loadedOrb = new Orb(
@@ -96,7 +98,6 @@ export default class Game {
   }
 
   keyDownEvent = (event: KeyboardEvent) => {
-    console.log(this.orbs);
     this.cannon.handleKeyDown(event.key);
     this.cannonBase.handleKeyDown(event.key);
     this.cannonOperatorSprite.handleKeyDown(event.key);
@@ -115,7 +116,7 @@ export default class Game {
   start() {
     window.addEventListener("keydown", this.keyDownEvent);
     window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 1, 0.05);
+    generateLevel(this, 15, 0.05);
     this.animationLoop();
   }
 
@@ -125,6 +126,7 @@ export default class Game {
     setTimeout(() => {
       this.lvlComplete = false;
       this.arena.resetArena(this);
+      this.level += 1;
       this.start();
     }, DELAY);
   }
@@ -173,6 +175,8 @@ export default class Game {
         this.transformOrigin.x,
         this.transformOrigin.y
       );
+
+      drawBackGround(this);
 
       this.arena.update(this.ctx);
       shiftOrbsWithArena(this);

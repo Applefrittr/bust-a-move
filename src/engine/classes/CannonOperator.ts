@@ -94,7 +94,7 @@ export default class CannonOperator {
   update(ctx: CanvasRenderingContext2D) {
     this.frame++;
     this.draw(ctx);
-    if (this.frame % 5 === 0) {
+    if (this.frame % 3 === 0) {
       this.spriteSX += this.spriteShiftX;
       this.wheelSX += this.wheelShiftX;
       if (this.spriteSX >= turningCannonSprite.width) {

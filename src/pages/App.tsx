@@ -4,8 +4,9 @@ import useMaxResolutionScaler from "../hooks/useMaxResolutionScaler";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
 import {
   NATIVERESOLUTION,
-  MINRESOLUTIONSCALER,
+  //MINRESOLUTIONSCALER,
 } from "../engine/utils/constantValues";
+import GameUI from "../components/GameUI";
 
 export default function App() {
   const [frame, setFrame] = useState(0);
@@ -22,6 +23,7 @@ export default function App() {
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
       game.setContext(ctx);
+
       game.start();
 
       syncReactFrames();
@@ -36,38 +38,21 @@ export default function App() {
     game.width = width;
     game.height = height;
 
-    game.transformScaler = Math.max(
-      MINRESOLUTIONSCALER,
-      Math.min(
-        width / NATIVERESOLUTION.width,
-        height / NATIVERESOLUTION.height,
-        maxResolutionScaler
-      )
+    game.transformScaler = Math.min(
+      width / NATIVERESOLUTION.width,
+      height / NATIVERESOLUTION.height,
+      maxResolutionScaler
     );
 
     game.transformOrigin = {
       x: (width - NATIVERESOLUTION.width * game.transformScaler) / 2,
       y: (height - NATIVERESOLUTION.height * game.transformScaler) / 2,
     };
-
-    console.log(game.transformScaler);
   }, [width, height]);
 
   return (
-    <>
-      <div className="relative z-10">
-        <p className="p-10 font-bold">Hello World</p>
-        <button
-          onClick={() => game?.togglePause()}
-          className="p-10 bg-amber-50 text-black"
-        >
-          pause
-        </button>
-        <p>{game.score}</p>
-        <p>
-          {width} X {height}
-        </p>
-      </div>
+    <main className="h-dvh relative">
+      <GameUI game={game} />
       <canvas
         className="absolute left-0 top-0 z-0"
         width={width}
@@ -84,6 +69,6 @@ export default function App() {
           <b>Game Over!</b>
         </h1>
       )}
-    </>
+    </main>
   );
 }

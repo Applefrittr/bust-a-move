@@ -82,7 +82,7 @@ export default class CannonLoader {
   update(ctx: CanvasRenderingContext2D) {
     this.frame++;
     this.draw(ctx);
-    if (this.frame % 7 === 0) {
+    if (this.frame % 3 === 0) {
       this.spriteSX += this.spriteShiftX;
       this.launcherSX += this.launcherShiftX;
       if (this.spriteSX >= firingCannonSprite.width) {

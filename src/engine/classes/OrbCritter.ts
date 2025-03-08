@@ -46,8 +46,8 @@ export default class OrbCritter {
     this.dy += GRAVITYPERFRAME;
     this.y += this.dy;
     this.x += this.dx;
-    if (this.y >= innerHeight) game.critters.delete(this);
-    if (this.frame % 5 === 0) {
+    if (this.y >= game.arena.arenaFloor) game.critters.delete(this);
+    if (this.frame % 3 === 0) {
       this.sx += this.spriteWidth;
       if (this.sx >= this.sprite.width) this.sx = 0;
     }

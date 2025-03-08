@@ -5,7 +5,7 @@ import Scoreboard from "../pages/Scoreboard";
 
 export default function RouteSwitch() {
   return (
-    <main className="h-lvh relative">
+    <>
       <HashRouter>
         <Routes>
           <Route index element={<Home />} />
@@ -13,6 +13,6 @@ export default function RouteSwitch() {
           <Route path="scoreboard" element={<Scoreboard />} />
         </Routes>
       </HashRouter>
-    </main>
+    </>
   );
 }
