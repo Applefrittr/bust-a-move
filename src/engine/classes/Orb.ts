@@ -1,8 +1,7 @@
-import Arena from "./Arena";
-import OrbGraph from "./OrbGraph";
 import randomNumInRange from "../utils/randomNumInRange";
 import { orbSprites, colors } from "../spriteObjects/OrbSprites";
 import { GRAVITYPERFRAME } from "../utils/constantValues";
+import Game from "../Game";
 
 export default class Orb {
   x: number;
@@ -28,6 +27,7 @@ export default class Orb {
   recursiveVisitedFlag: boolean = false;
   randomIdleInterval: number = randomNumInRange(200, 300);
   orphaned: boolean = false;
+  free: boolean = true;
 
   constructor(x: number, y: number, r: number, dx: number, dy: number) {
     this.x = x;
@@ -36,6 +36,30 @@ export default class Orb {
     this.dx = dx;
     this.dy = dy;
 
+    this.spriteDrawX = this.x - this.r;
+    this.spriteDrawY = this.y - this.r;
+    this.spriteDrawWidth = 2 * this.r;
+    this.spriteDrawHeight = 2 * this.r;
+  }
+
+  reset() {
+    this.x = 0;
+    this.y = 0;
+    this.dx = 0;
+    this.dy = 0;
+    this.busted = false;
+    this.recursiveVisitedFlag = false;
+    this.orphaned = false;
+    this.free = true;
+  }
+
+  initialize(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+    this.sprite = orbSprites[this.color].idle;
+    this.spriteWidth = orbSprites[this.color].width;
+    this.spriteHeight = orbSprites[this.color].height;
     this.spriteDrawX = this.x - this.r;
     this.spriteDrawY = this.y - this.r;
     this.spriteDrawWidth = 2 * this.r;
@@ -77,24 +101,25 @@ export default class Orb {
     this.dy = GRAVITYPERFRAME;
   }
 
-  update(
-    ctx: CanvasRenderingContext2D | null,
-    arena: Arena,
-    orbGraph?: OrbGraph
-  ) {
+  update(ctx: CanvasRenderingContext2D | null, game: Game) {
+    if (this.y + this.dy > game.arena.arenaFloor) {
+      game.orbs.deleteOrb(this);
+      return;
+    }
     if (
-      this.x + this.dx < arena.leftBound + this.r ||
-      this.x + this.dx > arena.rightBound - this.r
+      this.x + this.dx < game.arena.leftBound + this.r ||
+      this.x + this.dx > game.arena.rightBound - this.r
     )
       this.dx = -this.dx;
-    if (this.y + this.dy > arena.arenaFloor) orbGraph?.deleteOrb(this);
-    if (this.y + this.dy <= arena.topBound + this.r) {
+    if (this.y + this.dy <= game.arena.topBound + this.r) {
       this.dx = 0;
       this.dy = 0;
-      this.y = arena.topBound + this.r;
+      this.y = game.arena.topBound + this.r;
       this.x =
-        arena.leftBound +
-        Math.floor((this.x + this.r / 2 - arena.leftBound) / (2 * this.r)) *
+        game.arena.leftBound +
+        Math.floor(
+          (this.x + this.r / 2 - game.arena.leftBound) / (2 * this.r)
+        ) *
           (2 * this.r);
       this.anchoredToArena = true;
     }

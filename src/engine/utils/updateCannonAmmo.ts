@@ -1,8 +1,8 @@
 import Game from "../Game";
 
 export default function updateCannonAmmo(game: Game) {
-  game.nextOrb.update(game.ctx, game.arena);
-  game.loadedOrb.update(game.ctx, game.arena);
+  game.nextOrb.update(game.ctx, game);
+  game.loadedOrb.update(game.ctx, game);
 
   if (game.loadedOrb.x >= game.cannon.x + game.cannon.width / 2) {
     game.loadedOrb.x = game.cannon.x + game.cannon.width / 2;

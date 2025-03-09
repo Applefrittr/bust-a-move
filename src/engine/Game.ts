@@ -10,6 +10,7 @@ import OrbBag from "./classes/OrbBag";
 import OrbCritter from "./classes/OrbCritter";
 import OrbExplosion from "./classes/OrbExplosion";
 import OrbGraph from "./classes/OrbGraph";
+import ObjectPool from "./classes/ObjectPool";
 import TenPoints from "./classes/TenPoints";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
@@ -51,6 +52,7 @@ export default class Game {
   orbBagFront: OrbBag;
   orbRadius: number = ORBRADIUS;
   paused: boolean = false;
+  pool: ObjectPool;
   transformOrigin: { x: number; y: number };
   transformScaler: number;
   score: number = 0;
@@ -73,6 +75,8 @@ export default class Game {
     this.arena = new Arena(this, "#000000");
     this.cannon = new Cannon(this);
     this.cannonBase = new CannonBase(this);
+    this.pool = new ObjectPool();
+
     this.loadedOrb = new Orb(
       this.cannon.x + this.cannon.width / 2,
       this.cannon.y + this.cannon.height / 2,
@@ -80,6 +84,7 @@ export default class Game {
       0,
       0
     );
+
     this.nextOrb = new Orb(
       this.cannon.x - 5 * this.orbRadius,
       this.arena.arenaFloor - this.orbRadius,
@@ -87,6 +92,7 @@ export default class Game {
       0,
       0
     );
+
     this.cannonOperatorSprite = new CannonOperator(this);
     this.cannonLoaderSprite = new CannonLoader(this);
     this.orbBagBack = new OrbBag("back", this);
@@ -202,15 +208,11 @@ export default class Game {
 
       updateCannonAmmo(this);
       for (const [orb] of this.orbs.graph) {
-        orb.update(this.ctx, this.arena, this.orbs);
+        orb.update(this.ctx, this);
       }
-      this.explosions.forEach((explosion) =>
-        explosion.update(this.ctx, this.explosions)
-      );
+      this.explosions.forEach((explosion) => explosion.update(this.ctx, this));
 
-      this.tenPointSprites.forEach((sprite) =>
-        sprite.update(this.ctx, this.tenPointSprites)
-      );
+      this.tenPointSprites.forEach((sprite) => sprite.update(this.ctx, this));
 
       this.critters.forEach((critter) => critter.update(this.ctx, this));
 

@@ -18,6 +18,9 @@ export default function generateLevel(
       0,
       0
     );
+    // const orb = game.pool.getFreeObject("orbs") as Orb;
+    // orb.y = game.arena.topBound + game.orbRadius;
+    // orb.free = false;
     orb.anchoredToArena = true;
     placeOrb(orb, orbCoordinates, game);
   }
