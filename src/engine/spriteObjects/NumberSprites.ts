@@ -1,7 +1,7 @@
-import GreenNums from "../../assets/numbers-sheet-green.png";
-import BlueNums from "../../assets/numbers-sheet-blue.png";
-import RedNums from "../../assets/numbers-sheet-red.png";
-import YellowNums from "../../assets/numbers-sheet-yellow.png";
+import GreenNums from "../../assets/spriteSheets/numbers-sheet-green.png";
+import BlueNums from "../../assets/spriteSheets/numbers-sheet-blue.png";
+import RedNums from "../../assets/spriteSheets/numbers-sheet-red.png";
+import YellowNums from "../../assets/spriteSheets/numbers-sheet-yellow.png";
 import preLoadSprite from "../utils/preLoadSprite";
 
 const green = await preLoadSprite(GreenNums);

@@ -1,6 +1,6 @@
-import GreenBust from "../../assets/orb-green-bust.png";
-import BlueBust from "../../assets/orb-blue-bust.png";
-import RedBust from "../../assets/orb-red-bust.png";
+import GreenBust from "../../assets/spriteSheets/orb-green-bust.png";
+import BlueBust from "../../assets/spriteSheets/orb-blue-bust.png";
+import RedBust from "../../assets/spriteSheets/orb-red-bust.png";
 import preLoadSprite from "../utils/preLoadSprite";
 
 type ExplosionSprites = {

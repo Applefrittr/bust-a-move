@@ -1,6 +1,6 @@
-import GreenCritter from "../../assets/orb-green-critter.png";
-import BlueCritter from "../../assets/orb-blue-critter.png";
-import RedCritter from "../../assets/orb-red-critter.png";
+import GreenCritter from "../../assets/spriteSheets/orb-green-critter.png";
+import BlueCritter from "../../assets/spriteSheets/orb-blue-critter.png";
+import RedCritter from "../../assets/spriteSheets/orb-red-critter.png";
 import preLoadSprite from "../utils/preLoadSprite";
 
 type CritterSprites = {

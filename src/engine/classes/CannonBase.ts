@@ -1,4 +1,4 @@
-import Cannon from "../../assets/cannon-base-sheet.png";
+import Cannon from "../../assets/spriteSheets/cannon-base-sheet.png";
 import Game from "../Game";
 import { NATIVERESOLUTION } from "../utils/constantValues";
 

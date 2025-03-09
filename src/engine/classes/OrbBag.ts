@@ -1,4 +1,4 @@
-import orbBag from "../../assets/orbBag.png";
+import orbBag from "../../assets/spriteSheets/orbBag.png";
 import Game from "../Game";
 
 const orbBagSprite = new Image();

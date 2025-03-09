@@ -1,6 +1,5 @@
 import OrbCritter from "../classes/OrbCritter";
 import OrbExplosion from "../classes/OrbExplosion";
-// import OrbGraph from "../classes/OrbGraph";
 import TenPoints from "../classes/TenPoints";
 import Game from "../Game";
 
