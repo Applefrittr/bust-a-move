@@ -11,13 +11,16 @@ export default function generateLevel(
   const orbCoordinates = new Map<string, Orb>();
 
   for (let i = 0; i < numOfOrbs; i++) {
-    const orb = new Orb(
-      0,
-      game.arena.topBound + game.orbRadius,
-      game.orbRadius,
-      0,
-      0
-    );
+    // const orb = new Orb(
+    //   0,
+    //   game.arena.topBound + game.orbRadius,
+    //   game.orbRadius,
+    //   0,
+    //   0
+    // );
+    const orb = game.pool.getFreeObject("orbs") as Orb;
+    orb.y = game.arena.topBound + game.orbRadius;
+    orb.free = false;
     orb.anchoredToArena = true;
     placeOrb(orb, orbCoordinates, game);
   }

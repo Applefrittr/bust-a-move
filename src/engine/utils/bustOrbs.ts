@@ -13,6 +13,7 @@ export default function bustOrbs(game: Game) {
     if (orb.busted) {
       game.score += 10;
       game.orbs.deleteOrb(orb);
+      orb.free = true;
       const explosion = new OrbExplosion(
         orb.x - 2 * orb.r,
         orb.y - 2 * orb.r,

@@ -1,3 +1,4 @@
+import Game from "../Game";
 import ten from "../spriteObjects/TenPointsSprite";
 
 export default class TenPoints {
@@ -6,6 +7,7 @@ export default class TenPoints {
   dy: number = -1;
   originy: number;
   sprite: HTMLImageElement = ten;
+  free: boolean = true;
 
   constructor(x: number, y: number) {
     this.x = x - this.sprite.width / 2;
@@ -25,12 +27,9 @@ export default class TenPoints {
     }
   }
 
-  update(
-    ctx: CanvasRenderingContext2D | null,
-    tenPointSprites: Set<TenPoints>
-  ) {
+  update(ctx: CanvasRenderingContext2D | null, game: Game) {
     this.draw(ctx);
     this.y += this.dy;
-    if (this.y <= this.originy - 50) tenPointSprites.delete(this);
+    if (this.y <= this.originy - 50) game.tenPointSprites.delete(this);
   }
 }

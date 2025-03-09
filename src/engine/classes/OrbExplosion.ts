@@ -1,3 +1,4 @@
+import Game from "../Game";
 import { explosionSprites } from "../spriteObjects/ExplosionSprites";
 
 export default class OrbExplosion {
@@ -11,6 +12,7 @@ export default class OrbExplosion {
   spriteDrawWidth: number;
   spriteDrawHeight: number;
   color: string;
+  free: boolean = true;
 
   constructor(x: number, y: number, color: string) {
     this.x = x;
@@ -39,12 +41,9 @@ export default class OrbExplosion {
     }
   }
 
-  update(
-    ctx: CanvasRenderingContext2D | null,
-    orbExplosions: Set<OrbExplosion>
-  ) {
+  update(ctx: CanvasRenderingContext2D | null, game: Game) {
     if (this.sx >= this.sprite.width) {
-      orbExplosions.delete(this);
+      game.explosions.delete(this);
     }
     if (this.frame % 3 === 0) this.sx += this.shiftX;
     this.draw(ctx);

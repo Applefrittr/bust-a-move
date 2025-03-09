@@ -15,6 +15,7 @@ export default class OrbCritter {
   color: string;
   sprite: HTMLImageElement;
   frame: number = 1;
+  free: boolean = true;
 
   constructor(x: number, y: number, color: string) {
     this.x = x;
