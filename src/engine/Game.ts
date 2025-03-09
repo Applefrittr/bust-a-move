@@ -7,7 +7,7 @@ import DropPoints from "./classes/DropPoints";
 import FPSController from "./classes/FPSController";
 import Orb from "./classes/Orb";
 import OrbBag from "./classes/OrbBag";
-import OrbCritter from "./classes/OrbCritter";
+//import OrbCritter from "./classes/OrbCritter";
 import OrbExplosion from "./classes/OrbExplosion";
 import OrbGraph from "./classes/OrbGraph";
 import TenPoints from "./classes/TenPoints";
@@ -34,7 +34,7 @@ export default class Game {
   cannonBase: CannonBase;
   cannonLoaderSprite: CannonLoader;
   cannonOperatorSprite: CannonOperator;
-  critters: Set<OrbCritter> = new Set();
+  //critters: Set<OrbCritter> = new Set();
   dropPoints: DropPoints | null = null;
   explosions: Set<OrbExplosion> = new Set();
   firedOrb: Orb | null = null;
@@ -112,6 +112,7 @@ export default class Game {
   }
 
   keyDownEvent = (event: KeyboardEvent) => {
+    console.log(this.pool.critters);
     this.cannon.handleKeyDown(event.key);
     this.cannonBase.handleKeyDown(event.key);
     this.cannonOperatorSprite.handleKeyDown(event.key);
@@ -218,11 +219,12 @@ export default class Game {
       for (const [orb] of this.orbs.graph) {
         orb.update(this.ctx, this);
       }
-      this.explosions.forEach((explosion) => explosion.update(this.ctx, this));
+      //this.explosions.forEach((explosion) => explosion.update(this.ctx, this));
 
       this.tenPointSprites.forEach((sprite) => sprite.update(this.ctx, this));
 
-      this.critters.forEach((critter) => critter.update(this.ctx, this));
+      // this.critters.forEach((critter) => critter.update(this.ctx, this));
+      this.pool.drawObjects(this.ctx, this);
 
       this.orbBagFront.draw(this.ctx);
 
