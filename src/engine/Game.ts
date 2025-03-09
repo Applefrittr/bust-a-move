@@ -77,29 +77,29 @@ export default class Game {
     this.cannonBase = new CannonBase(this);
     this.pool = new ObjectPool();
 
-    // this.loadedOrb = new Orb(
-    //   this.cannon.x + this.cannon.width / 2,
-    //   this.cannon.y + this.cannon.height / 2,
-    //   this.orbRadius,
-    //   0,
-    //   0
-    // );
-    this.loadedOrb = this.pool.getFreeObject("orbs") as Orb;
-    this.loadedOrb.x = this.cannon.x + this.cannon.width / 2;
-    this.loadedOrb.y = this.cannon.y + this.cannon.height / 2;
-    this.loadedOrb.free = false;
+    this.loadedOrb = new Orb(
+      this.cannon.x + this.cannon.width / 2,
+      this.cannon.y + this.cannon.height / 2,
+      this.orbRadius,
+      0,
+      0
+    );
+    // this.loadedOrb = this.pool.getFreeObject("orbs") as Orb;
+    // this.loadedOrb.x = this.cannon.x + this.cannon.width / 2;
+    // this.loadedOrb.y = this.cannon.y + this.cannon.height / 2;
+    // this.loadedOrb.free = false;
 
-    // this.nextOrb = new Orb(
-    //   this.cannon.x - 5 * this.orbRadius,
-    //   this.arena.arenaFloor - this.orbRadius,
-    //   this.orbRadius,
-    //   0,
-    //   0
-    // );
-    this.nextOrb = this.pool.getFreeObject("orbs") as Orb;
-    this.nextOrb.x = this.cannon.x - 5 * this.orbRadius;
-    this.nextOrb.y = this.arena.arenaFloor - this.orbRadius;
-    this.nextOrb.free = false;
+    this.nextOrb = new Orb(
+      this.cannon.x - 5 * this.orbRadius,
+      this.arena.arenaFloor - this.orbRadius,
+      this.orbRadius,
+      0,
+      0
+    );
+    // this.nextOrb = this.pool.getFreeObject("orbs") as Orb;
+    // this.nextOrb.x = this.cannon.x - 5 * this.orbRadius;
+    // this.nextOrb.y = this.arena.arenaFloor - this.orbRadius;
+    // this.nextOrb.free = false;
 
     this.cannonOperatorSprite = new CannonOperator(this);
     this.cannonLoaderSprite = new CannonLoader(this);

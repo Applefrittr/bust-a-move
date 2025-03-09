@@ -44,9 +44,33 @@ export default class Orb {
     this.spriteDrawHeight = 2 * this.r;
   }
 
+  reset() {
+    this.x = 0;
+    this.y = 0;
+    this.dx = 0;
+    this.dy = 0;
+    this.busted = false;
+    this.recursiveVisitedFlag = false;
+    this.orphaned = false;
+    this.free = true;
+  }
+
+  initialize(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+    this.sprite = orbSprites[this.color].idle;
+    this.spriteWidth = orbSprites[this.color].width;
+    this.spriteHeight = orbSprites[this.color].height;
+    this.spriteDrawX = this.x - this.r;
+    this.spriteDrawY = this.y - this.r;
+    this.spriteDrawWidth = 2 * this.r;
+    this.spriteDrawHeight = 2 * this.r;
+  }
+
   draw(ctx: CanvasRenderingContext2D | null) {
     if (ctx) {
-      ctx.strokeStyle = "transparent";
+      ctx.strokeStyle = "black";
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
       ctx.stroke();
@@ -80,15 +104,16 @@ export default class Orb {
   }
 
   update(ctx: CanvasRenderingContext2D | null, game: Game) {
+    if (this.y + this.dy > game.arena.arenaFloor) {
+      game.orbs.deleteOrb(this);
+      //this.reset();
+      return;
+    }
     if (
       this.x + this.dx < game.arena.leftBound + this.r ||
       this.x + this.dx > game.arena.rightBound - this.r
     )
       this.dx = -this.dx;
-    if (this.y + this.dy > game.arena.arenaFloor) {
-      game.orbs.deleteOrb(this);
-      this.free = true;
-    }
     if (this.y + this.dy <= game.arena.topBound + this.r) {
       this.dx = 0;
       this.dy = 0;
