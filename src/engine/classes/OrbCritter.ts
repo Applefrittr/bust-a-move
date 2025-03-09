@@ -19,13 +19,6 @@ export default class OrbCritter {
 
   constructor() {}
 
-  // constructor(color: string) {
-  //   this.color = color;
-  //   this.sprite = critterSprites[this.color].sprite;
-  //   this.spriteWidth = critterSprites[this.color].width;
-  //   this.spriteHeight = critterSprites[this.color].height;
-  // }
-
   assignProps(x: number, y: number, color: string) {
     this.x = x;
     this.y = y;
@@ -72,6 +65,7 @@ export default class OrbCritter {
 
   update(ctx: CanvasRenderingContext2D | null, game: Game) {
     if (this.y >= game.arena.arenaFloor) {
+      game.critters.delete(this);
       this.resetDefault();
       return;
     }

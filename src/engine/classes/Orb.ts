@@ -1,5 +1,3 @@
-// import Arena from "./Arena";
-// import OrbGraph from "./OrbGraph";
 import randomNumInRange from "../utils/randomNumInRange";
 import { orbSprites, colors } from "../spriteObjects/OrbSprites";
 import { GRAVITYPERFRAME } from "../utils/constantValues";
@@ -106,7 +104,6 @@ export default class Orb {
   update(ctx: CanvasRenderingContext2D | null, game: Game) {
     if (this.y + this.dy > game.arena.arenaFloor) {
       game.orbs.deleteOrb(this);
-      //this.reset();
       return;
     }
     if (

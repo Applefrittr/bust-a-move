@@ -7,13 +7,14 @@ import DropPoints from "./classes/DropPoints";
 import FPSController from "./classes/FPSController";
 import Orb from "./classes/Orb";
 import OrbBag from "./classes/OrbBag";
-//import OrbCritter from "./classes/OrbCritter";
+import OrbCritter from "./classes/OrbCritter";
 import OrbExplosion from "./classes/OrbExplosion";
 import OrbGraph from "./classes/OrbGraph";
+import ObjectPool from "./classes/ObjectPool";
 import TenPoints from "./classes/TenPoints";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
-//import drawBackGround from "./utils/drawBackground";
+import drawBackGround from "./utils/drawBackground";
 import detectBusts from "./utils/detectBusts";
 import detectCollisions from "./utils/detectCollision";
 import detectGameOver from "./utils/detectGameOver";
@@ -24,7 +25,6 @@ import resetBustStatus from "./utils/resetBustStatus";
 import shiftOrbsWithArena from "./utils/shiftOrbsWithArena";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
-import ObjectPool from "./classes/ObjectPool";
 
 export default class Game {
   arena: Arena;
@@ -34,7 +34,7 @@ export default class Game {
   cannonBase: CannonBase;
   cannonLoaderSprite: CannonLoader;
   cannonOperatorSprite: CannonOperator;
-  //critters: Set<OrbCritter> = new Set();
+  critters: Set<OrbCritter> = new Set();
   dropPoints: DropPoints | null = null;
   explosions: Set<OrbExplosion> = new Set();
   firedOrb: Orb | null = null;
@@ -52,12 +52,12 @@ export default class Game {
   orbBagFront: OrbBag;
   orbRadius: number = ORBRADIUS;
   paused: boolean = false;
+  pool: ObjectPool;
   transformOrigin: { x: number; y: number };
   transformScaler: number;
   score: number = 0;
   tenPointSprites: Set<TenPoints> = new Set();
   width: number;
-  pool: ObjectPool;
 
   constructor(width: number, height: number) {
     this.width = width;
@@ -84,10 +84,6 @@ export default class Game {
       0,
       0
     );
-    // this.loadedOrb = this.pool.getFreeObject("orbs") as Orb;
-    // this.loadedOrb.x = this.cannon.x + this.cannon.width / 2;
-    // this.loadedOrb.y = this.cannon.y + this.cannon.height / 2;
-    // this.loadedOrb.free = false;
 
     this.nextOrb = new Orb(
       this.cannon.x - 5 * this.orbRadius,
@@ -96,10 +92,6 @@ export default class Game {
       0,
       0
     );
-    // this.nextOrb = this.pool.getFreeObject("orbs") as Orb;
-    // this.nextOrb.x = this.cannon.x - 5 * this.orbRadius;
-    // this.nextOrb.y = this.arena.arenaFloor - this.orbRadius;
-    // this.nextOrb.free = false;
 
     this.cannonOperatorSprite = new CannonOperator(this);
     this.cannonLoaderSprite = new CannonLoader(this);
@@ -112,7 +104,6 @@ export default class Game {
   }
 
   keyDownEvent = (event: KeyboardEvent) => {
-    console.log(this.pool.critters);
     this.cannon.handleKeyDown(event.key);
     this.cannonBase.handleKeyDown(event.key);
     this.cannonOperatorSprite.handleKeyDown(event.key);
@@ -191,7 +182,7 @@ export default class Game {
         this.transformOrigin.y
       );
 
-      //drawBackGround(this);
+      drawBackGround(this);
 
       this.arena.update(this.ctx);
       shiftOrbsWithArena(this);
@@ -219,12 +210,11 @@ export default class Game {
       for (const [orb] of this.orbs.graph) {
         orb.update(this.ctx, this);
       }
-      //this.explosions.forEach((explosion) => explosion.update(this.ctx, this));
+      this.explosions.forEach((explosion) => explosion.update(this.ctx, this));
 
       this.tenPointSprites.forEach((sprite) => sprite.update(this.ctx, this));
 
-      // this.critters.forEach((critter) => critter.update(this.ctx, this));
-      this.pool.drawObjects(this.ctx, this);
+      this.critters.forEach((critter) => critter.update(this.ctx, this));
 
       this.orbBagFront.draw(this.ctx);
 

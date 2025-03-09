@@ -16,17 +16,6 @@ export default class OrbExplosion {
 
   constructor() {}
 
-  // constructor(x: number, y: number, color: string) {
-  //   this.x = x;
-  //   this.y = y;
-  //   this.color = color;
-
-  //   this.sprite = explosionSprites[this.color].explosion;
-  //   this.shiftX = explosionSprites[this.color].width;
-  //   this.spriteDrawWidth = explosionSprites[this.color].width;
-  //   this.spriteDrawHeight = explosionSprites[this.color].height;
-  // }
-
   assignProps(x: number, y: number, color: string) {
     this.x = x;
     this.y = y;
