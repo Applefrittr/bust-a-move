@@ -2,10 +2,7 @@ import Game from "../engine/Game";
 import useDimensions from "../hooks/useDimensions";
 import useMaxResolutionScaler from "../hooks/useMaxResolutionScaler";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
-import {
-  NATIVERESOLUTION,
-  //MINRESOLUTIONSCALER,
-} from "../engine/utils/constantValues";
+import { NATIVERESOLUTION } from "../engine/utils/constantValues";
 import GameUI from "../components/GameUI";
 
 export default function App() {
