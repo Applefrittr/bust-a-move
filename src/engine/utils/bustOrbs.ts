@@ -11,7 +11,7 @@ export default function bustOrbs(game: Game) {
   }
 
   const bust = new Audio(Bust);
-  bust.currentTime = 0.25;
+  bust.currentTime = 0.2;
   bust.play();
   const score = new Audio(Score);
   score.currentTime = 0.25;

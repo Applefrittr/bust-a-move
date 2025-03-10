@@ -54,7 +54,7 @@ export default class DropPoints {
     this.frame++;
     this.y += this.dy;
     this.sprite = this.numberSheets[this.frame % this.numberSheets.length];
-    if (this.frame >= 100) this.dy = -5;
+    if (this.frame >= 60) this.dy = -5;
     if (this.y < 0 - this.digitHeight) game.dropPoints = null;
   }
 }

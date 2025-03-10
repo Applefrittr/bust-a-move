@@ -26,6 +26,8 @@ import shiftOrbsWithArena from "./utils/shiftOrbsWithArena";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
 import Collide from "../assets/sounds/collide.mp3";
+import Ready from "../assets/sounds/ready.mp3";
+import Go from "../assets/sounds/go.mp3";
 
 export default class Game {
   arena: Arena;
@@ -121,14 +123,25 @@ export default class Game {
   };
 
   start() {
-    window.addEventListener("keydown", this.keyDownEvent);
-    window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 25, 0.05);
+    generateLevel(this, 25);
+    const ready = new Audio(Ready);
+    ready.play();
     this.animationLoop();
+
+    setTimeout(() => {
+      const go = new Audio(Go);
+      go.play();
+      this.arenaShrinkRate = 0.05;
+      this.arena.shrinkRate = 0.05;
+      window.addEventListener("keydown", this.keyDownEvent);
+      window.addEventListener("keyup", this.keyUpEvent);
+    }, 3500);
   }
 
   nextLevel() {
     this.lvlComplete = true;
+    this.arenaShrinkRate = 0;
+    this.arena.shrinkRate = 0;
     this.stop();
     setTimeout(() => {
       this.lvlComplete = false;

@@ -5,8 +5,8 @@ import randomNumInRange from "./randomNumInRange";
 
 export default function generateLevel(
   game: Game,
-  numOfOrbs: number,
-  arenaShrinkRate: number
+  numOfOrbs: number
+  //arenaShrinkRate: number
 ) {
   const orbCoordinates = new Map<string, Orb>();
 
@@ -18,9 +18,6 @@ export default function generateLevel(
       0,
       0
     );
-    // const orb = game.pool.getFreeObject("orbs") as Orb;
-    // orb.y = game.arena.topBound + game.orbRadius;
-    // orb.free = false;
     orb.anchoredToArena = true;
     placeOrb(orb, orbCoordinates, game);
   }
@@ -30,8 +27,8 @@ export default function generateLevel(
     detectNeighbors(orb, game.orbs);
   }
 
-  game.arenaShrinkRate = arenaShrinkRate;
-  game.arena.shrinkRate = arenaShrinkRate;
+  // game.arenaShrinkRate = arenaShrinkRate;
+  // game.arena.shrinkRate = arenaShrinkRate;
 }
 
 function placeOrb(currOrb: Orb, coordinates: Map<string, Orb>, game: Game) {
