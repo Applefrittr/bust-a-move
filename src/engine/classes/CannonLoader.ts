@@ -1,6 +1,6 @@
-import FiringCannon from "../../assets/blue-firing-cannon.png";
-import CannonLauncher from "../../assets/cannon-launcher.png";
-import Idle from "../../assets/blue-idle.png";
+import FiringCannon from "../../assets/spriteSheets/blue-firing-cannon.png";
+import CannonLauncher from "../../assets/spriteSheets/cannon-launcher.png";
+import Idle from "../../assets/spriteSheets/blue-idle.png";
 import Game from "../Game";
 import { NATIVERESOLUTION } from "../utils/constantValues";
 

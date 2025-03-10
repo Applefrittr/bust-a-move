@@ -25,6 +25,7 @@ import resetBustStatus from "./utils/resetBustStatus";
 import shiftOrbsWithArena from "./utils/shiftOrbsWithArena";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
+import AudioPool from "./classes/AudioPool";
 
 export default class Game {
   arena: Arena;
@@ -58,6 +59,7 @@ export default class Game {
   score: number = 0;
   tenPointSprites: Set<TenPoints> = new Set();
   width: number;
+  audioPool: AudioPool;
 
   constructor(width: number, height: number) {
     this.width = width;
@@ -72,10 +74,11 @@ export default class Game {
       y: (height - NATIVERESOLUTION.height * this.transformScaler) / 2,
     };
 
+    this.audioPool = new AudioPool();
+    this.pool = new ObjectPool();
     this.arena = new Arena(this, "#000000");
     this.cannon = new Cannon(this);
     this.cannonBase = new CannonBase(this);
-    this.pool = new ObjectPool();
 
     this.loadedOrb = new Orb(
       this.cannon.x + this.cannon.width / 2,
@@ -120,14 +123,23 @@ export default class Game {
   };
 
   start() {
-    window.addEventListener("keydown", this.keyDownEvent);
-    window.addEventListener("keyup", this.keyUpEvent);
-    generateLevel(this, 25, 0.05);
+    generateLevel(this, 25);
+    this.audioPool.playSound("ready");
     this.animationLoop();
+
+    setTimeout(() => {
+      this.audioPool.playSound("go");
+      this.arenaShrinkRate = 0.05;
+      this.arena.shrinkRate = 0.05;
+      window.addEventListener("keydown", this.keyDownEvent);
+      window.addEventListener("keyup", this.keyUpEvent);
+    }, 3500);
   }
 
   nextLevel() {
     this.lvlComplete = true;
+    this.arenaShrinkRate = 0;
+    this.arena.shrinkRate = 0;
     this.stop();
     setTimeout(() => {
       this.lvlComplete = false;
@@ -194,6 +206,7 @@ export default class Game {
       if (this.firedOrb) {
         detectCollisions(this.firedOrb, this.orbs);
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
+          this.audioPool.playSound("collide");
           this.firedOrb.shine();
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);

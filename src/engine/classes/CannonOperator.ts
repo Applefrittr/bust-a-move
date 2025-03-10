@@ -1,6 +1,6 @@
-import TuringCannon from "../../assets/green-turning-cannon.png";
-import CannonWheel from "../../assets/cannon-wheel.png";
-import Idle from "../../assets/green-idle.png";
+import TuringCannon from "../../assets/spriteSheets/green-turning-cannon.png";
+import CannonWheel from "../../assets/spriteSheets/cannon-wheel.png";
+import Idle from "../../assets/spriteSheets/green-idle.png";
 import Game from "../Game";
 import { NATIVERESOLUTION } from "../utils/constantValues";
 

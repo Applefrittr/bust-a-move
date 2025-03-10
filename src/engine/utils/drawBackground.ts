@@ -1,5 +1,5 @@
 import Game from "../Game";
-import background from "../../assets/bg-lvl1.png";
+import background from "../../assets/arena/bg-lvl1.png";
 import preLoadSprite from "./preLoadSprite";
 
 const BG = await preLoadSprite(background);

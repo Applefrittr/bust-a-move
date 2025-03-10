@@ -1,14 +1,10 @@
 import Game from "../Game";
 import { NATIVERESOLUTION, ORBRADIUS } from "../utils/constantValues";
-import arenaBG from "../../assets/bg-lvl1-arena.png";
-import arenaBorder from "../../assets/bg-lvl1-border.png";
-import floor from "../../assets/bg-lvl1-floor.png";
+import arenaBG from "../../assets/arena/bg-lvl1-arena.png";
+import floor from "../../assets/arena/bg-lvl1-floor.png";
 
 const ArenaBG = new Image();
 ArenaBG.src = arenaBG;
-
-const ArenaBorder = new Image();
-ArenaBorder.src = arenaBorder;
 
 const Floor = new Image();
 Floor.src = floor;

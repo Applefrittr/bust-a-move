@@ -1,10 +1,10 @@
 import preLoadSprite from "../utils/preLoadSprite";
-import GreenIdle from "../../assets/orb-green-idle.png";
-import GreenShine from "../../assets/orb-green-shine.png";
-import BlueIdle from "../../assets/orb-blue-idle.png";
-import BlueShine from "../../assets/orb-blue-shine.png";
-import RedIdle from "../../assets/orb-red-idle.png";
-import RedShine from "../../assets/orb-red-shine.png";
+import GreenIdle from "../../assets/spriteSheets/orb-green-idle.png";
+import GreenShine from "../../assets/spriteSheets/orb-green-shine.png";
+import BlueIdle from "../../assets/spriteSheets/orb-blue-idle.png";
+import BlueShine from "../../assets/spriteSheets/orb-blue-shine.png";
+import RedIdle from "../../assets/spriteSheets/orb-red-idle.png";
+import RedShine from "../../assets/spriteSheets/orb-red-shine.png";
 
 type OrbSpriteObject = {
   idle: HTMLImageElement;
