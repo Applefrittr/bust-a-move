@@ -14,3 +14,5 @@ export const MAXRESOLUTIONSCALER = {
   "2K": 4,
   "4K": 5,
 };
+
+export const SHRINKRATE = 0.05;

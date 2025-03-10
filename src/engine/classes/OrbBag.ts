@@ -22,7 +22,7 @@ export default class OrbBag {
       this.sx = this.spriteWidth;
     }
 
-    this.x = game.nextOrb.x - this.spriteWidth / 2;
+    this.x = game.cannon.x - 5 * game.orbRadius - this.spriteWidth / 2;
     this.y = game.arena.arenaFloor - this.height;
   }
 

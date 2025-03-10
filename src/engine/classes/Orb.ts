@@ -10,16 +10,16 @@ export default class Orb {
   dy: number;
   r: number;
 
-  color: string = colors[Math.floor(Math.random() * colors.length)];
-  sprite: HTMLImageElement = orbSprites[this.color].idle;
+  color: string = "";
+  sprite: HTMLImageElement | null = null;
   frame: number = 1;
   sx: number = 0;
   sy: number = 0;
   spriteDrawX: number;
   spriteDrawY: number;
   shiftX: number = 0;
-  spriteWidth: number = orbSprites[this.color].width;
-  spriteHeight: number = orbSprites[this.color].height;
+  spriteWidth: number = 0;
+  spriteHeight: number = 0;
   spriteDrawWidth: number;
   spriteDrawHeight: number;
   busted: boolean = false;
@@ -29,37 +29,26 @@ export default class Orb {
   orphaned: boolean = false;
   free: boolean = true;
 
-  constructor(x: number, y: number, r: number, dx: number, dy: number) {
+  constructor(
+    x: number,
+    y: number,
+    r: number,
+    dx: number,
+    dy: number,
+    colorRange: number
+  ) {
     this.x = x;
     this.y = y;
     this.r = r;
     this.dx = dx;
     this.dy = dy;
 
-    this.spriteDrawX = this.x - this.r;
-    this.spriteDrawY = this.y - this.r;
-    this.spriteDrawWidth = 2 * this.r;
-    this.spriteDrawHeight = 2 * this.r;
-  }
-
-  reset() {
-    this.x = 0;
-    this.y = 0;
-    this.dx = 0;
-    this.dy = 0;
-    this.busted = false;
-    this.recursiveVisitedFlag = false;
-    this.orphaned = false;
-    this.free = true;
-  }
-
-  initialize(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-    this.color = colors[Math.floor(Math.random() * colors.length)];
+    this.color =
+      colors[Math.floor(Math.random() * Math.min(colorRange, colors.length))];
     this.sprite = orbSprites[this.color].idle;
     this.spriteWidth = orbSprites[this.color].width;
     this.spriteHeight = orbSprites[this.color].height;
+
     this.spriteDrawX = this.x - this.r;
     this.spriteDrawY = this.y - this.r;
     this.spriteDrawWidth = 2 * this.r;
@@ -67,7 +56,7 @@ export default class Orb {
   }
 
   draw(ctx: CanvasRenderingContext2D | null) {
-    if (ctx) {
+    if (ctx && this.sprite) {
       ctx.strokeStyle = "transparent";
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);

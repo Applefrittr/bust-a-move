@@ -24,17 +24,24 @@ import generateLevel from "./utils/generateLevel";
 import resetBustStatus from "./utils/resetBustStatus";
 import shiftOrbsWithArena from "./utils/shiftOrbsWithArena";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
-import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
+import {
+  DELAY,
+  NATIVERESOLUTION,
+  ORBRADIUS,
+  SHRINKRATE,
+} from "./utils/constantValues";
 import AudioPool from "./classes/AudioPool";
 
 export default class Game {
   arena: Arena;
   arenaShrinkRate: number = 0;
+  audioPool: AudioPool;
   ctx: CanvasRenderingContext2D | null = null;
   cannon: Cannon;
   cannonBase: CannonBase;
   cannonLoaderSprite: CannonLoader;
   cannonOperatorSprite: CannonOperator;
+  colorRange: number;
   critters: Set<OrbCritter> = new Set();
   dropPoints: DropPoints | null = null;
   explosions: Set<OrbExplosion> = new Set();
@@ -43,11 +50,11 @@ export default class Game {
   frame: number = 0;
   gameOverFlag: boolean = false;
   height: number;
-  level: number = 1;
-  loadedOrb: Orb;
+  level: number;
+  loadedOrb: Orb | null = null;
   lvlComplete: boolean = false;
   msNow: number = this.fpsController.msPrev;
-  nextOrb: Orb;
+  nextOrb: Orb | null = null;
   orbs: OrbGraph = new OrbGraph();
   orbBagBack: OrbBag;
   orbBagFront: OrbBag;
@@ -59,7 +66,6 @@ export default class Game {
   score: number = 0;
   tenPointSprites: Set<TenPoints> = new Set();
   width: number;
-  audioPool: AudioPool;
 
   constructor(width: number, height: number) {
     this.width = width;
@@ -73,28 +79,14 @@ export default class Game {
       x: (width - NATIVERESOLUTION.width * this.transformScaler) / 2,
       y: (height - NATIVERESOLUTION.height * this.transformScaler) / 2,
     };
+    this.level = 1;
+    this.colorRange = 1;
 
     this.audioPool = new AudioPool();
     this.pool = new ObjectPool();
     this.arena = new Arena(this, "#000000");
     this.cannon = new Cannon(this);
     this.cannonBase = new CannonBase(this);
-
-    this.loadedOrb = new Orb(
-      this.cannon.x + this.cannon.width / 2,
-      this.cannon.y + this.cannon.height / 2,
-      this.orbRadius,
-      0,
-      0
-    );
-
-    this.nextOrb = new Orb(
-      this.cannon.x - 5 * this.orbRadius,
-      this.arena.arenaFloor - this.orbRadius,
-      this.orbRadius,
-      0,
-      0
-    );
 
     this.cannonOperatorSprite = new CannonOperator(this);
     this.cannonLoaderSprite = new CannonLoader(this);
@@ -112,7 +104,7 @@ export default class Game {
     this.cannonOperatorSprite.handleKeyDown(event.key);
     this.cannonLoaderSprite.handleKeyDown(event.key);
     if (event.key === " " && !this.firedOrb) {
-      fireCannon(this, this.loadedOrb, this.nextOrb);
+      fireCannon(this);
     }
   };
 
@@ -123,15 +115,16 @@ export default class Game {
   };
 
   start() {
-    generateLevel(this, 25);
+    if ((this.level - 1) % 5 === 0) this.colorRange++;
+    generateLevel(this);
     this.arena.pickLevel(this.level);
     this.audioPool.playSound("ready");
     this.animationLoop();
 
     setTimeout(() => {
       this.audioPool.playSound("go");
-      this.arenaShrinkRate = 0.05;
-      this.arena.shrinkRate = 0.05;
+      this.arenaShrinkRate = SHRINKRATE;
+      this.arena.shrinkRate = SHRINKRATE;
       window.addEventListener("keydown", this.keyDownEvent);
       window.addEventListener("keyup", this.keyUpEvent);
     }, 3500);
@@ -142,6 +135,8 @@ export default class Game {
     this.arenaShrinkRate = 0;
     this.arena.shrinkRate = 0;
     this.stop();
+    this.loadedOrb = null;
+    this.nextOrb = null;
     setTimeout(() => {
       this.lvlComplete = false;
       this.arena.resetArena(this);
