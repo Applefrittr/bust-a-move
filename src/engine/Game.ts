@@ -124,6 +124,7 @@ export default class Game {
 
   start() {
     generateLevel(this, 25);
+    this.arena.pickLevel(this.level);
     this.audioPool.playSound("ready");
     this.animationLoop();
 

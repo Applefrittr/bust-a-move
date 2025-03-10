@@ -1,14 +1,35 @@
 import Game from "../Game";
 import { NATIVERESOLUTION, ORBRADIUS } from "../utils/constantValues";
-import arenaBG from "../../assets/arena/bg-lvl1-arena.png";
-import floor from "../../assets/arena/bg-lvl1-floor.png";
+import Arena1 from "../../assets/arena/bg-lvl1-arena.png";
+import Floor1 from "../../assets/arena/bg-lvl1-floor.png";
+import Arena2 from "../../assets/arena/bg-lvl2-arena.png";
+import Floor2 from "../../assets/arena/bg-lvl2-floor.png";
+import Arena3 from "../../assets/arena/bg-lvl3-arena.png";
+import Floor3 from "../../assets/arena/bg-lvl3-floor.png";
+import Arena4 from "../../assets/arena/bg-lvl4-arena.png";
+import Floor4 from "../../assets/arena/bg-lvl4-floor.png";
+import Arena5 from "../../assets/arena/bg-lvl5-arena.png";
+import Floor5 from "../../assets/arena/bg-lvl5-floor.png";
+import preLoadSprite from "../utils/preLoadSprite";
 
-const ArenaBG = new Image();
-ArenaBG.src = arenaBG;
+const arena1 = await preLoadSprite(Arena1);
+const floor1 = await preLoadSprite(Floor1);
+const arena2 = await preLoadSprite(Arena2);
+const floor2 = await preLoadSprite(Floor2);
+const arena3 = await preLoadSprite(Arena3);
+const floor3 = await preLoadSprite(Floor3);
+const arena4 = await preLoadSprite(Arena4);
+const floor4 = await preLoadSprite(Floor4);
+const arena5 = await preLoadSprite(Arena5);
+const floor5 = await preLoadSprite(Floor5);
 
-const Floor = new Image();
-Floor.src = floor;
-
+const levels = [
+  { arena: arena1, floor: floor1 },
+  { arena: arena2, floor: floor2 },
+  { arena: arena3, floor: floor3 },
+  { arena: arena4, floor: floor4 },
+  { arena: arena5, floor: floor5 },
+];
 export default class Arena {
   #width: number;
   #height: number;
@@ -20,6 +41,8 @@ export default class Arena {
   #arenaFloor: number;
   color: string;
   shrinkRate: number = 0;
+  arenaSprite: HTMLImageElement | null = null;
+  floorSprite: HTMLImageElement | null = null;
 
   constructor(game: Game, color: string) {
     this.#width = 2 * game.orbRadius * 10;
@@ -66,46 +89,54 @@ export default class Arena {
     this.#topBound = NATIVERESOLUTION.height / 2 - this.#height / 2;
   }
 
+  pickLevel(level: number) {
+    const currLevel = (level - 1) % levels.length;
+    this.arenaSprite = levels[currLevel].arena;
+    this.floorSprite = levels[currLevel].floor;
+  }
+
   draw(ctx: CanvasRenderingContext2D) {
-    ctx.drawImage(
-      ArenaBG,
-      0,
-      0,
-      ArenaBG.width,
-      ArenaBG.height,
-      this.#leftBound - ORBRADIUS,
-      this.#topBound - ORBRADIUS,
-      this.#width + 2 * ORBRADIUS,
-      this.#height + ORBRADIUS
-    );
+    if (this.arenaSprite && this.floorSprite) {
+      ctx.drawImage(
+        this.arenaSprite,
+        0,
+        0,
+        this.arenaSprite.width,
+        this.arenaSprite.height,
+        this.#leftBound - ORBRADIUS,
+        this.#topBound - ORBRADIUS,
+        this.#width + 2 * ORBRADIUS,
+        this.#height + ORBRADIUS
+      );
 
-    ctx.fillStyle = "white";
-    ctx.fillRect(
-      this.#leftBound - ORBRADIUS,
-      this.#line,
-      this.#width + 2 * ORBRADIUS,
-      0.5
-    );
+      ctx.fillStyle = "white";
+      ctx.fillRect(
+        this.#leftBound - ORBRADIUS,
+        this.#line,
+        this.#width + 2 * ORBRADIUS,
+        0.5
+      );
 
-    ctx.drawImage(
-      Floor,
-      0,
-      0,
-      Floor.width,
-      Floor.height,
-      this.leftBound - Floor.width / 4,
-      this.arenaFloor,
-      Floor.width,
-      Floor.height
-    );
+      ctx.drawImage(
+        this.floorSprite,
+        0,
+        0,
+        this.floorSprite.width,
+        this.floorSprite.height,
+        this.leftBound - this.floorSprite.width / 4,
+        this.arenaFloor,
+        this.floorSprite.width,
+        this.floorSprite.height
+      );
 
-    ctx.fillStyle = "#242424";
-    ctx.fillRect(
-      0 - innerWidth,
-      this.arenaFloor + Floor.height,
-      2 * innerWidth,
-      innerHeight
-    );
+      ctx.fillStyle = "#242424";
+      ctx.fillRect(
+        0 - innerWidth,
+        this.arenaFloor + this.floorSprite.height,
+        2 * innerWidth,
+        innerHeight
+      );
+    }
   }
 
   update(ctx: CanvasRenderingContext2D) {
