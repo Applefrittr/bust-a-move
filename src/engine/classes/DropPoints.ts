@@ -1,7 +1,7 @@
 import Game from "../Game";
 import { numbers } from "../spriteObjects/NumberSprites";
 import { NATIVERESOLUTION } from "../utils/constantValues";
-import PointsMulti from "../../assets/sounds/points-multi.mp3";
+//import PointsMulti from "../../assets/sounds/points-multi.mp3";
 
 export default class DropPoints {
   x: number;
@@ -19,15 +19,12 @@ export default class DropPoints {
   digitWidth: number = numbers.digitWidth;
   digitHeight: number = numbers.digitHieght;
   frame: number = 1;
-  audio: HTMLAudioElement = new Audio(PointsMulti);
 
   constructor(score: string) {
     this.scoreDigits = score.split("").map((digit) => Number(digit));
     this.width = this.digitWidth * this.scoreDigits.length;
     this.x = NATIVERESOLUTION.width / 2 - this.width / 4;
     this.y = this.digitHeight;
-    this.audio.currentTime = 0.4;
-    this.audio.play();
   }
 
   draw(ctx: CanvasRenderingContext2D | null) {
