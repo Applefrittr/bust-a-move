@@ -2,12 +2,20 @@ import OrbCritter from "../classes/OrbCritter";
 import OrbExplosion from "../classes/OrbExplosion";
 import TenPoints from "../classes/TenPoints";
 import Game from "../Game";
+import Bust from "../../assets/sounds/bust.mp3";
+import Score from "../../assets/sounds/score.mp3";
 
 export default function bustOrbs(game: Game) {
   if (game.orbs.bustedThisRound < 3) {
     return;
   }
 
+  const bust = new Audio(Bust);
+  bust.currentTime = 0.25;
+  bust.play();
+  const score = new Audio(Score);
+  score.currentTime = 0.25;
+  score.play();
   for (const [orb] of game.orbs.graph) {
     if (orb.busted) {
       game.score += 10;

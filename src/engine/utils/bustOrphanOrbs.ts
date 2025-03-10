@@ -2,6 +2,8 @@ import DropPoints from "../classes/DropPoints";
 import Orb from "../classes/Orb";
 import OrbGraph from "../classes/OrbGraph";
 import Game from "../Game";
+import ScoreMulti from "../../assets/sounds/score-multi.mp3";
+//import Bust from "../../assets/sounds/bust.wav";
 
 export default function bustOrphanOrbs(game: Game) {
   const anchoredOrbs = new Map<Orb, boolean | undefined>();
@@ -34,6 +36,8 @@ export default function bustOrphanOrbs(game: Game) {
   }
 
   if (numDropped) {
+    const scoreMulti = new Audio(ScoreMulti);
+    scoreMulti.play();
     let droppedScore = 20;
     for (let i = 1; i < numDropped; i++) {
       droppedScore *= 2;

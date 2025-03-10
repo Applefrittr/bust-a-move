@@ -1,7 +1,11 @@
 import Orb from "../classes/Orb";
 import Game from "../Game";
+import Shoot from "../../assets/sounds/shoot.mp3";
 
 export default function fireCannon(game: Game, loaded: Orb, next: Orb) {
+  const shoot = new Audio(Shoot);
+  shoot.currentTime = 0.1;
+  shoot.play();
   game.firedOrb = loaded;
   game.loadedOrb = next;
   game.loadedOrb.dx = 5;
@@ -16,8 +20,4 @@ export default function fireCannon(game: Game, loaded: Orb, next: Orb) {
     0,
     0
   );
-  // game.nextOrb = game.pool.getFreeObject("orbs") as Orb;
-  // game.nextOrb.x = game.cannon.x - 5 * game.orbRadius;
-  // game.nextOrb.y = game.arena.arenaFloor - game.orbRadius;
-  // game.nextOrb.free = false;
 }

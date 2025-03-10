@@ -25,6 +25,7 @@ import resetBustStatus from "./utils/resetBustStatus";
 import shiftOrbsWithArena from "./utils/shiftOrbsWithArena";
 import updateCannonAmmo from "./utils/updateCannonAmmo";
 import { DELAY, NATIVERESOLUTION, ORBRADIUS } from "./utils/constantValues";
+import Collide from "../assets/sounds/collide.mp3";
 
 export default class Game {
   arena: Arena;
@@ -194,6 +195,9 @@ export default class Game {
       if (this.firedOrb) {
         detectCollisions(this.firedOrb, this.orbs);
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
+          const collide = new Audio(Collide);
+          collide.currentTime = 0.25;
+          collide.play();
           this.firedOrb.shine();
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);
