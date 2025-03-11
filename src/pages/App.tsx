@@ -62,11 +62,11 @@ export default function App() {
           <b>LEVEL COMPLETE</b>
         </h1>
       )} */}
-      {game.gameOverFlag && (
+      {/* {game.gameOverFlag && (
         <h1 className="absolute left-1/2 top-1/2 -translate-1/2 z-10 bg-amber-50 text-black p-2">
           <b>Game Over!</b>
         </h1>
-      )}
+      )} */}
     </main>
   );
 }

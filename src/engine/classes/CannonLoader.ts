@@ -1,17 +1,15 @@
 import FiringCannon from "../../assets/spriteSheets/blue-firing-cannon.png";
 import CannonLauncher from "../../assets/spriteSheets/cannon-launcher.png";
 import Idle from "../../assets/spriteSheets/blue-idle.png";
+import KOd from "../../assets/spriteSheets/blue-ko.png";
+import preLoadSprite from "../utils/preLoadSprite";
 import Game from "../Game";
 import { NATIVERESOLUTION } from "../utils/constantValues";
 
-const firingCannonSprite = new Image();
-firingCannonSprite.src = FiringCannon;
-
-const idleSprite = new Image();
-idleSprite.src = Idle;
-
-const cannonLauncher = new Image();
-cannonLauncher.src = CannonLauncher;
+const firingCannonSprite = await preLoadSprite(FiringCannon);
+const idleSprite = await preLoadSprite(Idle);
+const cannonLauncher = await preLoadSprite(CannonLauncher);
+const knockedOutSprite = await preLoadSprite(KOd);
 
 export default class CannonLoader {
   spriteSheet: HTMLImageElement = idleSprite;
@@ -79,20 +77,32 @@ export default class CannonLoader {
     this.frame = 0;
   }
 
+  knocked() {
+    this.spriteSheet = knockedOutSprite;
+    this.spriteShiftX = this.spriteSourceWidth;
+  }
+
   update(ctx: CanvasRenderingContext2D) {
     this.frame++;
     this.draw(ctx);
     if (this.frame % 3 === 0) {
-      this.spriteSX += this.spriteShiftX;
-      this.launcherSX += this.launcherShiftX;
-      if (this.spriteSX >= firingCannonSprite.width) {
-        this.spriteSheet = idleSprite;
-        this.spriteSX = 0;
-        this.spriteShiftX = 0;
-      }
-      if (this.launcherSX >= cannonLauncher.width) {
-        this.launcherSX = 0;
-        this.launcherShiftX = 0;
+      if (this.spriteSheet === firingCannonSprite) {
+        this.spriteSX += this.spriteShiftX;
+        this.launcherSX += this.launcherShiftX;
+        if (this.spriteSX >= firingCannonSprite.width) {
+          this.spriteSheet = idleSprite;
+          this.spriteSX = 0;
+          this.spriteShiftX = 0;
+        }
+        if (this.launcherSX >= cannonLauncher.width) {
+          this.launcherSX = 0;
+          this.launcherShiftX = 0;
+        }
+      } else if (this.spriteSheet === knockedOutSprite) {
+        this.spriteSX += this.spriteShiftX;
+        if (this.spriteSX >= knockedOutSprite.width) {
+          this.spriteSX = 0;
+        }
       }
     }
   }

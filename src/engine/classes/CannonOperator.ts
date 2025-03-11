@@ -1,17 +1,15 @@
 import TuringCannon from "../../assets/spriteSheets/green-turning-cannon.png";
 import CannonWheel from "../../assets/spriteSheets/cannon-wheel.png";
 import Idle from "../../assets/spriteSheets/green-idle.png";
+import KOd from "../../assets/spriteSheets/green-ko.png";
 import Game from "../Game";
 import { NATIVERESOLUTION } from "../utils/constantValues";
+import preLoadSprite from "../utils/preLoadSprite";
 
-const turningCannonSprite = new Image();
-turningCannonSprite.src = TuringCannon;
-
-const idleSprite = new Image();
-idleSprite.src = Idle;
-
-const cannonWheel = new Image();
-cannonWheel.src = CannonWheel;
+const turningCannonSprite = await preLoadSprite(TuringCannon);
+const idleSprite = await preLoadSprite(Idle);
+const cannonWheel = await preLoadSprite(CannonWheel);
+const knockedOutSprite = await preLoadSprite(KOd);
 
 export default class CannonOperator {
   spriteSheet: HTMLImageElement = idleSprite;
@@ -91,18 +89,30 @@ export default class CannonOperator {
     this.wheelSX = 0;
   }
 
+  knocked() {
+    this.spriteSheet = knockedOutSprite;
+    this.spriteShiftX = this.spriteSourceWidth;
+  }
+
   update(ctx: CanvasRenderingContext2D) {
     this.frame++;
     this.draw(ctx);
     if (this.frame % 3 === 0) {
-      this.spriteSX += this.spriteShiftX;
-      this.wheelSX += this.wheelShiftX;
-      if (this.spriteSX >= turningCannonSprite.width) {
-        this.spriteSX = 0;
-        this.wheelSX = 0;
-      } else if (this.spriteSX < 0) {
-        this.spriteSX = turningCannonSprite.width - this.spriteSourceWidth;
-        this.wheelSX = cannonWheel.width - this.wheelSourceWidth;
+      if (this.spriteSheet === turningCannonSprite) {
+        this.spriteSX += this.spriteShiftX;
+        this.wheelSX += this.wheelShiftX;
+        if (this.spriteSX >= turningCannonSprite.width) {
+          this.spriteSX = 0;
+          this.wheelSX = 0;
+        } else if (this.spriteSX < 0) {
+          this.spriteSX = turningCannonSprite.width - this.spriteSourceWidth;
+          this.wheelSX = cannonWheel.width - this.wheelSourceWidth;
+        }
+      } else if (this.spriteSheet === knockedOutSprite) {
+        this.spriteSX += this.spriteShiftX;
+        if (this.spriteSX >= knockedOutSprite.width) {
+          this.spriteSX = 0;
+        }
       }
     }
   }

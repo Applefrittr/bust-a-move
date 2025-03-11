@@ -16,6 +16,7 @@ import TenPoints from "./classes/TenPoints";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
 import drawBackGround from "./utils/drawBackground";
+import drawGameOverMsg from "./utils/drawGameOverMsg";
 import drawRoundCompleteMsg from "./utils/drawRoundCompleteMsg";
 import drawRoundStartMsg from "./utils/drawrRoundStartMsg";
 import detectBusts from "./utils/detectBusts";
@@ -154,9 +155,12 @@ export default class Game {
 
   gameOver() {
     this.gameOverFlag = true;
+    this.arenaShrinkRate = 0;
+    this.arena.shrinkRate = 0;
+    this.cannonOperatorSprite.knocked();
+    this.cannonLoaderSprite.knocked();
     window.removeEventListener("keydown", this.keyDownEvent);
     window.removeEventListener("keyup", this.keyUpEvent);
-    cancelAnimationFrame(this.frame);
   }
 
   stop() {
@@ -252,6 +256,10 @@ export default class Game {
 
       if (this.roundStart) {
         drawRoundStartMsg(this);
+      }
+
+      if (this.gameOverFlag) {
+        drawGameOverMsg(this);
       }
 
       if (detectGameOver(this)) this.gameOver();

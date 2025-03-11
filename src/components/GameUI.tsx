@@ -21,7 +21,7 @@ export default function GameUI({ game }: GameUIProps) {
       <div className="flex justify-between items-center">
         <div className="font-bold space-y-4 2xl:text-3xl p-4 bg-black border-s-white border-2 rounded-2xl ">
           <p>{generateStringScore(game.score)}</p>
-          <p>LEVEL-{game.level}</p>
+          <p>ROUND-{game.level}</p>
         </div>
         <div className="flex flex-col gap-2 h-max lg:flex-row">
           <button
