@@ -22,6 +22,7 @@ export default function App() {
       game.setContext(ctx);
 
       game.start();
+      game.animationLoop();
 
       syncReactFrames();
     }
@@ -56,11 +57,11 @@ export default function App() {
         height={height}
         ref={canvasRef}
       />
-      {game.lvlComplete && (
+      {/* {game.lvlComplete && (
         <h1 className="absolute left-1/2 top-1/2 -translate-1/2 z-10 bg-amber-50 text-black p-2">
           <b>LEVEL COMPLETE</b>
         </h1>
-      )}
+      )} */}
       {game.gameOverFlag && (
         <h1 className="absolute left-1/2 top-1/2 -translate-1/2 z-10 bg-amber-50 text-black p-2">
           <b>Game Over!</b>

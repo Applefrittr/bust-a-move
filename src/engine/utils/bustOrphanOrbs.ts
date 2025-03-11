@@ -42,6 +42,7 @@ export default function bustOrphanOrbs(game: Game) {
     }
     game.dropPoints = new DropPoints(droppedScore.toString());
     game.score += droppedScore;
+    game.roundScore += droppedScore;
   }
 }
 

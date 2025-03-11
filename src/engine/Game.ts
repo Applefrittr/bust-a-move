@@ -1,4 +1,5 @@
 import Arena from "./classes/Arena";
+import AudioPool from "./classes/AudioPool";
 import Cannon from "./classes/Cannon";
 import CannonBase from "./classes/CannonBase";
 import CannonLoader from "./classes/CannonLoader";
@@ -15,6 +16,8 @@ import TenPoints from "./classes/TenPoints";
 import bustOrbs from "./utils/bustOrbs";
 import bustOrphanOrbs from "./utils/bustOrphanOrbs";
 import drawBackGround from "./utils/drawBackground";
+import drawRoundCompleteMsg from "./utils/drawRoundCompleteMsg";
+import drawRoundStartMsg from "./utils/drawrRoundStartMsg";
 import detectBusts from "./utils/detectBusts";
 import detectCollisions from "./utils/detectCollision";
 import detectGameOver from "./utils/detectGameOver";
@@ -30,7 +33,6 @@ import {
   ORBRADIUS,
   SHRINKRATE,
 } from "./utils/constantValues";
-import AudioPool from "./classes/AudioPool";
 
 export default class Game {
   arena: Arena;
@@ -52,7 +54,6 @@ export default class Game {
   height: number;
   level: number;
   loadedOrb: Orb | null = null;
-  lvlComplete: boolean = false;
   msNow: number = this.fpsController.msPrev;
   nextOrb: Orb | null = null;
   orbs: OrbGraph = new OrbGraph();
@@ -61,6 +62,9 @@ export default class Game {
   orbRadius: number = ORBRADIUS;
   paused: boolean = false;
   pool: ObjectPool;
+  roundComplete: boolean = false;
+  roundScore: number = 0;
+  roundStart: boolean = false;
   transformOrigin: { x: number; y: number };
   transformScaler: number;
   score: number = 0;
@@ -119,7 +123,9 @@ export default class Game {
     generateLevel(this);
     this.arena.pickLevel(this.level);
     this.audioPool.playSound("ready");
-    this.animationLoop();
+    this.roundComplete = false;
+    this.roundScore = 0;
+    this.roundStart = true;
 
     setTimeout(() => {
       this.audioPool.playSound("go");
@@ -127,18 +133,19 @@ export default class Game {
       this.arena.shrinkRate = SHRINKRATE;
       window.addEventListener("keydown", this.keyDownEvent);
       window.addEventListener("keyup", this.keyUpEvent);
+      this.roundStart = false;
     }, 3500);
   }
 
   nextLevel() {
-    this.lvlComplete = true;
+    this.roundComplete = true;
     this.arenaShrinkRate = 0;
     this.arena.shrinkRate = 0;
-    this.stop();
+    window.removeEventListener("keydown", this.keyDownEvent);
+    window.removeEventListener("keyup", this.keyUpEvent);
     this.loadedOrb = null;
     this.nextOrb = null;
     setTimeout(() => {
-      this.lvlComplete = false;
       this.arena.resetArena(this);
       this.level += 1;
       this.start();
@@ -231,8 +238,22 @@ export default class Game {
 
       this.dropPoints?.update(this.ctx, this);
 
-      if (this.orbs.graph.size === 0 && this.explosions.size === 0)
+      if (
+        this.orbs.graph.size === 0 &&
+        this.explosions.size === 0 &&
+        !this.roundComplete
+      ) {
         this.nextLevel();
+      }
+
+      if (this.roundComplete) {
+        drawRoundCompleteMsg(this);
+      }
+
+      if (this.roundStart) {
+        drawRoundStartMsg(this);
+      }
+
       if (detectGameOver(this)) this.gameOver();
 
       this.ctx.resetTransform();
