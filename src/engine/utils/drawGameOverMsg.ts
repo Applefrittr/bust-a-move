@@ -9,6 +9,6 @@ export default function drawGameOverMsg(game: Game) {
   game.ctx?.drawImage(
     gameOver,
     NATIVERESOLUTION.width / 2 - gameOver.width / 2,
-    NATIVERESOLUTION.height / 2 - gameOver.height / 2
+    NATIVERESOLUTION.height / 2 - gameOver.height
   );
 }

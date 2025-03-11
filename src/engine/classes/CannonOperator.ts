@@ -89,6 +89,12 @@ export default class CannonOperator {
     this.wheelSX = 0;
   }
 
+  idle() {
+    this.spriteSheet = idleSprite;
+    this.spriteSX = 0;
+    this.spriteShiftX = 0;
+  }
+
   knocked() {
     this.spriteSheet = knockedOutSprite;
     this.spriteShiftX = this.spriteSourceWidth;

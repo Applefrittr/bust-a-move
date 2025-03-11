@@ -163,6 +163,20 @@ export default class Game {
     window.removeEventListener("keyup", this.keyUpEvent);
   }
 
+  restart() {
+    this.gameOverFlag = false;
+    this.score = 0;
+    this.level = 1;
+    this.colorRange = 1;
+    this.orbs.deleteGraph();
+    this.loadedOrb = null;
+    this.nextOrb = null;
+    this.cannonOperatorSprite.idle();
+    this.cannonLoaderSprite.idle();
+    this.arena.resetArena(this);
+    this.start();
+  }
+
   stop() {
     window.removeEventListener("keydown", this.keyDownEvent);
     window.removeEventListener("keyup", this.keyUpEvent);

@@ -4,6 +4,7 @@ import useMaxResolutionScaler from "../hooks/useMaxResolutionScaler";
 import { useRef, useEffect, useMemo, useState, useCallback } from "react";
 import { NATIVERESOLUTION } from "../engine/utils/constantValues";
 import GameUI from "../components/GameUI";
+import LinkBtns from "../components/LinkBtns";
 
 export default function App() {
   const [frame, setFrame] = useState(0);
@@ -57,16 +58,17 @@ export default function App() {
         height={height}
         ref={canvasRef}
       />
-      {/* {game.lvlComplete && (
-        <h1 className="absolute left-1/2 top-1/2 -translate-1/2 z-10 bg-amber-50 text-black p-2">
-          <b>LEVEL COMPLETE</b>
-        </h1>
-      )} */}
-      {/* {game.gameOverFlag && (
-        <h1 className="absolute left-1/2 top-1/2 -translate-1/2 z-10 bg-amber-50 text-black p-2">
-          <b>Game Over!</b>
-        </h1>
-      )} */}
+      {game.gameOverFlag && (
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2 z-10 flex gap-2">
+          <button
+            onClick={() => game.restart()}
+            className="px-4 py-2 bg-black border-s-white border-2 rounded-2xl hover:cursor-pointer active:scale-95 focus:bg-blue-500"
+          >
+            RESTART
+          </button>
+          <LinkBtns to="/" text="MAIN MENU"></LinkBtns>
+        </div>
+      )}
     </main>
   );
 }
