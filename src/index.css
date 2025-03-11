@@ -5,6 +5,57 @@
   --font-press-start-2p: "Press Start 2P";
 }
 
+@theme {
+  --animate-pulse: pulse 10s ease-in-out infinite;
+
+  @keyframes pulse {
+    0%,
+    100% {
+      scale: 1;
+    }
+    50% {
+      scale: 1.05;
+    }
+  }
+}
+@theme {
+  --animate-slide: slide 10s linear infinite;
+
+  @keyframes slide {
+    0%,
+    100% {
+      left: 0;
+    }
+    50% {
+      left: 200px;
+    }
+  }
+}
+@theme {
+  --animate-run: run 10s steps(16) infinite;
+
+  @keyframes run {
+    0% {
+      background-position-x: 0%;
+    }
+    100% {
+      background-position-x: 100%;
+    }
+  }
+}
+@theme {
+  --animate-look: look 2s steps(2) infinite;
+
+  @keyframes look {
+    0% {
+      background-position-x: 0%;
+    }
+    100% {
+      background-position-x: 200%;
+    }
+  }
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
