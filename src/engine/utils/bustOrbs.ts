@@ -8,8 +8,10 @@ export default function bustOrbs(game: Game) {
     return;
   }
 
-  game.audioPool.playSound("pop");
-  game.audioPool.playSound("score");
+  if (game.sfx) {
+    game.audioPool.playSound("pop");
+    game.audioPool.playSound("score");
+  }
   for (const [orb] of game.orbs.graph) {
     if (orb.busted) {
       game.score += 10;

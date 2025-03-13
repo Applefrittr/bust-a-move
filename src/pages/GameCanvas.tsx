@@ -1,12 +1,21 @@
 import Game from "../engine/Game";
 import useDimensions from "../hooks/useDimensions";
 import useMaxResolutionScaler from "../hooks/useMaxResolutionScaler";
-import { useRef, useEffect, useMemo, useState, useCallback } from "react";
+import {
+  useRef,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+  useContext,
+} from "react";
 import { NATIVERESOLUTION } from "../engine/utils/constantValues";
 import GameUI from "../components/GameUI";
-import LinkBtns from "../components/LinkBtns";
+import LinkBtn from "../components/LinkBtn";
+import UIBtn from "../components/UIBtn";
+import { OptionsContext } from "../components/Context";
 
-export default function App() {
+export default function GameCanvas() {
   const [frame, setFrame] = useState(0);
   const { width, height } = useDimensions();
   const maxResolutionScaler = useMaxResolutionScaler(width);
@@ -16,11 +25,14 @@ export default function App() {
     () => setFrame(requestAnimationFrame(syncReactFrames)),
     []
   );
+  const options = useContext(OptionsContext);
 
   useEffect(() => {
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
       game.setContext(ctx);
+
+      game.setOptions(options);
 
       game.start();
       game.animationLoop();
@@ -60,13 +72,8 @@ export default function App() {
       />
       {game.gameOverFlag && (
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2 z-10 flex gap-2">
-          <button
-            onClick={() => game.restart()}
-            className="px-4 py-2 bg-black border-s-white border-2 rounded-2xl hover:cursor-pointer active:scale-95 focus:bg-blue-500"
-          >
-            RESTART
-          </button>
-          <LinkBtns to="/" text="MAIN MENU"></LinkBtns>
+          <UIBtn cb={() => game.restart()}>RESTART</UIBtn>
+          <LinkBtn to="/" text="HOME"></LinkBtn>
         </div>
       )}
     </main>

@@ -3,7 +3,7 @@ import Game from "../Game";
 
 export default function fireCannon(game: Game) {
   if (game.loadedOrb && game.nextOrb) {
-    game.audioPool.playSound("shoot");
+    if (game.sfx) game.audioPool.playSound("shoot");
     game.firedOrb = game.loadedOrb;
     game.loadedOrb = game.nextOrb;
     game.loadedOrb.dx = 5;

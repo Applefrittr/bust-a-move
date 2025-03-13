@@ -69,8 +69,8 @@ export default class CannonLoader {
     );
   }
 
-  handleKeyDown(char: string) {
-    if (char !== " ") return;
+  handleKeyDown(char: string, controls: { [action: string]: string }) {
+    if (char !== controls.fire) return;
     this.spriteSheet = firingCannonSprite;
     this.spriteShiftX = this.spriteSourceWidth;
     this.launcherShiftX = this.launcherSourceWidth;

@@ -5,7 +5,7 @@ type LinkProps = {
   text: string;
 };
 
-export default function LinkBtns({ to, text }: LinkProps) {
+export default function LinkBtn({ to, text }: LinkProps) {
   return (
     <Link
       to={to}

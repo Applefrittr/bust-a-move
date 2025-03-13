@@ -69,10 +69,10 @@ export default class CannonOperator {
     );
   }
 
-  handleKeyDown(char: string) {
-    if (char !== "a" && char !== "d") return;
+  handleKeyDown(char: string, controls: { [action: string]: string }) {
+    if (char !== controls.left && char !== controls.right) return;
     this.spriteSheet = turningCannonSprite;
-    if (char === "a") {
+    if (char === controls.left) {
       this.spriteShiftX = -this.spriteSourceWidth;
       this.wheelShiftX = -this.wheelSourceWidth;
     } else {

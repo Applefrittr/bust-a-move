@@ -1,6 +1,10 @@
+import { useContext } from "react";
+import { OptionsContext } from "./Context";
 import MobileButton from "./MobileButton";
 
 export default function MobileControls() {
+  const options = useContext(OptionsContext);
+
   const simulateKeyBoardPressDown = (
     event: React.TouchEvent<HTMLButtonElement>
   ) => {
@@ -19,27 +23,31 @@ export default function MobileControls() {
     window.dispatchEvent(fireEvent);
   };
   return (
-    <div className="flex justify-between items-center px-3 2xl:hidden">
-      <div className="flex flex-col w-28 gap-2">
-        <MobileButton
-          dispatchKeyBoardDown={simulateKeyBoardPressDown}
-          dispatchKeyBoardUp={simulateKeyBoardRelease}
-          value="a"
-        />
+    <>
+      {options.mobileUI && (
+        <div className="flex justify-between items-center px-3 2xl:hidden">
+          <div className="flex flex-col w-28 gap-2">
+            <MobileButton
+              dispatchKeyBoardDown={simulateKeyBoardPressDown}
+              dispatchKeyBoardUp={simulateKeyBoardRelease}
+              value={options.left}
+            />
 
-        <MobileButton
-          dispatchKeyBoardDown={simulateKeyBoardPressDown}
-          dispatchKeyBoardUp={simulateKeyBoardRelease}
-          value="d"
-          custClass="ml-auto"
-        />
-      </div>
-      <MobileButton
-        dispatchKeyBoardDown={simulateKeyBoardPressDown}
-        dispatchKeyBoardUp={simulateKeyBoardRelease}
-        value=" "
-        custClass="h-max"
-      />
-    </div>
+            <MobileButton
+              dispatchKeyBoardDown={simulateKeyBoardPressDown}
+              dispatchKeyBoardUp={simulateKeyBoardRelease}
+              value={options.right}
+              custClass="ml-auto"
+            />
+          </div>
+          <MobileButton
+            dispatchKeyBoardDown={simulateKeyBoardPressDown}
+            dispatchKeyBoardUp={simulateKeyBoardRelease}
+            value={options.fire}
+            custClass="h-max"
+          />
+        </div>
+      )}
+    </>
   );
 }

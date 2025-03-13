@@ -34,6 +34,7 @@ import {
   ORBRADIUS,
   SHRINKRATE,
 } from "./utils/constantValues";
+import { OptionsObj } from "../components/Context";
 
 export default class Game {
   arena: Arena;
@@ -45,6 +46,7 @@ export default class Game {
   cannonLoaderSprite: CannonLoader;
   cannonOperatorSprite: CannonOperator;
   colorRange: number;
+  controls: { [action: string]: string } = { left: "a", right: "d", fire: " " };
   critters: Set<OrbCritter> = new Set();
   dropPoints: DropPoints | null = null;
   explosions: Set<OrbExplosion> = new Set();
@@ -56,6 +58,7 @@ export default class Game {
   level: number;
   loadedOrb: Orb | null = null;
   msNow: number = this.fpsController.msPrev;
+  music: boolean = true;
   nextOrb: Orb | null = null;
   orbs: OrbGraph = new OrbGraph();
   orbBagBack: OrbBag;
@@ -66,6 +69,7 @@ export default class Game {
   roundComplete: boolean = false;
   roundScore: number = 0;
   roundStart: boolean = false;
+  sfx: boolean = true;
   transformOrigin: { x: number; y: number };
   transformScaler: number;
   score: number = 0;
@@ -103,12 +107,20 @@ export default class Game {
     this.ctx = ctx;
   }
 
+  setOptions(options: OptionsObj) {
+    this.sfx = options.sfx;
+    this.music = options.music;
+    this.controls.left = options.left;
+    this.controls.right = options.right;
+    this.controls.fire = options.fire;
+  }
+
   keyDownEvent = (event: KeyboardEvent) => {
-    this.cannon.handleKeyDown(event.key);
-    this.cannonBase.handleKeyDown(event.key);
-    this.cannonOperatorSprite.handleKeyDown(event.key);
-    this.cannonLoaderSprite.handleKeyDown(event.key);
-    if (event.key === " " && !this.firedOrb) {
+    this.cannon.handleKeyDown(event.key, this.controls);
+    this.cannonBase.handleKeyDown(event.key, this.controls);
+    this.cannonOperatorSprite.handleKeyDown(event.key, this.controls);
+    this.cannonLoaderSprite.handleKeyDown(event.key, this.controls);
+    if (event.key === this.controls.fire && !this.firedOrb) {
       fireCannon(this);
     }
   };
@@ -123,13 +135,13 @@ export default class Game {
     if ((this.level - 1) % 5 === 0) this.colorRange++;
     generateLevel(this);
     this.arena.pickLevel(this.level);
-    this.audioPool.playSound("ready");
+    if (this.sfx) this.audioPool.playSound("ready");
     this.roundComplete = false;
     this.roundScore = 0;
     this.roundStart = true;
 
     setTimeout(() => {
-      this.audioPool.playSound("go");
+      if (this.sfx) this.audioPool.playSound("go");
       this.arenaShrinkRate = SHRINKRATE;
       this.arena.shrinkRate = SHRINKRATE;
       window.addEventListener("keydown", this.keyDownEvent);
@@ -227,7 +239,7 @@ export default class Game {
       if (this.firedOrb) {
         detectCollisions(this.firedOrb, this.orbs);
         if (this.firedOrb.dx === 0 && this.firedOrb.dy === 0) {
-          this.audioPool.playSound("collide");
+          if (this.sfx) this.audioPool.playSound("collide");
           this.firedOrb.shine();
           detectNeighbors(this.firedOrb, this.orbs);
           detectBusts(this.firedOrb, this.orbs);

@@ -34,8 +34,10 @@ export default function bustOrphanOrbs(game: Game) {
   }
 
   if (numDropped) {
-    game.audioPool.playSound("scoreMulti");
-    game.audioPool.playSound("multiplier");
+    if (game.sfx) {
+      game.audioPool.playSound("scoreMulti");
+      game.audioPool.playSound("multiplier");
+    }
     let droppedScore = 20;
     for (let i = 1; i < numDropped; i++) {
       droppedScore *= 2;

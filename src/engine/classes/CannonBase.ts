@@ -23,9 +23,9 @@ export default class CannonBase {
     this.y = game.arena.arenaFloor - this.height;
   }
 
-  handleKeyDown(char: string) {
-    if (char === "a") this.shiftX = -this.spriteWidth;
-    else if (char === "d") this.shiftX = this.spriteWidth;
+  handleKeyDown(char: string, controls: { [action: string]: string }) {
+    if (char === controls.left) this.shiftX = -this.spriteWidth;
+    else if (char === controls.right) this.shiftX = this.spriteWidth;
     else return;
   }
 

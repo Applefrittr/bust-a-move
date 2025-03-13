@@ -20,9 +20,9 @@ export default class Cannon {
     this.y = game.arena.arenaFloor - this.height + 5;
   }
 
-  handleKeyDown(char: string) {
-    if (char === "a") this.degDelta = -2;
-    else if (char === "d") this.degDelta = 2;
+  handleKeyDown(char: string, controls: { [action: string]: string }) {
+    if (char === controls.left) this.degDelta = -2;
+    else if (char === controls.right) this.degDelta = 2;
     else return;
   }
 
