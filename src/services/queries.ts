@@ -1,6 +1,8 @@
 import {
   collection,
   getDocs,
+  setDoc,
+  doc,
   DocumentData,
   query,
   orderBy,
@@ -10,7 +12,6 @@ import { db } from "./firebase";
 
 export function getScores() {
   return new Promise<DocumentData[]>((resolve, reject) => {
-    console.log("querying firebase...");
     const userData: DocumentData[] = [];
 
     const q = query(
@@ -24,11 +25,14 @@ export function getScores() {
         data.forEach((doc) => {
           userData.push(doc.data());
         });
-        console.log("done!");
         resolve(userData);
       })
       .catch((error) => {
         reject(error);
       });
   });
+}
+
+export function submitScore(name: string, score: number) {
+  return setDoc(doc(db, "users"), { name, score });
 }

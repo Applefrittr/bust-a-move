@@ -11,9 +11,8 @@ import {
 } from "react";
 import { NATIVERESOLUTION } from "../engine/utils/constantValues";
 import GameUI from "../components/GameUI";
-import LinkBtn from "../components/LinkBtn";
-import UIBtn from "../components/UIBtn";
 import { OptionsContext } from "../components/Context";
+import GameOverModal from "../components/GameOverModal";
 
 export default function GameCanvas() {
   const [frame, setFrame] = useState(0);
@@ -71,10 +70,11 @@ export default function GameCanvas() {
         ref={canvasRef}
       />
       {game.gameOverFlag && (
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2 z-10 flex gap-2">
-          <UIBtn cb={() => game.restart()}>RESTART</UIBtn>
-          <LinkBtn to="/" text="HOME"></LinkBtn>
-        </div>
+        <GameOverModal
+          game={game}
+          frame={frame}
+          syncReactFrames={syncReactFrames}
+        />
       )}
     </main>
   );
