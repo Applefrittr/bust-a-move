@@ -55,6 +55,18 @@
     }
   }
 }
+@theme {
+  --animate-star: star 3s steps(6) infinite;
+
+  @keyframes star {
+    0% {
+      background-position-x: 0%;
+    }
+    100% {
+      background-position-x: 200%;
+    }
+  }
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

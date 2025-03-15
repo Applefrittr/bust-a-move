@@ -9,16 +9,16 @@ export default function Scoreboard() {
   });
 
   return (
-    <main className="h-dvh p-8">
-      <div className="p-8 border-2 border-white">
+    <main className="h-dvh p-8 bg-[url(/src/assets/title-bg.png)] bg-repeat">
+      <div className="p-8 border-2 border-white bg-[#242424]">
         <h1 className="m-auto w-max p-4">HIGH SCORES</h1>
-        <div className="[&>*:nth-child(even)]:border-white [&>*:nth-child(even)]:border-2">
+        <div className="[&>*:nth-child(even)]:bg-white [&>*:nth-child(even)]:text-black">
           {data &&
             data.map((doc, i) => {
               return (
                 <div
                   key={i}
-                  className="grid grid-cols-[40px_1fr] sm:grid-cols-[40px_2fr_1fr] gap-1 p-4"
+                  className="grid grid-cols-[40px_1fr] sm:grid-cols-[40px_2fr_1fr] gap-1 p-4 min-w-max"
                 >
                   <span>{i + 1}.</span>
                   <p className="text-center sm:text-left">{doc.name}</p>
@@ -31,9 +31,9 @@ export default function Scoreboard() {
           {isError && <p>Error retrieving scores. Try again later.</p>}
           {isLoading && <p>Loading...</p>}
         </div>
-      </div>
-      <div className="m-auto w-max p-4">
-        <LinkBtn to="/" text="BACK" />
+        <div className="m-auto w-max p-4">
+          <LinkBtn to="/" text="BACK" />
+        </div>
       </div>
     </main>
   );
