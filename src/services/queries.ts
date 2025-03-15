@@ -1,14 +1,18 @@
 import {
   collection,
   getDocs,
-  setDoc,
-  doc,
   DocumentData,
   query,
   orderBy,
   limit,
+  addDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
+
+export type FBUserDoc = {
+  name: string;
+  score: number;
+};
 
 export function getScores() {
   return new Promise<DocumentData[]>((resolve, reject) => {
@@ -33,6 +37,9 @@ export function getScores() {
   });
 }
 
-export function submitScore(name: string, score: number) {
-  return setDoc(doc(db, "users"), { name, score });
+export function submitScore(user: FBUserDoc) {
+  return addDoc(collection(db, "users"), {
+    name: user.name,
+    score: user.score,
+  });
 }
