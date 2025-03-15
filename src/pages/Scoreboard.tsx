@@ -9,7 +9,7 @@ export default function Scoreboard() {
   });
 
   return (
-    <main className="h-dvh p-8 bg-[url(/src/assets/title-bg.png)] bg-repeat">
+    <main className="min-h-svh p-8 bg-[url(/src/assets/title-bg.png)] bg-repeat">
       <div className="p-8 border-2 border-white bg-[#242424]">
         <h1 className="m-auto w-max p-4">HIGH SCORES</h1>
         <div className="[&>*:nth-child(even)]:bg-white [&>*:nth-child(even)]:text-black">
