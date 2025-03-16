@@ -3,6 +3,12 @@ import LinkBtn from "./LinkBtn";
 import UIBtn from "./UIBtn";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getScores, submitScore, FBUserDoc } from "../services/queries";
+import {
+  RegExpMatcher,
+  englishDataset,
+  englishRecommendedTransformers,
+} from "obscenity";
+import { useState } from "react";
 
 type GameOverModalProps = {
   game: Game;
@@ -17,6 +23,11 @@ export default function GameOverModal({
 }: GameOverModalProps) {
   cancelAnimationFrame(frame);
   const queryClient = useQueryClient();
+  const matcher = new RegExpMatcher({
+    ...englishDataset.build(),
+    ...englishRecommendedTransformers,
+  });
+  const [profanity, setProfanity] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["scores"],
@@ -39,6 +50,13 @@ export default function GameOverModal({
     userData.name = formData.get("name") as string;
     userData.score = game.score;
 
+    // filter here
+    if (matcher.hasMatch(userData.name)) {
+      console.log("profanity detected!");
+      setProfanity(true);
+      return;
+    }
+
     mutate(userData);
   };
 
@@ -58,12 +76,18 @@ export default function GameOverModal({
             <input
               type="text"
               placeholder="name"
-              className="bg-white text-black text-center"
+              className={`text-black text-center ${
+                profanity ? "bg-red-300" : "bg-white"
+              }`}
               size={15}
               minLength={3}
               maxLength={15}
               name="name"
+              onFocus={() => setProfanity(false)}
             />
+            {profanity && (
+              <p className="text-[.5rem] text-red-300">Really???</p>
+            )}
             <p className="text-[.5rem]">3-15 characters long</p>
             {isIdle && (
               <div className={`m-auto w-max`}>
