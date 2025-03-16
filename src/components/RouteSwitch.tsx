@@ -5,6 +5,9 @@ import Options from "../pages/Options";
 import Scoreboard from "../pages/Scoreboard";
 import { OptionsContext, OptionsObj } from "./Context";
 import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function RouteSwitch() {
   const [options, setOptions] = useState<OptionsObj>({
@@ -22,19 +25,21 @@ export default function RouteSwitch() {
 
   return (
     <>
-      <OptionsContext.Provider value={options}>
-        <HashRouter>
-          <Routes>
-            <Route index element={<Home />} />
-            <Route path="game" element={<GameCanvas />} />
-            <Route
-              path="options"
-              element={<Options updateOptions={updateOptions} />}
-            />
-            <Route path="scoreboard" element={<Scoreboard />} />
-          </Routes>
-        </HashRouter>
-      </OptionsContext.Provider>
+      <QueryClientProvider client={queryClient}>
+        <OptionsContext.Provider value={options}>
+          <HashRouter>
+            <Routes>
+              <Route index element={<Home />} />
+              <Route path="game" element={<GameCanvas />} />
+              <Route
+                path="options"
+                element={<Options updateOptions={updateOptions} />}
+              />
+              <Route path="scoreboard" element={<Scoreboard />} />
+            </Routes>
+          </HashRouter>
+        </OptionsContext.Provider>
+      </QueryClientProvider>
     </>
   );
 }

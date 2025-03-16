@@ -35,9 +35,9 @@ export default function Options({ updateOptions }: OptionsPorps) {
   };
 
   return (
-    <main className="p-8 flex items-center justify-center min-h-svh">
+    <main className="p-8 flex items-center justify-center min-h-svh bg-[url(/src/assets/modal-bg.png)] bg-repeat">
       <form
-        className="flex flex-col gap-4 p-8 border-white-solid border-2 lg:min-w-2xl"
+        className="flex flex-col gap-4 p-8 border-white-solid border-2 lg:min-w-2xl bg-[#242424]"
         onSubmit={(e) => saveOptions(e)}
       >
         <h1 className="m-auto">Options</h1>
