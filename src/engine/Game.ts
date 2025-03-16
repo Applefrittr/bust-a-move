@@ -253,9 +253,9 @@ export default class Game {
       this.cannonLoaderSprite.update(this.ctx);
 
       updateCannonAmmo(this);
-      for (const [orb] of this.orbs.graph) {
-        orb.update(this.ctx, this);
-      }
+
+      this.orbs.updateOrbs(this.ctx, this);
+
       this.explosions.forEach((explosion) => explosion.update(this.ctx, this));
 
       this.tenPointSprites.forEach((sprite) => sprite.update(this.ctx, this));
