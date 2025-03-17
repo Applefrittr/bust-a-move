@@ -2,6 +2,7 @@ import Game from "../Game";
 import Orb from "../classes/Orb";
 import detectNeighbors from "./detectNeighbors";
 import randomNumInRange from "./randomNumInRange";
+import { LEVELS } from "./constantValues";
 
 export default function generateLevel(game: Game) {
   game.loadedOrb = new Orb(
@@ -10,7 +11,7 @@ export default function generateLevel(game: Game) {
     game.orbRadius,
     0,
     0,
-    game.colorRange
+    LEVELS[game.level]
   );
 
   game.nextOrb = new Orb(
@@ -19,11 +20,11 @@ export default function generateLevel(game: Game) {
     game.orbRadius,
     0,
     0,
-    game.colorRange
+    LEVELS[game.level]
   );
 
   const orbCoordinates = new Map<string, Orb>();
-  const numOfOrbs = 10 + 10 * ((game.level - 1) % 5);
+  const numOfOrbs = 10 + 10 * ((game.round - 1) % 5);
   for (let i = 0; i < numOfOrbs; i++) {
     const orb = new Orb(
       0,
@@ -31,7 +32,7 @@ export default function generateLevel(game: Game) {
       game.orbRadius,
       0,
       0,
-      game.colorRange
+      LEVELS[game.level]
     );
     orb.anchoredToArena = true;
     placeOrb(orb, orbCoordinates, game);

@@ -16,7 +16,7 @@ const levels = [BG1, BG2, BG3, BG4, BG5];
 
 export default function drawBackGround(game: Game) {
   if (game.ctx) {
-    const level = (game.level - 1) % levels.length;
+    const level = (game.round - 1) % levels.length;
     const pattern = game.ctx.createPattern(
       levels[level],
       "repeat"
