@@ -36,11 +36,13 @@ import {
   LEVELS,
 } from "./utils/constantValues";
 import { OptionsObj } from "../components/Context";
+import BGMusic from "../assets/sounds/Let's Go to Pao Pao Island!.mp3";
 
 export default class Game {
   arena: Arena;
   arenaShrinkRate: number = 0;
   audioPool: AudioPool;
+  bgMusic: HTMLAudioElement = new Audio(BGMusic);
   ctx: CanvasRenderingContext2D | null = null;
   cannon: Cannon;
   cannonBase: CannonBase;
@@ -114,6 +116,9 @@ export default class Game {
     this.controls.left = options.left;
     this.controls.right = options.right;
     this.controls.fire = options.fire;
+
+    if (!this.music) this.bgMusic.pause();
+    else this.bgMusic.play();
   }
 
   keyDownEvent = (event: KeyboardEvent) => {
@@ -133,6 +138,9 @@ export default class Game {
   };
 
   start() {
+    if (this.music) {
+      this.bgMusic.play();
+    }
     if ((this.round - 1) % 5 === 0)
       this.level = Math.min(this.level + 1, LEVELS.length - 1);
     generateLevel(this);
@@ -153,6 +161,9 @@ export default class Game {
   }
 
   nextRound() {
+    if (this.sfx) this.audioPool.playSound("clear");
+    this.bgMusic.pause();
+    this.bgMusic.currentTime = 0;
     this.roundComplete = true;
     this.arenaShrinkRate = 0;
     this.arena.shrinkRate = 0;
@@ -168,6 +179,11 @@ export default class Game {
   }
 
   gameOver() {
+    if (this.music) {
+      this.bgMusic.pause();
+      this.bgMusic.currentTime = 0;
+    }
+    if (this.sfx) this.audioPool.playSound("game-over");
     this.gameOverFlag = true;
     this.arenaShrinkRate = 0;
     this.arena.shrinkRate = 0;
@@ -200,10 +216,12 @@ export default class Game {
 
   togglePause() {
     if (this.paused) {
+      if (this.music) this.bgMusic.play();
       requestAnimationFrame(this.animationLoop);
       window.addEventListener("keydown", this.keyDownEvent);
       window.addEventListener("keyup", this.keyUpEvent);
     } else {
+      if (this.music) this.bgMusic.pause();
       cancelAnimationFrame(this.frame);
       window.removeEventListener("keydown", this.keyDownEvent);
       window.removeEventListener("keyup", this.keyUpEvent);

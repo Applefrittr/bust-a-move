@@ -6,6 +6,8 @@ import Ready from "../../assets/sounds/ready.mp3";
 import ScoreMulti from "../../assets/sounds/score-multi.mp3";
 import Score from "../../assets/sounds/score.mp3";
 import Shoot from "../../assets/sounds/shoot.mp3";
+import Clear from "../../assets/sounds/clear.mp3";
+import GameOver from "../../assets/sounds/game-over.mp3";
 
 export default class AudioPool {
   maxCount: number = 30;
@@ -28,6 +30,8 @@ export default class AudioPool {
       scoreMulti: { name: ScoreMulti },
       score: { name: Score, timeStamp: 0.25 },
       shoot: { name: Shoot, timeStamp: 0.1 },
+      clear: { name: Clear },
+      "game-over": { name: GameOver },
     };
   }
 
@@ -41,6 +45,8 @@ export default class AudioPool {
       | "scoreMulti"
       | "score"
       | "shoot"
+      | "clear"
+      | "game-over"
   ) {
     let audio;
     for (let i = 0; i < this.maxCount; i++) {
