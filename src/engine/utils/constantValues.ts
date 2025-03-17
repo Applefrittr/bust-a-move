@@ -17,6 +17,8 @@ export const MAXRESOLUTIONSCALER = {
 
 export const SHRINKRATE = 0.05;
 
+export const ORBSPEED = 6;
+
 export const LEVELS = [
   ["green", "blue"],
   ["red", "yellow"],
