@@ -1,17 +1,13 @@
 import { ReactNode, useContext, useState } from "react";
-import { OptionsObj, OptionsContext } from "../components/Context";
+import { OptionsContext } from "../components/Context";
 import LinkBtn from "../components/LinkBtn";
 import UIBtn from "../components/UIBtn";
-
-type OptionsPorps = {
-  updateOptions: (options: OptionsObj) => void;
-};
 
 type OptionFormElementProps = {
   children: ReactNode;
 };
 
-export default function Options({ updateOptions }: OptionsPorps) {
+export default function Options() {
   const options = useContext(OptionsContext);
   const [saved, setSaved] = useState(false);
 
@@ -30,7 +26,7 @@ export default function Options({ updateOptions }: OptionsPorps) {
           ? " "
           : dataObj.fire.toString()[0] || " ",
     };
-    updateOptions(optionsData);
+    options?.updateOptions(optionsData);
     setSaved(true);
   };
 
@@ -46,7 +42,7 @@ export default function Options({ updateOptions }: OptionsPorps) {
           <input
             name="sfx"
             type="checkbox"
-            defaultChecked={options.sfx ? true : false}
+            defaultChecked={options?.sfx ? true : false}
           ></input>
         </OptionFromElement>
         <OptionFromElement>
@@ -54,7 +50,7 @@ export default function Options({ updateOptions }: OptionsPorps) {
           <input
             name="music"
             type="checkbox"
-            defaultChecked={options.music ? true : false}
+            defaultChecked={options?.music ? true : false}
           ></input>
         </OptionFromElement>
         <OptionFromElement>
@@ -62,7 +58,7 @@ export default function Options({ updateOptions }: OptionsPorps) {
           <input
             name="mobileUI"
             type="checkbox"
-            defaultChecked={options.mobileUI ? true : false}
+            defaultChecked={options?.mobileUI ? true : false}
           ></input>
         </OptionFromElement>
         <div className="flex-col flex gap-4">
@@ -72,7 +68,7 @@ export default function Options({ updateOptions }: OptionsPorps) {
             <input
               name="left"
               maxLength={1}
-              defaultValue={options.left}
+              defaultValue={options?.left}
               className="focus:bg-white focus:text-black w-24 px-1 border-2 border-white"
               onClick={(e) => (e.currentTarget.value = "")}
               autoComplete="false"
@@ -83,7 +79,7 @@ export default function Options({ updateOptions }: OptionsPorps) {
             <input
               name="right"
               maxLength={1}
-              defaultValue={options.right}
+              defaultValue={options?.right}
               className=" focus:bg-white focus:text-black w-24 px-1 border-2 border-white"
               onClick={(e) => (e.currentTarget.value = "")}
               autoComplete="false"
@@ -94,7 +90,7 @@ export default function Options({ updateOptions }: OptionsPorps) {
             <input
               name="fire"
               maxLength={1}
-              defaultValue={options.fire === " " ? "space" : options.fire}
+              defaultValue={options?.fire === " " ? "space" : options?.fire}
               className="focus:bg-white focus:text-black w-24 px-1 border-2 border-white"
               onClick={(e) => (e.currentTarget.value = "")}
               autoComplete="false"

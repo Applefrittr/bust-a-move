@@ -13,6 +13,7 @@ import { NATIVERESOLUTION } from "../engine/utils/constantValues";
 import GameUI from "../components/GameUI";
 import { OptionsContext } from "../components/Context";
 import GameOverModal from "../components/GameOverModal";
+import PauseModal from "../components/PauseModal";
 
 export default function GameCanvas() {
   const [frame, setFrame] = useState(0);
@@ -31,7 +32,7 @@ export default function GameCanvas() {
       const ctx = canvasRef.current.getContext("2d");
       game.setContext(ctx);
 
-      game.setOptions(options);
+      if (options) game.setOptions(options);
 
       game.start();
       game.animationLoop();
@@ -76,6 +77,7 @@ export default function GameCanvas() {
           syncReactFrames={syncReactFrames}
         />
       )}
+      {game.paused && <PauseModal game={game} />}
     </main>
   );
 }

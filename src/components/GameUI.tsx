@@ -1,5 +1,4 @@
 import Game from "../engine/Game";
-import LinkBtn from "./LinkBtn";
 import MobileControls from "./MobileControls";
 import UIBtn from "./UIBtn";
 
@@ -33,7 +32,6 @@ export default function GameUI({ game }: GameUIProps) {
           >
             PAUSE
           </UIBtn>
-          <LinkBtn to="/" text="HOME" />
         </div>
       </div>
       <MobileControls />

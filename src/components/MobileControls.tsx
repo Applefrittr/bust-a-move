@@ -24,26 +24,26 @@ export default function MobileControls() {
   };
   return (
     <>
-      {options.mobileUI && (
+      {options?.mobileUI && (
         <div className="flex justify-between items-center px-3 2xl:hidden">
           <div className="flex flex-col w-28 gap-2">
             <MobileButton
               dispatchKeyBoardDown={simulateKeyBoardPressDown}
               dispatchKeyBoardUp={simulateKeyBoardRelease}
-              value={options.left}
+              value={options?.left}
             />
 
             <MobileButton
               dispatchKeyBoardDown={simulateKeyBoardPressDown}
               dispatchKeyBoardUp={simulateKeyBoardRelease}
-              value={options.right}
+              value={options?.right}
               custClass="ml-auto"
             />
           </div>
           <MobileButton
             dispatchKeyBoardDown={simulateKeyBoardPressDown}
             dispatchKeyBoardUp={simulateKeyBoardRelease}
-            value={options.fire}
+            value={options?.fire}
             custClass="h-max"
           />
         </div>
