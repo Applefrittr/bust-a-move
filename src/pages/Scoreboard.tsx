@@ -20,7 +20,7 @@ export default function Scoreboard() {
 
   return (
     <main className="min-h-svh p-8 bg-[url(/src/assets/title-bg.png)] bg-repeat">
-      <div className="p-8 border-2 border-white bg-[#242424]">
+      <div className="p-2 sm:p-8 border-2 border-white bg-[#242424]">
         <UIBtn cb={() => setToggleView((prev) => !prev)}>SWITCH</UIBtn>
         {toggleView && (
           <LeaderBoardList
@@ -63,7 +63,7 @@ function LeaderBoardList({
             return (
               <div
                 key={i}
-                className="grid grid-cols-[40px_1fr] sm:grid-cols-[40px_2fr_1fr] gap-1 p-4 min-w-max"
+                className="grid grid-cols-[40px_1fr] sm:grid-cols-[40px_2fr_1fr] gap-1 p-2 sm:p-4 min-w-max text-[.85rem] sm:text-[1rem]"
               >
                 <span>{i + 1}.</span>
                 <p className="text-center sm:text-left">{doc.name}</p>
