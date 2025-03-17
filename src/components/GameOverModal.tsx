@@ -50,9 +50,7 @@ export default function GameOverModal({
     userData.name = formData.get("name") as string;
     userData.score = game.score;
 
-    // filter here
     if (matcher.hasMatch(userData.name)) {
-      console.log("profanity detected!");
       setProfanity(true);
       return;
     }

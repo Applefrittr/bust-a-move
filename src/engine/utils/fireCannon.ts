@@ -11,13 +11,15 @@ export default function fireCannon(game: Game) {
     game.firedOrb.dy = 5 * Math.sin(((-90 + game.cannon.deg) * Math.PI) / 180);
     game.orbs.addOrb(game.firedOrb);
 
+    const colorsLeftInGraph = Array.from(game.orbs.currentColors);
+
     game.nextOrb = new Orb(
       game.cannon.x - 5 * game.orbRadius,
       game.arena.arenaFloor - game.orbRadius,
       game.orbRadius,
       0,
       0,
-      game.colorRange
+      colorsLeftInGraph
     );
   }
 }

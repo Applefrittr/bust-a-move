@@ -33,6 +33,7 @@ import {
   NATIVERESOLUTION,
   ORBRADIUS,
   SHRINKRATE,
+  LEVELS,
 } from "./utils/constantValues";
 import { OptionsObj } from "../components/Context";
 
@@ -45,7 +46,6 @@ export default class Game {
   cannonBase: CannonBase;
   cannonLoaderSprite: CannonLoader;
   cannonOperatorSprite: CannonOperator;
-  colorRange: number;
   controls: { [action: string]: string } = { left: "a", right: "d", fire: " " };
   critters: Set<OrbCritter> = new Set();
   dropPoints: DropPoints | null = null;
@@ -55,6 +55,7 @@ export default class Game {
   frame: number = 0;
   gameOverFlag: boolean = false;
   height: number;
+  round: number;
   level: number;
   loadedOrb: Orb | null = null;
   msNow: number = this.fpsController.msPrev;
@@ -88,8 +89,8 @@ export default class Game {
       x: (width - NATIVERESOLUTION.width * this.transformScaler) / 2,
       y: (height - NATIVERESOLUTION.height * this.transformScaler) / 2,
     };
-    this.level = 1;
-    this.colorRange = 1;
+    this.round = 1;
+    this.level = -1;
 
     this.audioPool = new AudioPool();
     this.pool = new ObjectPool();
@@ -132,9 +133,10 @@ export default class Game {
   };
 
   start() {
-    if ((this.level - 1) % 5 === 0) this.colorRange++;
+    if ((this.round - 1) % 5 === 0)
+      this.level = Math.min(this.level + 1, LEVELS.length - 1);
     generateLevel(this);
-    this.arena.pickLevel(this.level);
+    this.arena.pickLevel(this.round);
     if (this.sfx) this.audioPool.playSound("ready");
     this.roundComplete = false;
     this.roundScore = 0;
@@ -150,7 +152,7 @@ export default class Game {
     }, 3500);
   }
 
-  nextLevel() {
+  nextRound() {
     this.roundComplete = true;
     this.arenaShrinkRate = 0;
     this.arena.shrinkRate = 0;
@@ -160,7 +162,7 @@ export default class Game {
     this.nextOrb = null;
     setTimeout(() => {
       this.arena.resetArena(this);
-      this.level += 1;
+      this.round += 1;
       this.start();
     }, DELAY);
   }
@@ -178,8 +180,8 @@ export default class Game {
   restart() {
     this.gameOverFlag = false;
     this.score = 0;
-    this.level = 1;
-    this.colorRange = 1;
+    this.round = 1;
+    this.level = -1;
     this.orbs.deleteGraph();
     this.loadedOrb = null;
     this.nextOrb = null;
@@ -273,7 +275,7 @@ export default class Game {
         this.explosions.size === 0 &&
         !this.roundComplete
       ) {
-        this.nextLevel();
+        this.nextRound();
       }
 
       if (this.roundComplete) {

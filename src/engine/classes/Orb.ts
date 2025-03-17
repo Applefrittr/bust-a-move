@@ -1,5 +1,5 @@
 import randomNumInRange from "../utils/randomNumInRange";
-import { orbSprites, colors } from "../spriteObjects/OrbSprites";
+import { orbSprites } from "../spriteObjects/OrbSprites";
 import { GRAVITYPERFRAME } from "../utils/constantValues";
 import Game from "../Game";
 
@@ -35,7 +35,7 @@ export default class Orb {
     r: number,
     dx: number,
     dy: number,
-    colorRange: number
+    availColors: string[] = []
   ) {
     this.x = x;
     this.y = y;
@@ -43,8 +43,7 @@ export default class Orb {
     this.dx = dx;
     this.dy = dy;
 
-    this.color =
-      colors[Math.floor(Math.random() * Math.min(colorRange, colors.length))];
+    this.color = availColors[Math.floor(Math.random() * availColors.length)];
     this.sprite = orbSprites[this.color].idle;
     this.spriteWidth = orbSprites[this.color].width;
     this.spriteHeight = orbSprites[this.color].height;
