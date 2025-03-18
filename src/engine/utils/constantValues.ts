@@ -21,14 +21,11 @@ export const ORBSPEED = 6;
 
 export const LEVELS = [
   ["green", "blue"],
-  ["red", "yellow"],
   ["purple", "white"],
-  ["green", "red", "blue"],
-  ["purple", "yellow", "white"],
-  ["red", "purple", "white"],
+  ["white", "red", "blue"],
+  ["purple", "yellow", "green"],
   ["red", "purple", "white", "green"],
   ["blue", "yellow", "white", "red"],
-  ["purple", "yellow", "blue", "green"],
   ["green", "blue", "red", "white", "yellow"],
   ["purple", "yellow", "green", "red", "blue", "white"],
 ];
