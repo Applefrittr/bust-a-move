@@ -20,6 +20,9 @@ export default function Home() {
           <div className="w-[98px] h-[98px] bg-[url(/src/assets/title-look.png)] bg-cover animate-look absolute top-36 right-1/12 sm:-top-1/2 sm:-right-1/4"></div>
         </div>
       </section>
+      <p className="text-[.50rem] sm:text-[.70rem] p-2 fixed bottom-0 text-center">
+        &copy;Taito Re-created with Web Technology by Applefrittr 2025
+      </p>
     </main>
   );
 }
