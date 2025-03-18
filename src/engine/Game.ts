@@ -304,11 +304,13 @@ export default class Game {
         drawRoundStartMsg(this);
       }
 
+      if (!this.gameOverFlag) {
+        if (detectGameOver(this)) this.gameOver();
+      }
+
       if (this.gameOverFlag) {
         drawGameOverMsg(this);
       }
-
-      if (detectGameOver(this)) this.gameOver();
 
       this.ctx.resetTransform();
     }

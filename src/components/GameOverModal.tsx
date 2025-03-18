@@ -80,12 +80,12 @@ export default function GameOverModal({
             game.round > rounds.data[rounds.data.length - 1].score ||
             rounds.data.length < 10) && (
             <form
-              className="bg-black text-white p-4 border-2 border-white rounded-2xl w-max absolute top-1/4 -translate-y-1/4 flex flex-col justify-center items-center gap-2"
+              className="bg-black text-white p-4 border-2 border-white rounded-2xl w-max absolute top-1/4 -translate-y-1/3 flex flex-col justify-center items-center gap-2"
               onSubmit={submitNewScore}
             >
               <div className="flex gap-2 items-center">
                 <div className="w-6 h-6 bg-[url(/src/assets/stars.png)] bg-cover animate-star"></div>
-                <h2 className="w-max">NEW LEADERBOARD PLACEMENT</h2>
+                <h2 className="w-max">NEW PLACEMENT</h2>
                 <div className="w-6 h-6 bg-[url(/src/assets/stars.png)] bg-cover animate-star"></div>
               </div>
               <input
