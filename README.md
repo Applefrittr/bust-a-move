@@ -24,7 +24,7 @@ Bust A Move made a splash in the video game scene in the early to mid-1990s, bec
 - React Router
 - Firebase
 
-For full dependency list, check - 
+For full dependency list, check - https://github.com/Applefrittr/bust-a-move/blob/main/package.json
 
 ## Know Bugs
 - Orb placement will occasionally end up out of the arena boundaries
