@@ -288,11 +288,7 @@ export default class Game {
 
       this.dropPoints?.update(this.ctx, this);
 
-      if (
-        this.orbs.graph.size === 0 &&
-        this.explosions.size === 0 &&
-        !this.roundComplete
-      ) {
+      if (this.orbs.graph.size === 0 && !this.roundComplete) {
         this.nextRound();
       }
 
