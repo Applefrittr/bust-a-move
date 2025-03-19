@@ -29,7 +29,7 @@ For full dependency list, check - https://github.com/Applefrittr/bust-a-move/blo
 ## Know Bugs
 - Orb placement will occasionally end up out of the arena boundaries
 - Orbs fired from cannon will attach to orbs that are currently dropping off of arena
-- audio on iOS is very erratic, well occasionally skip certain sound effects
+- audio on iOS is very erratic, occasionally skipping certain sound effects
 
 Feel free to open up an issue if more bugs are found during play.
 
