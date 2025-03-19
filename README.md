@@ -1,50 +1,37 @@
-# React + TypeScript + Vite
+# Bust A Move
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A recreation of Taito's 1994 arcade classic Puzzle Bobble/Bust a Move for web browsers.
 
-Currently, two official plugins are available:
+https://github.com/user-attachments/assets/5bf7712a-6a42-4536-9c35-a1c1311c59cf
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Description
+**`DISCLAIMER`**: Purely an educational project.  Not intended for commercial use.  Bust A Move and in-game characters are property of Taito Corp.
 
-## Expanding the ESLint configuration
+Bust A Move made a splash in the video game scene in the early to mid-1990s, becoming a staple in arcades around the world. Blending simple mechanics with addictive puzzle-solving, it laid the foundation for many games that followed, inspiring mobile puzzle gaming today.  The project goal was to explore the feasibility of recreating this classic arcade experience in a modern web environment.  Feel free to take a look under the hood for my implementation of the game mechanics.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Features
+- Cross platform functionality - play on most devices with a web browser
+- Responsive Design
+- In-game audio and sound effects
+- Character animations
+- Leaderboard
 
-- Configure the top-level `parserOptions` property like this:
+## Technology
+- Typescript
+- Vite
+- React
+- Tailwind CSS
+- React Router
+- Firebase
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+For full dependency list, check - 
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Know Bugs
+- Orb placement will occasionally end up out of the arena boundaries
+- Orbs fired from cannon will attach to orbs that are currently dropping off of arena
+- audio on iOS is very erratic, well occasionally skip certain sound effects
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Feel free to open up an issue if more bugs are found during play.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Contributing
+Not currently accepting contributions as I have no plans to extend the game further.  But that could change in the future.
