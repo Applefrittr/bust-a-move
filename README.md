@@ -26,7 +26,7 @@ Bust A Move made a splash in the video game scene in the early to mid-1990s, bec
 
 For full dependency list, check - https://github.com/Applefrittr/bust-a-move/blob/main/package.json
 
-## Know Bugs
+## Known Bugs
 - Orb placement will occasionally end up out of the arena boundaries
 - Orbs fired from cannon will attach to orbs that are currently dropping off of arena
 - audio on iOS is very erratic, occasionally skipping certain sound effects
