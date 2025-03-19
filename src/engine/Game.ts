@@ -146,8 +146,8 @@ export default class Game {
     generateLevel(this);
     this.arena.pickLevel(this.round);
     if (this.sfx) this.audioPool.playSound("ready");
-    this.roundComplete = false;
     this.roundScore = 0;
+    this.roundComplete = false;
     this.roundStart = true;
 
     setTimeout(() => {
@@ -215,6 +215,7 @@ export default class Game {
   }
 
   togglePause() {
+    if (this.roundComplete || this.roundStart) return;
     if (this.paused) {
       if (this.music) this.bgMusic.play();
       requestAnimationFrame(this.animationLoop);
