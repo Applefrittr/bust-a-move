@@ -1,6 +1,7 @@
 # Bust A Move
 
 A recreation of Taito's 1994 arcade classic Puzzle Bobble/Bust a Move for web browsers.
+Live Link - https://applefrittr.github.io/bust-a-move/
 
 https://github.com/user-attachments/assets/5bf7712a-6a42-4536-9c35-a1c1311c59cf
 
